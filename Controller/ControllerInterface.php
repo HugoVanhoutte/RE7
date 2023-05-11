@@ -4,5 +4,9 @@ namespace App\Controller;
 
 interface ControllerInterface
 {
-    public function index(string $action, array $params = []); //TODO Add pageTitle here or to each action ?
+    /**
+     * @param array $params
+     * @return void
+     */
+    public function index(array $params = []): void;
 }
