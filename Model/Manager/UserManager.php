@@ -6,7 +6,6 @@ use App\Model\DB;
 use PDO;
 use App\Model\Entity\User;
 
-require "../Entity/User.php";
 
 class UserManager implements ManagerInterface
 {
@@ -24,10 +23,9 @@ class UserManager implements ManagerInterface
                 ->setUsername($userData['username'])
                 ->setEmail($userData['email'])
                 ->setPassword($userData['password'])
-                ->setTimestamp($userData['timestamp'])
-                ->setProfilePictureLink($userData['profilePictureLink'])
-                ->setIsAdmin((bool)$userData['isAdmin'])
-                //TODO Check if casts works
+                ->setRegistrationDateTime($userData['registration_date_time'])
+                ->setRoleId($userData['role_id'])
+                ->setToken($userData['token'])
                 ;
 
         }
@@ -47,10 +45,9 @@ class UserManager implements ManagerInterface
             ->setUsername($data['username'])
             ->setEmail($data['email'])
             ->setPassword($data['password'])
-            ->setTimestamp($data['timestamp'])
-            ->setProfilePictureLink($data['profilePictureLink'])
-            ->setIsAdmin((bool)$data['isAdmin'])
-            //TODO Check if casts works
+            ->setRegistrationDateTime($data['registration_date_time'])
+            ->setRoleId($data['role_id'])
+            ->setToken($data['token'])
         ;
 
         } else {
@@ -77,56 +74,35 @@ class UserManager implements ManagerInterface
         return $stmt->execute();
     }
 
-    public function insert(array $userData): bool
+    public function insert(User $user): bool
     {
-        $sql = "INSERT INTO users (username, email, password)
-                VALUES (:username, :email, :password)";
-        $stmt = DB::getInstance()->prepare($sql);
-
-        $stmt->bindParam(':username', $userData['username']);
-        $stmt->bindParam(':email', $userData['email']);
-        $stmt->bindParam(':password', $userData['password']);
-
-        return $stmt->execute();
-    }
-
-    public function insertUnconfirmedUser(array $userData): bool
-    {
-        $sql = "INSERT INTO unconfirmed_users (username, email, password, token)
+        $sql = "INSERT INTO users (username, email, password, token)
                 VALUES (:username, :email, :password, :token)";
         $stmt = DB::getInstance()->prepare($sql);
+        $username = $user->getUsername();
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+        $token = $user->getToken();
 
-        $stmt->bindParam(':username', $userData['username']);
-        $stmt->bindParam(':email', $userData['email']);
-        $stmt->bindParam(':password', $userData['password']);
-        $stmt->bindParam(':token', $userData['token']);
-
-        return $stmt->execute();
-    }
-
-    public function getUnconfirmedUserByToken($token):array {
-        $sql = "SELECT id, email, username, password FROM unconfirmed_users WHERE token = :token";
-        $stmt = DB::getInstance()->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $password);
         $stmt->bindParam(':token', $token);
-        $stmt->execute();
-        return $stmt->fetch();
-    }
 
-    public function deleteUnconfirmedUser(int $id): bool {
-        $sql = "DELETE FROM unconfirmed_users WHERE id = :id";
-        $stmt = DB::getInstance()->prepare($sql);
-        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
 
     public function update(int $id, array $userData): bool
     {
-        $sql = "UPDATE users SET username = :username, email = :email, password = :password WHERE id = :id";
+        $sql = "UPDATE users SET username = :username, email = :email, password = :password, role_id = :role_id, token =:token WHERE id = :id";
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':username', $userData['username']);
         $stmt->bindParam(':email', $userData['email']);
         $stmt->bindParam(':password', $userData['password']);
+        $stmt->bindParam(':role_id', $userdata['role_id']);
+        $stmt->bindParam(':token', $userData['token']);
 
         return $stmt->execute();
     }
@@ -137,8 +113,12 @@ class UserManager implements ManagerInterface
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-        return $stmt->fetch();
-        //TODO Check IF THAT WORKS
+        $check = $stmt->fetch();
+        if (empty($check)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function checkUsernameAlreadyInDB(string $username): bool
@@ -147,8 +127,12 @@ class UserManager implements ManagerInterface
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
-        return $stmt->fetch();
-        //TODO Check IF THAT WORKS
+        $check = $stmt->fetch();
+        if (empty($check)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function validateEmail(string $email): bool

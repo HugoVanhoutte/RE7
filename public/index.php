@@ -1,18 +1,26 @@
 <?php
 session_start();
+//TODO REMOVE DEBUG
+var_dump($_SESSION);
 
 use App\Controller\RootController;
 
 
 //All requires
 
+//Librairies
+require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/PHPMailer.php";
+require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/SMTP.php";
+require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/Exception.php";
+
 //Model
 require_once __DIR__ . "/../Model/DB.php";
 
     //Entity
-
+    require_once __DIR__ . "/../Model/Entity/User.php";
     //Manager
     require_once __DIR__ . "/../Model/Manager/ManagerInterface.php";
+    require_once __DIR__ . "/../Model/Manager/UserManager.php";
 
 //Controller
 require_once __DIR__ . "/../Controller/AbstractController.php";

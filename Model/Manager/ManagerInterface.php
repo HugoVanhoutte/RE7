@@ -20,17 +20,4 @@ interface ManagerInterface
      * @return bool
      */
     public function delete(int $id): bool;
-
-    /**
-     * @param array $content
-     * @return bool
-     */
-    public function insert(array $content): bool;
-
-    /**
-     * @param int $id
-     * @param array $content
-     * @return bool
-     */
-    public function update(int $id, array $content): bool;
 }

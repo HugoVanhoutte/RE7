@@ -1,12 +1,12 @@
 <!--TODO ERROR MANAGEMENT-->
 <?php
 if (isset($params['error'])) {
-    echo $params["error"];
+    echo $params['error'];
 } else {
     echo "Pas d'erreurs"
 ;}
 ?>
-<form action="/../RE7/public/index.php/user?action=validateRegister" method="post">
+<form action="/../RE7/public/index.php/user?action=validateRegistration" method="post">
     <div>
         <label for="email">Adresse mail</label>
         <input type="email" name="email" id="email" required>

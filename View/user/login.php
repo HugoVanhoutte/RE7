@@ -1,3 +1,11 @@
+<!-- TODO MESSAGE MANAGEMENT -->
+<?php
+if(isset($params['message'])) {
+    echo $params['message'];
+} else {
+    echo 'pas de message';
+}
+?>
 <form action="/../RE7/public/index.php/user?action=validateLogin" method="post">
     <div>
         <label for="email">Adresse mail</label>
@@ -12,6 +20,6 @@
     </div>
 
     <div>
-        <input type="submit" value="Créer mon compte">
+        <input type="submit" value="Connexion">
     </div>
 </form>

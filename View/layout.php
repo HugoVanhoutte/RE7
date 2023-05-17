@@ -18,7 +18,8 @@
         <li>
             <a href="/../RE7/public/index.php">Accueil</a>
             <a href="/../RE7/public/index.php/user?action=register">Créer un compte</a>
-            <a href="/../RE7/public/index.php/user?action=login">Se connecter</a>
+            <a href="/../RE7/public/index.php/user?action=login">Connexion</a>
+            <a href="/../RE7/public/index.php/user?action=logout">Déconnexion</a>
         </li>
     </ul>
 </nav>

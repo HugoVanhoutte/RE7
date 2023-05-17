@@ -10,16 +10,13 @@ class User
     //At most 50 characters
     private string $email;
     private string $password;
-    //Hashed automatically on set Method ?
-    private string $timestamp;
-    private string $profilePictureLink;
-    private bool $isAdmin;
-
+    private string $registrationDateTime;
+    private int $roleId;
+    private ?string $token;
 
 
 
     /**Getters And Setters*********************************************************************************************/
-
     /**
      * @return int
      */
@@ -95,54 +92,55 @@ class User
     /**
      * @return string
      */
-    public function getTimestamp(): string
+    public function getRegistrationDateTime(): string
     {
-        return $this->timestamp;
+        return $this->registrationDateTime;
     }
 
     /**
-     * @param string $timestamp
+     * @param string $registrationDateTime
      * @return User
      */
-    public function setTimestamp(string $timestamp): User
+    public function setRegistrationDateTime(string $registrationDateTime): User
     {
-        $this->timestamp = $timestamp;
+        $this->registrationDateTime = $registrationDateTime;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getProfilePictureLink(): string
+    public function getRoleId(): int
     {
-        return $this->profilePictureLink;
+        return $this->roleId;
     }
 
     /**
-     * @param string $profilePictureLink
+     * @param int $roleId
      * @return User
      */
-    public function setProfilePictureLink(string $profilePictureLink): User
+    public function setRoleId(int $roleId): User
     {
-        $this->profilePictureLink = $profilePictureLink;
+        $this->roleId = $roleId;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
-    public function isAdmin(): bool
+    public function getToken(): ?string
     {
-        return $this->isAdmin;
+        return $this->token;
     }
 
     /**
-     * @param bool $isAdmin
+     * @param string|null $token
      * @return User
      */
-    public function setIsAdmin(bool $isAdmin): User
+    public function setToken(?string $token): User
     {
-        $this->isAdmin = $isAdmin;
+        $this->token = $token;
         return $this;
     }
+
 }
