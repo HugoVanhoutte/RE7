@@ -1,5 +1,4 @@
 <?php
-//This file is the router
 session_start();
 
 use App\Controller\RootController;
@@ -23,7 +22,6 @@ require_once __DIR__ . "/../Controller/ControllerInterface.php";
 
 //Router
 
-
 //Displays Homepage if nothing in url
 if (!isset($_SERVER["PATH_INFO"]))
 {
@@ -31,12 +29,9 @@ if (!isset($_SERVER["PATH_INFO"]))
     exit();
 }
 
-// TODO DEBUG
-echo "PATH INFO AVANT" . $_SERVER["PATH_INFO"];
-//
 $controller = $_SERVER["PATH_INFO"];
 $controller = str_replace("/", "", $controller);
-$controller = ucfirst($controller);
+$controller = ucfirst($controller) . "Controller";
 $require = __DIR__ . "/../Controller/$controller.php";
 
 //If this controller does not exist, sends the user to an error 404 page
@@ -47,5 +42,5 @@ if (!file_exists($require)) {
 
 require_once $require;
 
-$controller = "App\\Controller\\Controller";
+$controller = "App\\Controller\\$controller";
 (new $controller)->index($_REQUEST);
