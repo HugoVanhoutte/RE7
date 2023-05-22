@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Manager\UserManager;
+use App\Model\Manager\RoleManager;
+use App\Model\Manager\UserManager;
 use App\Model\Entity\User;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -46,7 +47,14 @@ class UserController extends AbstractController implements ControllerInterface
             }
 
             case 'logout' :
+            {
                 $this->logout();
+            }
+
+            case 'profile' :
+            {
+                $this->profile($params['id']);
+            }
         }
     }
 
@@ -141,7 +149,7 @@ class UserController extends AbstractController implements ControllerInterface
             $id = $newUser->getId();
 
             //Mail Sending
-            // SMTP Connection setup
+// SMTP Connection setup
             $smtpHost = 'smtp.gmail.com';
             $smtpPort = 587;
             $smtpUsername = 'noreply.re7project@gmail.com';
@@ -261,6 +269,15 @@ class UserController extends AbstractController implements ControllerInterface
         session_destroy();
         $this->display('user/login', 'Connexion', [
             'message' => 'Vous vous êtes déconnecté avec succès'
+        ]);
+    }
+
+    private function profile($id)
+    {
+        $user = (new UserManager())->get($id);
+        $username = $user->getUsername();
+        $this->display('user/profile', "Profil de $username", [
+            'user' => $user
         ]);
     }
 }

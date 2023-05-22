@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Manager;
+namespace App\Model\Manager;
 
 use App\Model\DB;
-use PDO;
 use App\Model\Entity\User;
+use PDO;
 
-
-class UserManager implements ManagerInterface
+require_once "AbstractManager.php";
+class UserManager extends AbstractManager implements ManagerInterface
 {
     public function getAll(): array
     {
@@ -167,6 +167,20 @@ class UserManager implements ManagerInterface
             } else {
                 return false;
             }
+        }
+    }
+
+    /**
+     * @param $author_id
+     * @return bool
+     */
+    public function isEditable($author_id): bool
+    {
+        if($author_id === $_SESSION['user_id'] || in_array(($this->get($author_id))->getRoleId(), [1,2,3]))  //Check if the current user is either a SuperAdmin, Admin moderator or the author/page owner
+        {
+            return true;
+        } else {
+            return false;
         }
     }
 }

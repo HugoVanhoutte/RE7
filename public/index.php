@@ -21,6 +21,8 @@ require_once __DIR__ . "/../Model/DB.php";
     //Manager
     require_once __DIR__ . "/../Model/Manager/ManagerInterface.php";
     require_once __DIR__ . "/../Model/Manager/UserManager.php";
+    require_once __DIR__ . "/../Model/Manager/RoleManager.php";
+    require_once __DIR__ . "/../Model/Manager/AbstractManager.php";
 
 //Controller
 require_once __DIR__ . "/../Controller/AbstractController.php";

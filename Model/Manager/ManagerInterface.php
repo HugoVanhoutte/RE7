@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager;
+namespace App\Model\Manager;
 
 interface ManagerInterface
 {
