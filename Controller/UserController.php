@@ -105,6 +105,12 @@ class UserController extends AbstractController implements ControllerInterface
                 break;
             }
 
+            case 'delete' :
+            {
+                $this->delete($params['id']);
+                break;
+            }
+
             default:
             {
                 $this->displayError(404);
@@ -124,7 +130,6 @@ class UserController extends AbstractController implements ControllerInterface
     /**
      * @param array $registrationInfo
      * @return void
-     * @throws Exception
      */
     private function validateRegistration(array $registrationInfo): void
     {
@@ -251,7 +256,7 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
-     * @param array $loginInfo
+     * @param array $data
      * @return void
      */
     private function validateLogin(array $data): void
@@ -416,7 +421,12 @@ class UserController extends AbstractController implements ControllerInterface
         }
     }
 
-    private function newPassword(int $id, string $token)
+    /**
+     * @param int $id
+     * @param string $token
+     * @return void
+     */
+    private function newPassword(int $id, string $token): void
     {
             $this->display('user/new_password', 'Changer mot de passe', [
                 'id' => $id,
@@ -424,7 +434,12 @@ class UserController extends AbstractController implements ControllerInterface
                 ]);
     }
 
-    private function validatePasswordReset(int $id, string $token)
+    /**
+     * @param int $id
+     * @param string $token
+     * @return void
+     */
+    private function validatePasswordReset(int $id, string $token): void
     { //Check if user token matches sent token
         $userManager = new UserManager();
         $user = $userManager->get($id);
@@ -443,5 +458,12 @@ class UserController extends AbstractController implements ControllerInterface
                 ]);
             }
         }
+    }
+
+    private function delete(int $id)
+    {
+        $this->display('user/deletion_confirmation', 'Supprimer', [
+            'id' => $id
+        ]);
     }
 }

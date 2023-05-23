@@ -9,7 +9,7 @@ if ((new UserManager())->isEditable($user->getId()))
 {
     ?>
     <a href="../index.php/user?action=edit&id=<?= $user->getId() ?>">Editer</a>
-    <a href="">Supprimer mon compte</a>
+    <a href="../index.php/user?action=delete&id=<?= $user->getId() ?>">Supprimer mon compte</a>
 <?php
 }
 ?>
