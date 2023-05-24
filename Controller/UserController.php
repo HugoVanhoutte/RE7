@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Model\MailUtil;
 use App\Model\Manager\UserManager;
 use App\Model\Entity\User;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 
 class UserController extends AbstractController implements ControllerInterface
 {
@@ -111,6 +109,12 @@ class UserController extends AbstractController implements ControllerInterface
                 break;
             }
 
+            case 'deletion_validated' :
+            {
+                $this->deletionValidated($params['id'], $_POST['deleteAll']);
+                break;
+            }
+
             default:
             {
                 $this->displayError(404);
@@ -175,7 +179,7 @@ class UserController extends AbstractController implements ControllerInterface
         {
             //Display Error Message (Generic)
             //TODO Make Generic: can be checked in front
-            $this->display('user/register', 'S\'enregister', [
+            $this->display('user/register', 'S\'enregistrer', [
                 'message' => 'Le nom d\'utilisateur n\'est pas valide'
             ]);
         }
@@ -330,7 +334,6 @@ class UserController extends AbstractController implements ControllerInterface
     private function validateEdit(array $data, int $id): void
     {
         //gets infos from data array, checks if they are valid, and then updates DB
-        //TODO
         $userManager = new UserManager();
         $user = $userManager->get($id);
         //Check if email entered in form is identical to the one already in DB:
@@ -351,7 +354,7 @@ class UserController extends AbstractController implements ControllerInterface
                 }
             }
         }
-        //If nothing happens, check if input are valid
+        //If nothing is wrong, check if input are valid
         if ($userManager->validateEmail($data['email']) && $userManager->validateUsername($data['username'])) {
             //UPDATE
             $data = [
@@ -465,5 +468,34 @@ class UserController extends AbstractController implements ControllerInterface
         $this->display('user/deletion_confirmation', 'Supprimer', [
             'id' => $id
         ]);
+    }
+
+    private function deletionValidated($id, $deleteAll) {
+        $userManager = new UserManager();
+        if($deleteAll === 'true') {
+            //Call delete on user id
+            $userManager->delete($id);
+            session_destroy();
+            $this->display('home/index', 'Accueil', [
+                'message' => 'Votre profil a été supprimé'
+            ]);
+        } elseif($deleteAll === 'false') {
+            //Set User to deleted
+            $userManager->update($id, [
+                'username' => '[supprimé]',
+                'email' => '[supprimé]',
+                'password' => password_hash(uniqid("", true), PASSWORD_BCRYPT),
+                'registration_date_time' => '2000-01-01 00:00:00',
+                'role_id' => 5,
+                'token' => null
+            ]);
+            session_destroy();
+            $this->display('home/index', 'Accueil', [
+                'message' => 'Votre profil a été supprimé'
+            ]);
+        } else {
+            //error
+            $this->displayError(403);
+        }
     }
 }

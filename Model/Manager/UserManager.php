@@ -4,7 +4,6 @@ namespace App\Model\Manager;
 
 use App\Model\DB;
 use App\Model\Entity\User;
-use PDO;
 
 require_once "AbstractManager.php";
 class UserManager extends AbstractManager implements ManagerInterface
@@ -101,6 +100,7 @@ class UserManager extends AbstractManager implements ManagerInterface
         $username = $updateData['username'] ?? $user->getUsername();
         $email = $updateData['email'] ?? $user->getEmail();
         $password = $updateData['password'] ?? $user->getPassword();
+        $registration_date_time = $updateData['registration_date_time'] ?? $user->getRegistrationDateTime();
         $role_id = $updateData['role_id'] ?? $user->getRoleId();
         if (isset($updateData['token'])) {
             // this 'if' statement is set to avoid an undefined array key "token"... error
@@ -112,12 +112,13 @@ class UserManager extends AbstractManager implements ManagerInterface
         }
 
 
-        $sql = "UPDATE users SET username = :username, email = :email, password = :password, role_id = :role_id, token =:token WHERE id = :id";
+        $sql = "UPDATE users SET username = :username, email = :email, password = :password, registration_date_time = :registration_date_time, role_id = :role_id, token =:token WHERE id = :id";
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':registration_date_time', $registration_date_time);
         $stmt->bindParam(':role_id', $role_id);
         $stmt->bindParam(':token', $token);
 
