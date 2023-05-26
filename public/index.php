@@ -32,9 +32,6 @@ require_once __DIR__ . "/../Controller/ControllerInterface.php";
 //Router
 
 session_start();
-echo "\$_SESSION: ";
-var_dump($_SESSION);
-//TODO REMOVE FOR PRODUCTION
 
 //Displays Homepage if nothing in url
 if (!isset($_SERVER["PATH_INFO"]))

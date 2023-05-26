@@ -155,6 +155,10 @@ class UserManager extends AbstractManager implements ManagerInterface
         return (bool) $stmt->fetch();
     }
 
+    /**
+     * @param string $email
+     * @return bool
+     */
     public function validateEmail(string $email): bool
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) !== false) {
@@ -162,15 +166,21 @@ class UserManager extends AbstractManager implements ManagerInterface
         } else {
             return false;
         }
-        //TODO CHECK
     }
 
+    /**
+     * @param string $username
+     * @return bool
+     */
     public function validateUsername(string $username): bool
     {
         return (strlen($username) > 3 && strlen($username) <= 50);
-        //TODO CHECK
     }
 
+    /**
+     * @param string $password
+     * @return bool
+     */
     public function validatePassword(string $password): bool
     {
         return (bool) preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}/", $password);

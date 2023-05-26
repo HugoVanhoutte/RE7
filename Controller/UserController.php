@@ -147,7 +147,7 @@ class UserController extends AbstractController implements ControllerInterface
         {
             //Display Message on registration page that username already taken
             $this->display('user/register', 'S\'enregistrer', [
-                'message' => 'Ce nom d\'utilisateur est déjà utilisé'
+                'error' => 'Ce nom d\'utilisateur est déjà utilisé'
             ]);
         }
 
@@ -155,41 +155,37 @@ class UserController extends AbstractController implements ControllerInterface
         {
             //Display Message on registration page that email already taken
             $this->display('user/register', 'S\'enregistrer', [                                           //If true: an email is already used in DB
-                'message' => 'Cette adresse mail est déjà utilisé'
+                'error' => 'Cette adresse mail est déjà utilisé'
             ]);
         }
 
         elseif (!($registrationInfo['password'] === $registrationInfo['passwordConfirm']))                              //If true: password and password confirmation doesn't match
             //Display Error Message (Generic)
-            //TODO Make generic: can be checked on front end
-            $this->display('user/registration', 'S\'enregistrer', [
-                'message' => 'Les mots de passe ne correspondent pas'
+            $this->display('user/register', 'S\'enregistrer', [
+                'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
 
         elseif (!$userManager->validateEmail($registrationInfo['email']))                                               //If true: email is not valid
         {
             //Display Error Message (Generic)
-            //TODO Make generic: can be checked in front
             $this->display('user/register', 'S\'enregistrer', [
-                'message' => 'L\'adresse email n\'est pas correcte'
+                'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
         }
 
         elseif(!$userManager->validateUsername($registrationInfo['username']))                                          //If true: username is not valid
         {
             //Display Error Message (Generic)
-            //TODO Make Generic: can be checked in front
             $this->display('user/register', 'S\'enregistrer', [
-                'message' => 'Le nom d\'utilisateur n\'est pas valide'
+                'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
         }
 
         elseif (!$userManager->validatePassword($registrationInfo['password']))                                         //If true: password is not valid
         {
             //Display Error Message (Generic)
-            //TODO Make Generic: can be checked in front
             $this->display('user/register', 'S\'enregistrer', [
-                'message' => 'Le mot de passe n\'est pas valide'
+                'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
         }
 
@@ -244,9 +240,8 @@ class UserController extends AbstractController implements ControllerInterface
                 'message' => 'Adresse E-mail vérifié, vous pouvez vous connecter'
             ]);
         } else {
-            //TODO ERROR
-            $this->display('home/generic_display', "ERREUR", [
-                'message' => "Erreur"
+            $this->display('home/generic_display', 'Erreur', [
+                'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
         }
     }
@@ -281,12 +276,12 @@ class UserController extends AbstractController implements ControllerInterface
 
             } else {                                                                                                    //Wrong Password
                 $this->display('user/login', 'Connexion', [
-                    'message' => 'Mot de passe incorrect'
+                    'error' => 'Mot de passe incorrect'
                 ]);
             }
         } else {
             $this->display('user/login', 'Connexion', [
-                'message' => 'Cet E-mail ne correspond a aucun compte'
+                'error' => 'Cet E-mail ne correspond a aucun compte'
             ]);
         }
     }
@@ -342,13 +337,13 @@ class UserController extends AbstractController implements ControllerInterface
             if ($userManager->checkEmailAlreadyInDB($data['email'])) {
                 //If new email is already in DB: display message
                 $this->display('user/edit', 'Modifier', [
-                    'message' => 'Cet adresse email est déjà utilisée'
+                    'error' => 'Cette adresse email est déjà utilisée'
                 ]);
             } else { //If email is valid, check same things for username
                 if ($user->getUsername() !== $data['username']) {
                     if (!$userManager->checkUsernameAlreadyInDB($data['username'])) {
                         $this->display('user/edit', 'Modifier', [
-                            'message' => 'Ce nom d\'utilisateur est déjà utilisé'
+                            'error' => 'Ce nom d\'utilisateur est déjà utilisé'
                         ]);
                     }
                 }
@@ -365,7 +360,7 @@ class UserController extends AbstractController implements ControllerInterface
             $this->profile($id);
         } else {
             $this->display('user/edit', 'Modifier', [
-                'message' => 'Erreur' //Generic error: avoidable in front
+                'error' => 'Une erreur s\'est produite, veuillez réessayer' //Generic error: avoidable in front
             ]);
         }
     }
@@ -387,13 +382,13 @@ class UserController extends AbstractController implements ControllerInterface
         $userManager = new UserManager();
         if (!$userManager->validateEmail($email)) { //If email address not valid: error
             $this->display('user/password_reset', 'Mot de passe oublié', [
-                'message' => 'Cette adresse e-mail n\'est pas valide'
+                'error' => 'Une erreur s\'est produite, veuillez réessayer' //Generic Error: avoidable in front
             ]);
         }
 
         if (!$userManager->checkEmailAlreadyInDB($email)) { //If email address not in DB: error message
             $this->display('user/password_reset', 'Mot de passe oublié', [
-                'message' => 'Cette adresse e-mail n\'est associée à aucun compte'
+                'error' => 'Cette adresse e-mail n\'est associée à aucun compte'
             ]);
         }
         //If everything is correct: get user from DB by email address and send password changing mail.
@@ -419,7 +414,7 @@ class UserController extends AbstractController implements ControllerInterface
             ]);
         } else {
             $this->display('user/password_reset', 'Récupération mot de passe', [
-                'message' => 'Erreur lors de l\'envoi du mail, veuillez réessayer ultérieurement'
+                'error' => 'Erreur lors de l\'envoi du mail, veuillez réessayer ultérieurement'
             ]);
         }
     }
