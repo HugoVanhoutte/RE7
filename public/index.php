@@ -1,7 +1,5 @@
 <?php
-session_start();
-//TODO REMOVE DEBUG
-var_dump($_SESSION);
+
 
 use App\Controller\RootController;
 
@@ -15,6 +13,7 @@ require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/Exception.php";
 
 //Model
 require_once __DIR__ . "/../Model/DB.php";
+require_once __DIR__ . "/../Model/MailUtil.php";
 
     //Entity
     require_once __DIR__ . "/../Model/Entity/User.php";
@@ -31,6 +30,8 @@ require_once __DIR__ . "/../Controller/ControllerInterface.php";
 
 
 //Router
+
+session_start();
 
 //Displays Homepage if nothing in url
 if (!isset($_SERVER["PATH_INFO"]))

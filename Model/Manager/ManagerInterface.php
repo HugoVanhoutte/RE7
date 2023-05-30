@@ -11,13 +11,20 @@ interface ManagerInterface
 
     /**
      * @param int $id
-     * @return array
+     * @return object|null
      */
-    public function get(int $id);
+    public function get(int $id): ?object;
 
     /**
      * @param int $id
      * @return bool
      */
     public function delete(int $id): bool;
+
+    /**
+     * @param int $id
+     * @param array $updateData
+     * @return bool
+     */
+    public function update(int $id, array $updateData): bool;
 }

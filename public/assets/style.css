@@ -15,7 +15,6 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     font: inherit;
     vertical-align: baseline;
 }
@@ -40,7 +39,6 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-    content: '';
     content: none;
 }
 
@@ -56,9 +54,153 @@ html {
 }
 
 /*FIN CALIBRAGE PX/REM*/
+:root {
+    /* TODO VARIABLES */
+    /* https://coolors.co/2b2d42-8d99ae-edf2f4-ef233c-d80032 */
+    --main-color: #FFFFFF;
+    --secondary-color: grey;
+    --accent-color: #000000 ;
 
-body {
-    background-color: lightgrey;
+    --invalid-border: rgb(255, 0, 0);
+    --invalid-bg: rgba(128, 0, 0, 0.25);
+
+    --valid-border: green;
+    --valid-bg: rgba(0, 128, 0, 0.25);
+}
+html {
+    font-size: 1rem;
+
+    color: var(--accent-color);
 }
 
-/*TODO REMOVE*/
+body {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+
+    font-family: Calibri ,sans-serif;
+
+    background-color: var(--main-color);
+}
+
+
+/* Forms */
+form {
+    border: var(--accent-color) solid 2px;
+    border-radius: 1.5rem;
+
+    display: flex;
+    flex-flow: column wrap;
+
+    align-items: center;
+    width: fit-content;
+    padding: 2rem;
+    margin: 2rem;
+
+    background-color: var(--main-color);
+}
+
+form div {
+    display: flex;
+    /*flex-flow: column wrap;*/
+
+    align-items: center;
+
+    padding: .5rem;
+
+    font-size: 1rem;
+
+}
+
+form div label {
+    font-size: 1.5rem;
+}
+
+form div input  {
+    border-radius: 1rem;
+
+    padding: .25rem;
+    margin:  .25rem;
+
+    font-size: 1.25rem;
+}
+
+form div .text-input {
+    border-color: green;
+    background-color: rgba(0, 128, 0, 0.25);
+}
+
+form div .text-input:invalid {
+    border-color: rgb(255, 0, 0);
+    background-color: rgba(128, 0, 0, 0.25);
+}
+
+form input[type='submit'] {
+    cursor: pointer
+}
+
+/* Menus */
+/*Main*/
+nav {
+    margin: 1rem;
+}
+
+nav ul li a {
+    font-size: large;
+    text-decoration: none;
+    color: var(--accent-color);
+
+    margin: 1rem;
+
+    border-bottom: 2px solid black;
+    border-radius: .5rem;
+    transition-property: border-bottom-color, color;
+    transition-duration: .15s;
+}
+
+nav ul li a:hover {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.message {
+    background-color: rgba(0, 0, 128, 0.25);
+    border: #000080 2px solid;
+    border-radius: .75rem;
+
+    padding: .5rem;
+}
+
+.error {
+    background-color: rgba(255, 0, 0, 0.25);
+    border: #800000 2px solid;
+    border-radius: .75rem;
+
+    padding: .5rem;
+}
+
+/*Account Management*/
+.account_management a i{
+    color: var(--accent-color);
+    font-size: 2rem;
+}
+
+.account_management a i:hover{
+    color: var(--secondary-color);
+}
+
+/* General */
+
+h1 {
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+strong {
+    font-weight: bold;
+}

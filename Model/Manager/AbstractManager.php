@@ -2,7 +2,7 @@
 
 namespace App\Model\Manager;
 
-class AbstractManager
+abstract class AbstractManager
 {
     public function getTimeFR($date_time): string
     {
