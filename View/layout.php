@@ -12,28 +12,28 @@
     <title><?= $pageTitle ?></title>
 </head>
 <body>
-<nav>    <!--Navigation menu-->
-    <ul>
-        <li>
-            <a href="/../RE7/public/index.php" title="Accueil">Accueil</a>
-            <?php
-            if (!empty($_SESSION['user_id'])) {
-                ?>
-                <a href="/../RE7/public/index.php/recipe?action=write" title="Créer une nouvelle recette">Nouvelle Recette</a>
-                <a href="/../RE7/public/index.php/user?action=logout" title="Déconnexion">Déconnexion</a>
-                <a href="/../RE7/public/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>" title="Mon profil">Mon profil</a>
+<div class="navigation-menu">
+    <nav>    <!--Navigation menu-->
+
+                <a href="/../RE7/public/index.php" title="Accueil">Accueil</a>
                 <?php
-            } else {
+                if (!empty($_SESSION['user_id'])) {
+                    ?>
+                    <a href="/../RE7/public/index.php/recipe?action=write" title="Créer une nouvelle recette">Nouvelle
+                        Recette</a>
+                    <a href="/../RE7/public/index.php/user?action=logout" title="Déconnexion">Déconnexion</a>
+                    <a href="/../RE7/public/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>"
+                       title="Mon profil">Mon profil</a>
+                    <?php
+                } else {
+                    ?>
+                    <a href="/../RE7/public/index.php/user?action=register" title="Créer un compte">Créer un compte</a>
+                    <a href="/../RE7/public/index.php/user?action=login" title="Connexion">Connexion</a>
+                    <?php
+                }
                 ?>
-                <a href="/../RE7/public/index.php/user?action=register" title="Créer un compte">Créer un compte</a>
-                <a href="/../RE7/public/index.php/user?action=login" title="Connexion">Connexion</a>
-                <?php
-            }
-            ?>
-        </li>
-    </ul>
-</nav>
-<!-- TODO: make difference between errors and information messages-->
+    </nav>
+</div>
 <?php
 if (isset($params['error'])) {
     echo "<div class='error'><p>" . $params['error'] . "</p></div>";
