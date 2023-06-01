@@ -269,11 +269,7 @@ class UserController extends AbstractController implements ControllerInterface
             if (password_verify($data['password'], $user->getPassword())) {                                            //Password correct, start session
 
                 $_SESSION['user_id'] = $user->getId();
-
-                $this->display('home/index', 'Accueil', [
-                    'message' => 'Connecté avec succès !'
-                ]);
-
+                header('location: ../../public/index.php');                                                      //Not using display: prevents broken links for some reason...
             } else {                                                                                                    //Wrong Password
                 $this->display('user/login', 'Connexion', [
                     'error' => 'Mot de passe incorrect'
@@ -304,10 +300,14 @@ class UserController extends AbstractController implements ControllerInterface
     private function profile(int $id): void
     {
         $user = (new UserManager())->get($id);
+        if (is_null($user)){
+            $this->displayError(404);
+            exit;
+        }
         $username = $user->getUsername();
-        $this->display('user/profile', "Profil de $username", [
-            'user' => $user
-        ]);
+            $this->display('user/profile', "Profil de $username", [
+                'user' => $user
+            ]);
     }
 
     /**
@@ -458,14 +458,24 @@ class UserController extends AbstractController implements ControllerInterface
         }
     }
 
-    private function delete(int $id)
+    /**
+     * @param int $id
+     * @return void
+     */
+    private function delete(int $id): void
     {
         $this->display('user/deletion_confirmation', 'Supprimer', [
             'id' => $id
         ]);
     }
 
-    private function deletionValidated($id, $deleteAll) {
+    /**
+     * @param $id
+     * @param $deleteAll
+     * @return void
+     */
+    private function deletionValidated($id, $deleteAll): void
+    {
         $userManager = new UserManager();
         if($deleteAll === 'true') {
             //Call delete on user id

@@ -2,6 +2,7 @@
 
 namespace App\Model\Manager;
 
+
 interface ManagerInterface
 {
     /**
@@ -26,5 +27,7 @@ interface ManagerInterface
      * @param array $updateData
      * @return bool
      */
-    public function update(int $id, array $updateData): bool;
+    public function update(int $id, array $updateData = []): bool;
+
+
 }

@@ -73,6 +73,10 @@ class UserManager extends AbstractManager implements ManagerInterface
         return $stmt->execute();
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function insert(User $user): bool
     {
         $sql = "INSERT INTO users (username, email, password, token)
@@ -186,17 +190,4 @@ class UserManager extends AbstractManager implements ManagerInterface
         return (bool) preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}/", $password);
     }
 
-    /**
-     * @param $author_id
-     * @return bool
-     */
-    public function isEditable($author_id): bool
-    {
-        if($author_id === $_SESSION['user_id'] || in_array(($this->get($author_id))->getRoleId(), [1,2,3]))  //Check if the current user is either a SuperAdmin, Admin moderator or the author/page owner
-        {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

@@ -14,7 +14,7 @@ if ($userManager->isEditable($params['id'])) {
             <input type="email" id="email" name="email" value="<?= $user->getEmail() ?>" required>
         </div>
         <div>
-            <label for="username">modifier mon nom d'utilisateur</label>
+            <label for="username">Modifier mon nom d'utilisateur</label>
             <input type="text" id="username" name="username" value="<?= $user->getUsername() ?>" required>
         </div>
         <input type="submit" value="Editer">

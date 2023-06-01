@@ -19,6 +19,7 @@
             <?php
             if (!empty($_SESSION['user_id'])) {
                 ?>
+                <a href="/../RE7/public/index.php/recipe?action=write" title="Créer une nouvelle recette">Nouvelle Recette</a>
                 <a href="/../RE7/public/index.php/user?action=logout" title="Déconnexion">Déconnexion</a>
                 <a href="/../RE7/public/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>" title="Mon profil">Mon profil</a>
                 <?php

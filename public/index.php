@@ -3,6 +3,7 @@
 
 use App\Controller\RootController;
 
+session_start();
 
 //All requires
 
@@ -16,22 +17,30 @@ require_once __DIR__ . "/../Model/DB.php";
 require_once __DIR__ . "/../Model/MailUtil.php";
 
     //Entity
+    require_once __DIR__ . "/../Model/Entity/AbstractPost.php";
     require_once __DIR__ . "/../Model/Entity/User.php";
+    require_once __DIR__ . "/../Model/Entity/Recipe.php";
+    require_once __DIR__ . "/../Model/Entity/Comment.php";
+
     //Manager
     require_once __DIR__ . "/../Model/Manager/ManagerInterface.php";
     require_once __DIR__ . "/../Model/Manager/UserManager.php";
     require_once __DIR__ . "/../Model/Manager/RoleManager.php";
     require_once __DIR__ . "/../Model/Manager/AbstractManager.php";
+    require_once __DIR__ . "/../Model/Manager/RecipeManager.php";
+    require_once __DIR__ . "/../Model/Manager/CommentManager.php";
+
 
 //Controller
 require_once __DIR__ . "/../Controller/AbstractController.php";
 require_once __DIR__ . "/../Controller/RootController.php";
 require_once __DIR__ . "/../Controller/ControllerInterface.php";
+require_once __DIR__ . "/../Controller/RecipeController.php";
+require_once __DIR__ . "/../Controller/CommentController.php";
 
 
 //Router
 
-session_start();
 
 //Displays Homepage if nothing in url
 if (!isset($_SERVER["PATH_INFO"]))

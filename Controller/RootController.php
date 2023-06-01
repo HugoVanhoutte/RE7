@@ -8,6 +8,6 @@ class RootController extends AbstractController implements ControllerInterface
 {
     public function index(array $params = []): void
     {
-        $this->display('home/index', 'HomePage');
+        $this->display('home/index', 'Homepage');
     }
 }
