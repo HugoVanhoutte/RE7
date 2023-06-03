@@ -145,7 +145,7 @@ class RecipeManager extends AbstractManager implements ManagerInterface
         return $recipes;
     }
 
-    public function getAllDesc(): array
+    public function get3MostRecent(): array
     {
         $sql = "SELECT * FROM recipes ORDER BY creation_date_time DESC";
         $stmt = DB::getInstance()->prepare($sql);
