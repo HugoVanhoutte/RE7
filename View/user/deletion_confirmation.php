@@ -7,7 +7,7 @@ if (!(new UserManager())->isEditable($params['id'])) {
     (new RootController())->displayError(403);
 }
 ?>
-<div class="container">
+<div class="container"> <!-- TODO FORM -->
     <form action="../../public/index.php/user?action=deletion_validated&id=<?= $params['id'] ?>" method="post">
         <h2>Que souhaitez vous supprimer ?</h2>
         <input type="radio" name="deleteAll" value="true">
