@@ -9,17 +9,24 @@ if (isset($_SESSION['user_id']) && $userManager->isEditable($params['id'])) {
     $user = $userManager->get($params['id'])
     ?>
     <div class="container">
-        <form action="/../RE7/public/index.php/user?action=validateEdit&id=<?= $user->getId() ?>" method="post">
-            <div>
-                <label for="email">Modifier mon adresse mail: </label>
-                <input type="email" id="email" name="email" value="<?= $user->getEmail() ?>" required>
+        <div class="row justify-content-center">
+            <div class="col col-md-4 shadow rounded bg-light text-center">
+                <form action="/../RE7/public/index.php/user?action=validateEdit&id=<?= $user->getId() ?>" method="post">
+                    <div class="my-2">
+                        <label for="email" class="form-label">Modifier mon adresse mail: </label>
+                        <input type="email" id="email" name="email" value="<?= $user->getEmail() ?>" required class="form-control">
+                    </div>
+
+                    <div class="my-2">
+                        <label for="username" class="form-label">Modifier mon nom d'utilisateur</label>
+                        <input type="text" id="username" name="username" value="<?= $user->getUsername() ?>" required class="form-control">
+                    </div>
+                    <div class="my-3">
+                        <input type="submit" value="Editer" class="btn btn-primary">
+                    </div>
+                </form>
             </div>
-            <div>
-                <label for="username">Modifier mon nom d'utilisateur</label>
-                <input type="text" id="username" name="username" value="<?= $user->getUsername() ?>" required>
-            </div>
-            <input type="submit" value="Editer">
-        </form>
+        </div>
     </div>
     <?php
 } else {
