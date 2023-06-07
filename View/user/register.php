@@ -20,15 +20,11 @@
 
                 <div class="my-2">
                     <label for="password" class="form-label">Mot de passe:</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
-                        <input type="password" name="password" id="password"
-                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}"
-                               title="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial."
-                               required class="form-control">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+                            <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}" required class="form-control tt" title="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.">
+                        </div>
                     </div>
-                </div>
-
                 <div class="my-2">
                     <label for="passwordConfirm" class="form-label">Confirmer mot de passe:</label>
                     <div class="input-group">

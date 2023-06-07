@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Model\MailUtil;
-use App\Model\Manager\UserManager;
 use App\Model\Entity\User;
+use App\Model\Manager\UserManager;
+use App\utils\MailUtil;
 
 class UserController extends AbstractController implements ControllerInterface
 {
@@ -277,7 +277,7 @@ class UserController extends AbstractController implements ControllerInterface
             }
         } else {
             $this->display('user/login', 'Connexion', [
-                'error' => 'Cet E-mail ne correspond a aucun compte'
+                'error' => 'Cette adresse e-mail ne correspond a aucun compte'
             ]);
         }
     }

@@ -8,6 +8,7 @@
 	* Amélioration mise en page des recettes (Ingredients, units, etc..)
 	* Groupes
 	* Menus
+    * Connexion/inscription dans des fenêtres modulaires
 * 1.2
 	* Likes (recettes et commentaires)
 	* Photos de profil et de recettes (Commentaires ?)

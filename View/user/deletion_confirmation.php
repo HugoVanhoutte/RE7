@@ -3,7 +3,7 @@
 use App\Controller\RootController;
 use App\Model\Manager\UserManager;
 
-if (!(new UserManager())->isEditable($params['id'])) {
+if (!(new UserManager())->isRemovable($params['id'])) {
     (new RootController())->displayError(403);
 }
 ?>

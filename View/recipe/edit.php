@@ -11,7 +11,7 @@ $recipeManager = new RecipeManager();
 $recipe = $recipeManager->get($params['id']);
 /* @var Recipe $recipe */
 
-if (!$recipeManager->isEditable($recipe->getAuthorId())) {
+if (!$recipeManager->isAuthor($recipe->getAuthorId())) {
     (new RootController())->displayError(403);
     exit;
 } else {

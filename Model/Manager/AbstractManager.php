@@ -4,6 +4,12 @@ namespace App\Model\Manager;
 
 abstract class AbstractManager
 {
+    /**
+     * Allows to set the date to a format used in France,
+     * Coming from the standard datetime format provided by the database
+     * @param $date_time
+     * @return string
+     */
     public function getTimeFR($date_time): string
     {
         $date_time = explode(" ", $date_time);
@@ -14,16 +20,29 @@ abstract class AbstractManager
     }
 
     /**
-     * @param $author_id
      * @return bool
      */
-    public function isEditable($author_id): bool
+    public function isAdmin():bool {
+        if (isset($_SESSION['user_id'])) {
+            $currentUser = (new UserManager())->get($_SESSION['user_id']);
+            return in_array($currentUser->getRoleId(), [1,2,3]);
+        } else return false;
+    }
+
+    /**
+     * @param $authorId
+     * @return bool
+     */
+    public function isAuthor($authorId): bool {
+        return (isset($_SESSION['user_id']) && $authorId === $_SESSION['user_id']);
+    }
+
+    /**
+     * @param $authorId
+     * @return bool
+     */
+    public function isRemovable($authorId): bool
     {
-        if($author_id === $_SESSION['user_id'] || in_array(((new userManager)->get($author_id))->getRoleId(), [1,2,3]))  //Check if the current user is either a SuperAdmin, Admin moderator or the author/page owner
-        {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->isAdmin() || $this->isAuthor($authorId);
     }
 }

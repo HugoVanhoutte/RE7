@@ -5,7 +5,7 @@ use App\Model\Manager\UserManager;
 
 $userManager = new UserManager();
 
-if (isset($_SESSION['user_id']) && $userManager->isEditable($params['id'])) {
+if (isset($_SESSION['user_id']) && $userManager->isAuthor($params['id'])) {
     $user = $userManager->get($params['id'])
     ?>
     <div class="container">

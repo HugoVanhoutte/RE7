@@ -2,7 +2,7 @@
 
 namespace App\Model\Entity;
 
-class AbstractPost
+abstract class AbstractPost
 {
     private int $id;
     private string $content;
