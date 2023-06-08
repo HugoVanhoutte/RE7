@@ -8,7 +8,7 @@ if (!(new UserManager())->isRemovable($params['id'])) {
 }
 ?>
 <div class="container"> <!-- TODO FORM -->
-    <form action="../../public/index.php/user?action=deletion_validated&id=<?= $params['id'] ?>" method="post">
+    <form action="/index.php/user?action=deletion_validated&id=<?= $params['id'] ?>" method="post">
         <h2>Que souhaitez vous supprimer ?</h2>
         <input type="radio" name="deleteAll" value="true">
         <p>Tout: mon profil ainsi que tout le contenu que j'ai ajouté sur le site.</p>

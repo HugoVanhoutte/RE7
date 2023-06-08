@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-md-4 shadow rounded bg-light text-center">
-            <form action="/../RE7/public/index.php/user?action=validateRegistration" method="post" class="needs-validation" novalidate> <!--TODO: Form validation-->
+            <form action="/index.php/user?action=validateRegistration" method="post" class="needs-validation" novalidate>
                 <div class="my-2">
                     <label for="email" class="form-label">Adresse E-mail:</label>
                     <div class="input-group has-validation">
@@ -28,7 +28,7 @@
                     <label for="password" class="form-label">Mot de passe:</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
-                            <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}" required class="form-control" title="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.">
+                            <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}" required class="form-control" title="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial(!@#$%^&*()_+).">
                             <div class="invalid-feedback">
                                 le mot de passe n'est pas valide
                             </div>
@@ -38,7 +38,7 @@
                         <div class="col-1 border rounded bg-danger text-light" id="password-validation-lc" title="Votre mot de passe doit contenir au minimum une lettre minuscule">a</div>
                         <div class="col-1 border rounded bg-danger text-light" id="password-validation-uc" title="Votre mot de passe doit contenir au minimum une lettre majuscule">A</div>
                         <div class="col-1 border rounded bg-danger text-light" id="password-validation-number" title="Votre mot de passe doit contenir au minimum un chiffre">1</div>
-                        <div class="col-1 border rounded bg-danger text-light" id="password-validation-spec" title="Votre mot de passe doit contenir au minimum un caractère spécial">#</div>
+                        <div class="col-1 border rounded bg-danger text-light" id="password-validation-spec" title="Votre mot de passe doit contenir au minimum un caractère spécial (!@#$%^&*()_+)">#</div>
                     </div>
                     </div>
                 <div class="my-2">
@@ -60,4 +60,4 @@
     </div>
 </div>
 
-<script defer src="../../public/assets/formsCheck.js"></script>
+<script defer src="/assets/formsCheck.js"></script> <!-- IDE error wrong: link works -->

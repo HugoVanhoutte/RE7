@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-md-4 shadow rounded bg-light text-center">
-            <form action="/../RE7/public/index.php/user?action=validateLogin" method="post">
+            <form action="/index.php/user?action=validateLogin" method="post">
                 <div class="my-2">
                     <label for="email" class="form-label">Adresse E-Mail:</label>
                     <div class="input-group">
@@ -23,11 +23,10 @@
 
                 <div class="my-3">
                     <input type="submit" value="Connexion" title="Connexion" class="btn btn-primary mb-1">
-                    <a href="/../RE7/public/index.php/user?action=passwordReset" title="Mot de passe oublié"
+                    <a href="/index.php/user?action=passwordReset" title="Mot de passe oublié"
                        class="btn btn-outline-primary btn-sm">Mot de passe oublié ?</a>
                 </div>
             </form>
         </div>
     </div>
-</div>
 </div>

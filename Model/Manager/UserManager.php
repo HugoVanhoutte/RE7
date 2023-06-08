@@ -101,12 +101,36 @@ class UserManager extends AbstractManager implements ManagerInterface
     public function update(int $id, array $updateData = []): bool
     {
         $user = $this->get($id);
+if (!isset($updateData['username'])) {
+    $username = $user->getUsername();
+} else {
+    $username = $this->sanitize($updateData['username']);
+}
 
+if (!isset($updateData['email'])) {
+    $email = $user->getEmail();
+} else {
+    $email = $this->sanitize($updateData['email']);
+}
+
+if (!isset($updatedata['password'])) {
+    $password = $user->getPassword();
+} else {
+    $password = $updateData['password'];
+}
+
+if (!isset($updateData['role_id'])) {
+    $role_id = $user->getRoleId();
+} else {
+    $role_id = $updateData['role_id'];
+}
+
+        /*
         $username = $this->sanitize($updateData['username']) ?? $user->getUsername();
         $email = $this->sanitize($updateData['email']) ?? $user->getEmail();
         $password = $updateData['password'] ?? $user->getPassword();
-        $registration_date_time = $updateData['registration_date_time'] ?? $user->getRegistrationDateTime();
         $role_id = $updateData['role_id'] ?? $user->getRoleId();
+*/
         if (isset($updateData['token'])) {
             // this 'if' statement is set to avoid an undefined array key "token"... error
             if (is_null($updateData['token'])) {
@@ -117,13 +141,12 @@ class UserManager extends AbstractManager implements ManagerInterface
         }
 
 
-        $sql = "UPDATE users SET username = :username, email = :email, password = :password, registration_date_time = :registration_date_time, role_id = :role_id, token =:token WHERE id = :id";
+        $sql = "UPDATE users SET username = :username, email = :email, password = :password, role_id = :role_id, token =:token WHERE id = :id";
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
-        $stmt->bindParam(':registration_date_time', $registration_date_time);
         $stmt->bindParam(':role_id', $role_id);
         $stmt->bindParam(':token', $token);
 

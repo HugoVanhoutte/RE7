@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="container">
         <div class="row justify-content-center">
             <div class="col col-md-8 shadow rounded bg-light text-center">
-                <form action="/../RE7/public/index.php/recipe?action=validateWrite" method="post">
+                <form action="/index.php/recipe?action=validateWrite" method="post">
                     <div class="my-2">
                         <label for="title" class="form-label">Titre de la recette</label>
                         <input type="text" maxlength="50" required name="title" id="title" class="form-control">

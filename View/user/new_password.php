@@ -1,6 +1,5 @@
 <?php
 
-use App\Controller\RootController;
 use App\Model\Manager\UserManager;
 
 $userManager = new UserManager();
@@ -14,7 +13,7 @@ $user = $userManager->get($params['id']);
     <div class="container">
         <div class="row justify-content-center">
             <div class="col col-md-4 shadow rounded bg-light text-center">
-                <form action="../../public/index.php/user?action=validatePasswordReset&id=<?= $params['id'] ?>&token=<?= $params['token'] ?>"
+                <form action="/index.php/user?action=validatePasswordReset&id=<?= $params['id'] ?>&token=<?= $params['token'] ?>"
                       method="post">
                     <div class="my-2">
                         <label for="password" class="form-label">Nouveau mot de passe</label>

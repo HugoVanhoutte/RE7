@@ -1,13 +1,9 @@
 let form = document.querySelector(".needs-validation");
-let passwordConfirmInput = document.querySelector("input[name='passwordConfirm']");
-let emailInput = document.querySelector("input[name='email']");
-let usernameInput = document.querySelector("input[name='username']");
-let submitButton = document.querySelector("input[type='submit']");
 
 //Bootstrap form validation
 form.addEventListener('submit', validate);
 
-function validate(e) {
+function validate(e) { //TODO: change for password validated correctly NOT URGENT
     if (form.checkValidity() === false) {
         e.preventDefault();
     }
@@ -29,7 +25,7 @@ let upperPattern = /[A-Z]/
 let numberPattern = /[0-9]/
 let specialPattern = /[!@#$%^&*()_+]/
 
-document.body.addEventListener("keyup", function (e) {
+document.body.addEventListener("keyup", function () {
     updateValidation();
 })
 

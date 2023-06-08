@@ -3,6 +3,7 @@
 use App\Controller\RootController;
 use App\Model\Entity\Recipe;
 use App\Model\Manager\RecipeManager;
+use App\Model\Manager\UserManager;
 
 ?>
 <?php
@@ -10,8 +11,9 @@ use App\Model\Manager\RecipeManager;
 $recipeManager = new RecipeManager();
 $recipe = $recipeManager->get($params['id']);
 /* @var Recipe $recipe */
+$userManager = new UserManager();
 
-if (!$recipeManager->isAuthor($recipe->getAuthorId())) {
+if (!$userManager->isAuthor($recipe->getAuthorId())) {
     (new RootController())->displayError(403);
     exit;
 } else {
@@ -19,7 +21,7 @@ if (!$recipeManager->isAuthor($recipe->getAuthorId())) {
     <div class="container">
         <div class="row justify-content-center">
             <div class="col col-md-8 shadow rounded bg-light text-center">
-                <form action="../../public/index.php/recipe?action=validateEdit&id=<?= $recipe->getId() ?>"
+                <form action="index.php/recipe?action=validateEdit&id=<?= $recipe->getId() ?>"
                       method="post" class="needs-validation">
                     <div class="my-2">
                         <label for="title" class="form-label">Titre de la recette</label>

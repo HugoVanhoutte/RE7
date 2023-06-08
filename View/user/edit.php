@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id']) && $userManager->isAuthor($params['id'])) {
     <div class="container">
         <div class="row justify-content-center">
             <div class="col col-md-4 shadow rounded bg-light text-center">
-                <form action="/../RE7/public/index.php/user?action=validateEdit&id=<?= $user->getId() ?>" method="post">
+                <form action="/index.php/user?action=validateEdit&id=<?= $user->getId() ?>" method="post">
                     <div class="my-2">
                         <label for="email" class="form-label">Modifier mon adresse mail: </label>
                         <input type="email" id="email" name="email" value="<?= $user->getEmail() ?>" required class="form-control">

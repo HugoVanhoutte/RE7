@@ -18,14 +18,14 @@ $userManager = new UserManager();
     if ($userManager->isAuthor($user->getId())) //Checks if user is authenticated (prevent error message) and check if he is admin or user
     {
         ?>
-        <a href="../index.php/user?action=edit&id=<?= $user->getId() ?>" title="&Eacute;diter mon profil"
+        <a href="/index.php/user?action=edit&id=<?= $user->getId() ?>" title="&Eacute;diter mon profil"
            class="btn btn-outline-primary">
             <i class="fa-solid fa-pen"></i></a>
         <?php
     }
     if ($userManager->isRemovable($user->getId())) {
         ?>
-        <a href="../index.php/user?action=delete&id=<?= $user->getId() ?>" title="Supprimer mon compte"
+        <a href="/index.php/user?action=delete&id=<?= $user->getId() ?>" title="Supprimer mon compte"
            class="btn btn-outline-danger">
             <i class="fa-solid fa-trash"></i></a>
         <?php
@@ -48,7 +48,7 @@ $userManager = new UserManager();
 
         if (empty($recipes)) {
             ?>
-            <h3><?= $user->getUsername() ?> n'a pas encore publié de recettes</h3>
+            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
             <?php
         }
         foreach ($recipes as $recipe) {
@@ -56,20 +56,20 @@ $userManager = new UserManager();
             ?>
             <div class="col-12 col-md-5 col-lg-4 col-xl-3">
                 <div class="card bg-light rounded shadow m-2 text-center border-0">
-                    <a href="../../public/index.php/recipe?action=view&id=<?= $recipe->getId() ?>"
+                    <a href="/index.php/recipe?action=view&id=<?= $recipe->getId() ?>"
                        class="card-title display-6 text-decoration-none"><?= $recipe->getTitle() ?></a>
                     <p class="text-muted fst-italic">
                         le <?= $recipeManager->getTimeFR($recipe->getCreationDateTime()) ?></p>
                     <?php
                     if ($userManager->isAuthor($user->getId())) {
                         ?>
-                        <a href="../../public/index.php/recipe?action=edit&id=<?= $recipe->getId() ?>"
+                        <a href="/index.php/recipe?action=edit&id=<?= $recipe->getId() ?>"
                            title="&Eacute;diter" class="btn btn-outline-primary"><i class="fa-solid fa-pen"></i></a>
                         <?php
                     }
                     if ($userManager->isRemovable($user->getId())) {
                         ?>
-                        <a href="../../public/index.php/recipe?action=delete&id=<?= $recipe->getId() ?>"
+                        <a href="/index.php/recipe?action=delete&id=<?= $recipe->getId() ?>"
                            title="Supprimer" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
                         <?php
                     }
@@ -90,7 +90,7 @@ $userManager = new UserManager();
 
         if (empty($comments)) {
             ?>
-            <h3><?= $user->getUsername() ?> n'a pas encore publié de commentaires</h3>
+            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de commentaires</p>
             <?php
         }
 
@@ -104,12 +104,12 @@ $userManager = new UserManager();
                     <p class="lead"><?= $comment->getContent() ?></p>
                     <p class="text-muted fst-italic">
                         le <?= $commentManager->getTimeFR($comment->getCreationDateTime()) ?> à propos de <a
-                                href="../../public/index.php/recipe?action=view&id=<?= $recipe->getId() ?>"><?= $recipe->getTitle() ?></a>
+                                href="/index.php/recipe?action=view&id=<?= $recipe->getId() ?>"><?= $recipe->getTitle() ?></a>
                     </p>
                     <?php
                     if (isset($_SESSION['user_id']) && (new UserManager())->isRemovable($user->getId())) {
                         ?>
-                        <a href="../../public/index.php/comment?action=delete&id=<?= $comment->getId() ?>"
+                        <a href="/index.php/comment?action=delete&id=<?= $comment->getId() ?>"
                            title="Supprimer" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
                         <?php
                     }

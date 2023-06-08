@@ -16,7 +16,7 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">    <!--Navbar-->
     <div class="container">
-        <a href="/../RE7/public/index.php" title="Accueil" class="navbar-brand"><span class="text-light">RE7</span></a>
+        <a href="/index.php" title="Accueil" class="navbar-brand"><span class="text-light">RE7</span></a> <!-- IDE error is wrong: link works on deployment -->
         <!-- Toggle button for mobile navigation -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"><span
                     class="navbar-toggler-icon"></span></button>
@@ -28,28 +28,28 @@
                 if (!empty($_SESSION['user_id'])) {
                     ?>
                     <li class="nav-item">
-                        <a href="/../RE7/public/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link">Nouvelle
+                        <a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link">Nouvelle
                             Recette</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/../RE7/public/index.php/user?action=logout" title="Déconnexion" class="nav-link">Déconnexion</a>
+                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link">Déconnexion</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/../RE7/public/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>"
+                        <a href="/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>"
                            title="Mon profil" class="nav-link">Mon profil</a>
                     </li>
                     <?php
                 } else {
                     ?>
                     <li class="nav-item">
-                        <a href="/../RE7/public/index.php/user?action=register" title="Créer un compte" class="nav-link">Créer un
+                        <a href="/index.php/user?action=register" title="Créer un compte" class="nav-link">Créer un
                             compte</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/../RE7/public/index.php/user?action=login" title="Connexion" class="nav-link">Connexion</a>
+                        <a href="/index.php/user?action=login" title="Connexion" class="nav-link">Connexion</a>
                     </li>
                     <?php
                 }
@@ -66,16 +66,32 @@ if (isset($params['error'])) {
 <p class='text-light'>" . $params['error'] . "</p></div>";
 }
 if (isset($params['message'])) {
-    echo "<div class='container-sm rounded bg-info text-center'><p>" . $params['message'] . "</p></div>";
+    echo "<div class='container-sm rounded bg-success text-center text-light'><p>" . $params['message'] . "</p></div>";
 }
 ?>
 
 <?= $pageContent ?>
 
-<footer class="bg-light mt-5">
-    <!--TODO: upgrade-->
-    <h3>Contact</h3>
-    <a href="mailto:hugo.vanhoutte.pro@gmail.com">E-mail au gérant du site</a>
+<footer class="bg-dark text-light mt-5 container-fluid"> <!-- TODO -->
+    <div class="row">
+        <div class="col text-start">
+            <ul class="list-unstyled">
+                <li><h3>Contact</h3></li>
+                <li><a href="mailto: hugo.vanhoutte.pro@gmail.com" title="Mail" class="text-muted display-6"><i class="fa-solid fa-envelope"></i></a></li>
+                <li><a href="#" title="Twitter" class="text-muted display-6"><i class="fa-brands fa-square-twitter"></i></a></li>
+                <li><a href="#" title="Facebook" class="text-muted display-6"><i class="fa-brands fa-square-facebook"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <ul class="list-unstyled text-end">
+                    <li><h3>Informations légales</h3></li>
+                    <li><a href="#" class="text-muted">RGPD</a></li>
+                    <li><a href="#" class="text-muted">CGU</a></li>
+                    <li><a href="#" class="text-muted">Politique de confidentialité</a></li>
+            </ul>
+        </div>
+    </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

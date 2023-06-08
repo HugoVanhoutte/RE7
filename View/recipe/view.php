@@ -21,14 +21,14 @@ use App\Model\Manager\UserManager;
     //Checking if current user is recipe author, if true displays recipe editing button
     if ($userManager->isAuthor($recipe->getAuthorId())) {
         ?>
-        <a href="../../public/index.php/recipe?action=edit&id=<?= $recipe->getId() ?>"
+        <a href="/index.php/recipe?action=edit&id=<?= $recipe->getId() ?>"
            title="&Eacute;diter la recette" class="btn btn-outline-primary"><i class="fa-solid fa-pen"></i></a>
         <?php
     }
     //Checking if current user has removing authorisations (admin OR author), if true displays recipe delete button
     if ($userManager->isRemovable($author->getId())) {
         ?>
-        <a href="../../public/index.php/recipe?action=delete&id=<?= $recipe->getId() ?>"
+        <a href="/index.php/recipe?action=delete&id=<?= $recipe->getId() ?>"
            title="Supprimer la recette" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
         <?php
     }
@@ -45,7 +45,7 @@ use App\Model\Manager\UserManager;
         <p><?= nl2br(htmlspecialchars_decode($recipe->getContent())) ?></p>
 
         <h3>Recette Créée par <strong><a
-                        href="../../public/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a></strong>
+                        href="/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a></strong>
             le <?= $recipeManager->getTimeFR($recipe->getCreationDateTime()) ?></h3>
 
     </div>
@@ -62,7 +62,7 @@ use App\Model\Manager\UserManager;
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col col-md-8 shadow rounded bg-light text-center">
-                            <form action="../../public/index.php/comment?action=write&recipe_id=<?= $recipe->getId() ?>"
+                            <form action="/index.php/comment?action=write&recipe_id=<?= $recipe->getId() ?>"
                                   method="post">
                                 <div class="my-2">
                                     <label for="content" class="form-label">&Eacute;crire un commentaire</label>
@@ -81,26 +81,31 @@ use App\Model\Manager\UserManager;
                     }
                     $commentManager = new CommentManager();
                     $comments = $commentManager->getCommentsByRecipeId($recipe->getId());
-                    foreach ($comments as $comment) {
-                        /* @var Comment $comment */
-                        $author = $userManager->get($comment->getAuthorId())
-                        ?>
-                        <li class="bg-light rounded shadow m-3 p-2">
-                            <p><?= $comment->getContent() ?></p>
-                            <p class="text-muted fst-italic">&Eacute;crit par <a
-                                        href="../../public/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a>
-                                le <?= $commentManager->getTimeFR($comment->getCreationDateTime()) ?></p><?php
-                            if ($userManager->isRemovable($comment->getAuthorId())) {
-                                ?>
-                                <div>
-                                    <a href="../../public/index.php/comment?action=delete&id=<?= $comment->getId() ?>"
-                                       title="Supprimer ce commentaire"><i class="fa-solid fa-trash"></i></a>
-                                </div>
-                                <?php
-                            }
+
+                    if(empty($comments)) {
+                        echo "<span class='text-muted fst-italic'>Aucun commentaire n'a été publié pour cette recette</span>";
+                    } else {
+                        foreach ($comments as $comment) {
+                            /* @var Comment $comment */
+                            $author = $userManager->get($comment->getAuthorId())
                             ?>
-                        </li>
-                        <?php
+                            <li class="bg-light rounded shadow m-3 p-2">
+                                <p><?= $comment->getContent() ?></p>
+                                <p class="text-muted fst-italic">&Eacute;crit par <a
+                                            href="/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a>
+                                    le <?= $commentManager->getTimeFR($comment->getCreationDateTime()) ?></p><?php
+                                if ($userManager->isRemovable($comment->getAuthorId())) {
+                                    ?>
+                                    <div>
+                                        <a href="/index.php/comment?action=delete&id=<?= $comment->getId() ?>"
+                                           title="Supprimer ce commentaire"><i class="fa-solid fa-trash"></i></a>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                            </li>
+                            <?php
+                        }
                     }
                     ?>
                 </ul>

@@ -11,7 +11,9 @@ use App\Model\Manager\UserManager;
 
     if (isset($_SESSION['user_id'])) {
         $user = (new UserManager())->get($_SESSION['user_id']);
-    } else $user = (new User())->setUsername("invité")
+    } else {
+        $user = (new User())->setUsername("invité");
+    }
     ?>
 
 
@@ -31,8 +33,8 @@ use App\Model\Manager\UserManager;
                 ?>
                 <div class="col-8 col-lg-4 col-xl-3">
                     <div class="card bg-light rounded shadow m-2 text-center border-0">
-                        <a href="../public/index.php/recipe?action=view&id=<?= $recipe->getId() ?>" class="card-title display-6 text-decoration-none"><?= $recipe->getTitle() ?></a>
-                        <a href="../public/index.php/user?action=profile&id=<?= $author->getId() ?>" class="text-muted"><?= $author->getUsername() ?></a>
+                        <a href="/index.php/recipe?action=view&id=<?= $recipe->getId() ?>" class="card-title display-6 text-decoration-none"><?= $recipe->getTitle() ?></a>
+                        <a href="/index.php/user?action=profile&id=<?= $author->getId() ?>" class="text-muted"><?= $author->getUsername() ?></a>
                     </div>
                 </div>
                 <?php

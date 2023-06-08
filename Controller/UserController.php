@@ -269,7 +269,7 @@ class UserController extends AbstractController implements ControllerInterface
             if (password_verify($data['password'], $user->getPassword())) {                                            //Password correct, start session
 
                 $_SESSION['user_id'] = $user->getId();
-                header('location: ../../public/index.php');                                                      //Not using display: prevents broken links for some reason...
+                header('location: /index.php');                                                      //Not using display: prevents broken links for some reason...
             } else {                                                                                                    //Wrong Password
                 $this->display('user/login', 'Connexion', [
                     'error' => 'Mot de passe incorrect'
@@ -277,7 +277,7 @@ class UserController extends AbstractController implements ControllerInterface
             }
         } else {
             $this->display('user/login', 'Connexion', [
-                'error' => 'Cette adresse e-mail ne correspond a aucun compte'
+                'error' => 'Cette adresse e-mail ne correspond à aucun compte'
             ]);
         }
     }
@@ -401,7 +401,7 @@ class UserController extends AbstractController implements ControllerInterface
         $body = "
                 <h1>Bonjour $username</h1>
                 <p>Cliquez sur ce lien pour changer votre mot de passe</p>
-                <a href='localhost/RE7/public/index.php/user?action=newPassword&id=$id&token=$token'>Changer mon mot de passe</a> 
+                <a href='localhost/index.php/user?action=newPassword&id=$id&token=$token'>Changer mon mot de passe</a> 
                 <p>Si vous n'êtes pas à l'origine de cette action, ne cliquez pas sur le lien</p>
             ";
 
