@@ -20,7 +20,7 @@ if (!$recipeManager->isAuthor($recipe->getAuthorId())) {
         <div class="row justify-content-center">
             <div class="col col-md-8 shadow rounded bg-light text-center">
                 <form action="../../public/index.php/recipe?action=validateEdit&id=<?= $recipe->getId() ?>"
-                      method="post">
+                      method="post" class="needs-validation">
                     <div class="my-2">
                         <label for="title" class="form-label">Titre de la recette</label>
                         <input type="text" maxlength="50" required name="title" id="title"

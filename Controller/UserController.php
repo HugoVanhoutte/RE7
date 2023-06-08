@@ -191,8 +191,8 @@ class UserController extends AbstractController implements ControllerInterface
 
         else                                                                                                            //All good: create a new User and send confirmation email
         {
-            $username = trim($registrationInfo['username']);
-            $email = trim(strtolower($registrationInfo['email']));
+            $username = $userManager->sanitize($registrationInfo['username']);
+            $email = $userManager->sanitize(strtolower($registrationInfo['email']));
             $password = password_hash($registrationInfo['password'], PASSWORD_BCRYPT);
             $token = uniqid("", true);
 

@@ -82,8 +82,9 @@ class UserManager extends AbstractManager implements ManagerInterface
         $sql = "INSERT INTO users (username, email, password, token)
                 VALUES (:username, :email, :password, :token)";
         $stmt = DB::getInstance()->prepare($sql);
-        $username = $user->getUsername();
-        $email = $user->getEmail();
+
+        $username = $this->sanitize($user->getUsername());
+        $email = $this->sanitize($user->getEmail());
         $password = $user->getPassword();
         $token = $user->getToken();
 
@@ -101,8 +102,8 @@ class UserManager extends AbstractManager implements ManagerInterface
     {
         $user = $this->get($id);
 
-        $username = $updateData['username'] ?? $user->getUsername();
-        $email = $updateData['email'] ?? $user->getEmail();
+        $username = $this->sanitize($updateData['username']) ?? $user->getUsername();
+        $email = $this->sanitize($updateData['email']) ?? $user->getEmail();
         $password = $updateData['password'] ?? $user->getPassword();
         $registration_date_time = $updateData['registration_date_time'] ?? $user->getRegistrationDateTime();
         $role_id = $updateData['role_id'] ?? $user->getRoleId();
@@ -190,4 +191,31 @@ class UserManager extends AbstractManager implements ManagerInterface
         return (bool) preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}/", $password);
     }
 
+
+    /**
+     * @return bool
+     */
+    public function isAdmin():bool {
+        if (isset($_SESSION['user_id'])) {
+            $currentUser = (new UserManager())->get($_SESSION['user_id']);
+            return in_array($currentUser->getRoleId(), [1,2,3]);
+        } else return false;
+    }
+
+    /**
+     * @param $authorId
+     * @return bool
+     */
+    public function isAuthor($authorId): bool {
+        return (isset($_SESSION['user_id']) && $authorId === $_SESSION['user_id']);
+    }
+
+    /**
+     * @param $authorId
+     * @return bool
+     */
+    public function isRemovable($authorId): bool
+    {
+        return $this->isAdmin() || $this->isAuthor($authorId);
+    }
 }

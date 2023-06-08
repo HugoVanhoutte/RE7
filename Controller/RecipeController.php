@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\Entity\Recipe;
 use App\Model\Manager\RecipeManager;
+use App\Model\Manager\UserManager;
 
 class RecipeController extends AbstractController implements ControllerInterface
 {
@@ -70,15 +71,16 @@ class RecipeController extends AbstractController implements ControllerInterface
      * @return void
      */
     private function validateWrite($data):void {
+        $recipeManager = new RecipeManager();
         $recipe = (new Recipe())
-            ->setTitle($data['title'])
-            ->setContent($data['content'])
-            ->setPreparationTimeMinutes($data['preparation_time_minutes'])
-            ->setCookingTimeMinutes($data['cooking_time_minutes'])
-            ->setAuthorId($_SESSION['user_id'])
+            ->setTitle($recipeManager->sanitize($data['title']))
+            ->setContent($recipeManager->sanitize($data['content']))
+            ->setPreparationTimeMinutes($recipeManager->sanitize($data['preparation_time_minutes']))
+            ->setCookingTimeMinutes($recipeManager->sanitize($data['cooking_time_minutes']))
+            ->setAuthorId($recipeManager->sanitize($_SESSION['user_id']))
             ;
 
-        $id = (new RecipeManager())->insert($recipe);
+        $id = $recipeManager->insert($recipe);
 
         $this->display('recipe/view', 'Recette', [
             'id' => $id
@@ -117,8 +119,10 @@ class RecipeController extends AbstractController implements ControllerInterface
     private function validateEdit($updateData, $id): void
     {
         $recipeManager = new RecipeManager();
+        $userManager = new UserManager();
+
         $recipe = $recipeManager->get($id);
-        if($recipeManager->isEditable($recipe->getAuthorId())) {
+        if($userManager->isAuthor($recipe->getAuthorId())) {
             $recipeManager->update($id, $updateData);
             $this->view($id);
         } else {
@@ -134,7 +138,7 @@ class RecipeController extends AbstractController implements ControllerInterface
     {
         $recipeManager = new RecipeManager();
         $recipe = $recipeManager->get($id);
-        if($recipeManager->isEditable($recipe->getAuthorId())) {
+        if((new UserManager())->isAuthor($recipe->getAuthorId())) {
             $recipeManager->delete($id);
             (new RootController())->index();
         } else {

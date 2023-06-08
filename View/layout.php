@@ -72,7 +72,7 @@ if (isset($params['message'])) {
 
 <?= $pageContent ?>
 
-<footer>
+<footer class="bg-light mt-5">
     <!--TODO: upgrade-->
     <h3>Contact</h3>
     <a href="mailto:hugo.vanhoutte.pro@gmail.com">E-mail au gérant du site</a>

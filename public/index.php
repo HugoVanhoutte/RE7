@@ -12,9 +12,11 @@ require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/PHPMailer.php";
 require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/SMTP.php";
 require_once __DIR__ . "/../vendor/phpmailer/phpmailer/src/Exception.php";
 
+//Utils
+require_once __DIR__ . "/../utils/MailUtil.php";
+
 //Model
 require_once __DIR__ . "/../Model/DB.php";
-require_once __DIR__ . "/../Model/MailUtil.php";
 
     //Entity
     require_once __DIR__ . "/../Model/Entity/AbstractPost.php";
