@@ -77,8 +77,8 @@ class RecipeManager extends AbstractManager implements ManagerInterface
     {
         $recipe = $this->get($id);
 
-        $title = $updateData['title'] ?? $recipe->getTitle();
-        $content = $updateData['content'] ?? $recipe->getContent();
+        $title = $this->sanitize($updateData['title']) ?? $recipe->getTitle();
+        $content = $this->sanitize($updateData['content']) ?? $recipe->getContent();
         $preparationTimeMinutes = $updateData['preparation_time_minutes'] ?? $recipe->getPreparationTimeMinutes();
         $cookingTimeMinutes = $updateData['cooking_time_minutes'] ?? $recipe->getCookingTimeMinutes();
 
@@ -102,8 +102,8 @@ class RecipeManager extends AbstractManager implements ManagerInterface
         $pdo = DB::getInstance();
         $stmt = $pdo->prepare($sql);
 
-        $title = $recipe->getTitle();
-        $content = $recipe->getContent();
+        $title = $this->sanitize($recipe->getTitle());
+        $content = $this->sanitize($recipe->getContent());
         $authorId = $recipe->getAuthorId();
         $preparationTimeMinutes = $recipe->getPreparationTimeMinutes();
         $cookingTimeMinutes = $recipe->getCookingTimeMinutes();
@@ -145,7 +145,7 @@ class RecipeManager extends AbstractManager implements ManagerInterface
         return $recipes;
     }
 
-    public function getAllDesc(): array
+    public function get3MostRecent(): array
     {
         $sql = "SELECT * FROM recipes ORDER BY creation_date_time DESC";
         $stmt = DB::getInstance()->prepare($sql);

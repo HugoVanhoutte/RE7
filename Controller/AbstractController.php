@@ -23,4 +23,5 @@ abstract class AbstractController
     {
         $this->display("error/$type", "Erreur $type");
     }
+
 }

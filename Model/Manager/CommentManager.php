@@ -75,7 +75,7 @@ class CommentManager extends AbstractManager implements ManagerInterface
     {
         $comment = $this->get($id);
 
-        $content = $updateData['content'] ?? $comment->getContent();
+        $content = $this->sanitize($updateData['content']) ?? $comment->getContent();
 
         $sql = "UPDATE comments SET content = :content WHERE id = :id";
         $stmt = DB::getInstance()->prepare($sql);
@@ -96,7 +96,7 @@ class CommentManager extends AbstractManager implements ManagerInterface
         $pdo = DB::getInstance();
         $stmt = $pdo->prepare($sql);
 
-        $content = $comment->getContent();
+        $content = $this->sanitize($comment->getContent());
         $authorId = $comment->getAuthorId();
         $recipeId = $comment->getRecipeId();
 
@@ -109,7 +109,7 @@ class CommentManager extends AbstractManager implements ManagerInterface
         return $pdo->lastInsertId();
     }
 
-    public function getCommentsByAuthorId($authorId)
+    public function getCommentsByAuthorId($authorId): array
     {
         $sql = "SELECT * FROM comments WHERE author_id = :author_id";
         $stmt = DB::getInstance()->prepare($sql);
@@ -131,7 +131,7 @@ class CommentManager extends AbstractManager implements ManagerInterface
         return $comments;
     }
 
-    public function getCommentsByRecipeId($recipeId)
+    public function getCommentsByRecipeId($recipeId): array
     {
 
         $sql = "SELECT * FROM comments WHERE recipe_id = :recipe_id";

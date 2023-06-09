@@ -54,12 +54,11 @@ html {
 }
 
 /*FIN CALIBRAGE PX/REM*/
-:root {
-    /* TODO VARIABLES */
+:root {*
     /* https://coolors.co/2b2d42-8d99ae-edf2f4-ef233c-d80032 */
     --main-color: #FFFFFF;
     --secondary-color: grey;
-    --accent-color: #000000 ;
+    --accent-color: #000000;
 
     --invalid-border: rgb(255, 0, 0);
     --invalid-bg: rgba(128, 0, 0, 0.25);
@@ -67,6 +66,7 @@ html {
     --valid-border: green;
     --valid-bg: rgba(0, 128, 0, 0.25);
 }
+
 html {
     font-size: 1rem;
 
@@ -78,12 +78,76 @@ body {
     flex-flow: column wrap;
     align-items: center;
 
-    font-family: Calibri ,sans-serif;
+    font-family: Calibri, sans-serif;
 
     background-color: var(--main-color);
 }
 
+/* General */
 
+a {
+    color: var(--accent-color);
+    font-weight: bold;
+
+    transition-property: border-bottom-color, color;
+    transition-duration: .15s;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+strong {
+    font-weight: bold;
+}
+
+.credits {
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+.credits a {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex-flow: column wrap;
+
+    text-align: center;
+    align-items: center;
+
+    width: 80%;
+}
+
+li .admin a i {
+    font-size: 1rem;
+}
+
+a i {
+    transition-property: border-bottom-color, color;
+    transition-duration: .15s;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.profile {
+    padding: 1rem;
+}
+
+.comments-list li {
+    text-align: left;
+}
 /* Forms */
 form {
     border: var(--accent-color) solid 2px;
@@ -102,25 +166,24 @@ form {
 
 form div {
     display: flex;
-    /*flex-flow: column wrap;*/
+    flex-flow: column wrap;
 
     align-items: center;
 
     padding: .5rem;
 
     font-size: 1rem;
-
 }
 
 form div label {
     font-size: 1.5rem;
 }
 
-form div input  {
+form div input {
     border-radius: 1rem;
 
     padding: .25rem;
-    margin:  .25rem;
+    margin: .25rem;
 
     font-size: 1.25rem;
 }
@@ -140,28 +203,32 @@ form input[type='submit'] {
 }
 
 /* Menus */
-/*Main*/
-nav {
+/*navigation Menu*/
+.navigation-menu {
+    border-bottom: black 1px solid;
+    width: 100%;
+}
+
+.navigation-menu nav {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+
     margin: 1rem;
 }
 
-nav ul li a {
+.navigation-menu nav a {
+    display: block;
+
     font-size: large;
     text-decoration: none;
-    color: var(--accent-color);
 
     margin: 1rem;
 
     border-bottom: 2px solid black;
     border-radius: .5rem;
-    transition-property: border-bottom-color, color;
-    transition-duration: .15s;
 }
 
-nav ul li a:hover {
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
-}
 
 .message {
     background-color: rgba(0, 0, 128, 0.25);
@@ -179,28 +246,77 @@ nav ul li a:hover {
     padding: .5rem;
 }
 
-/*Account Management*/
-.account_management a i{
-    color: var(--accent-color);
+/* Admin */
+.admin a i {
     font-size: 2rem;
 }
 
-.account_management a i:hover{
+.admin a i:hover {
     color: var(--secondary-color);
 }
 
-/* General */
 
-h1 {
-    font-size: 2rem;
-    font-weight: bolder;
+/* Recipe */
+.recipe {
+    padding: 2rem;
 }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
+/* Comment Section */
+.comment-section {
+    display: flex;
+    flex-flow: column;
+
+    align-items: center;
+
+    /*border: var(--accent-color) solid 2px;*/
+    border-radius: .75rem;
+    margin: 1rem;
+    width: 80%
 }
 
-strong {
-    font-weight: bold;
+.comment-section ul {
+    list-style-type: none;
+
 }
+
+.comment {
+    border-radius: .75rem;
+
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.comment:nth-child(even) {
+    background-color: lightblue;
+}
+
+/* recipes section */
+.recipes-section {
+    display: flex;
+    flex-flow: column;
+
+    align-items: center;
+
+    border: var(--accent-color) solid 2px;
+    border-radius: .75rem;
+    margin: 1rem;
+
+    width: 80%;
+}
+
+.recipes-section ul {
+    list-style-type: none;
+}
+
+.recipe {
+    border-radius: .75rem;
+
+    padding: 1rem 0;
+
+    width: 100%;
+}
+
+.recipe:nth-child(even) {
+    background-color: lightblue;
+}
+
