@@ -52,6 +52,7 @@
                     </div>
                 </div>
 
+                <small class="text-muted fst-italic">En cliquant sur créer mon compte, je certifie avoir lu et approuver les <a href="/index.php/user?action=rgpd">mentions légales.</a></small>
                 <div class="my-3">
                     <input type="submit" value="Créer mon compte" class="btn btn-primary">
                 </div>

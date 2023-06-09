@@ -82,10 +82,8 @@ if (isset($params['message'])) {
 
         <div class="col">
             <ul class="list-unstyled text-end">
-                    <li><h3>Informations légales</h3></li>
-                    <li><a href="#" class="text-muted">RGPD</a></li>
-                    <li><a href="#" class="text-muted">CGU</a></li>
-                    <li><a href="#" class="text-muted">Politique de confidentialité</a></li>
+                    <li><h3>Mentions légales</h3></li>
+                    <li><a href="/index.php/user?action=rgpd" class="text-muted">RGPD</a></li>
             </ul>
         </div>
     </div>

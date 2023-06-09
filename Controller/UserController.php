@@ -115,6 +115,11 @@ class UserController extends AbstractController implements ControllerInterface
                 break;
             }
 
+            case 'rgpd' :
+            {
+                $this->display("user/rgpd", "RGPD");
+            }
+
             default:
             {
                 $this->displayError(404);
