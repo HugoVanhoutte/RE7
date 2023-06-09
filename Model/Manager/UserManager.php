@@ -202,7 +202,7 @@ if (!isset($updateData['role_id'])) {
      */
     public function validateUsername(string $username): bool
     {
-        return (strlen($username) > 3 && strlen($username) <= 50);
+        return (strlen($username) >= 3 && strlen($username) <= 50);
     }
 
     /**

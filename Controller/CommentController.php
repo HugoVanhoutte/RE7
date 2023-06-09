@@ -6,6 +6,7 @@ use App\Model\Entity\Comment;
 use App\Model\Entity\Recipe;
 use App\Model\Manager\CommentManager;
 use App\Model\Manager\RecipeManager;
+use App\Model\Manager\UserManager;
 
 class CommentController extends AbstractController implements ControllerInterface
 {
@@ -47,7 +48,7 @@ class CommentController extends AbstractController implements ControllerInterfac
             ->setContent($content)
             ;
         (new CommentManager())->insert($comment);
-        header("location: ../../public/index.php/recipe?action=view&id=$recipeId");
+        header("location: /index.php/recipe?action=view&id=$recipeId");
         //$this->display('recipe/view', $recipe->getTitle(), ['id'=>$recipeId]);
     }
 
@@ -56,9 +57,9 @@ class CommentController extends AbstractController implements ControllerInterfac
         $commentManager = new CommentManager();
         $comment = $commentManager->get($id);
         $recipeId = (new RecipeManager())->get($comment->getRecipeId())->getId();
-        if ($commentManager->isEditable($comment->getAuthorId())){
+        if ((new UserManager())->isRemovable($comment->getAuthorId())){
             $commentManager->delete($id);
-            header("location: ../../public/index.php/recipe?action=view&id=$recipeId");
+            header("location: /index.php/recipe?action=view&id=$recipeId");
         } else {
             $this->displayError(403);
         }
