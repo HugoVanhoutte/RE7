@@ -87,6 +87,8 @@ class IngredientManager extends AbstractManager implements ManagerInterface
         return $pdo->lastInsertId();
     }
 
+
+    //TODO a revoir
     public function getIngredientsRecipe(int $recipe_id): array
     {
         $sql = "SELECT ingredients.name, units.name as unit_name, recipe_ingredients.quantity

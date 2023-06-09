@@ -24,4 +24,10 @@ abstract class AbstractController
         $this->display("error/$type", "Erreur $type");
     }
 
+    public function getJson(string $file): void
+    {
+        require_once __DIR__ . "/../json/$file.php";
+    }
+
+
 }

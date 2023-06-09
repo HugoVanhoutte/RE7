@@ -19,38 +19,12 @@ if (!isset($_SESSION['user_id'])) {
                         <input type="text" maxlength="50" required name="title" id="title" class="form-control">
                     </div>
 
-                    <!--TODO: AddIngredient Button-->
+                    <div class="my-2" id="ingredients">
 
-                    <div class="my-2" id="ingredient">
-                        <label>Ingredients</label>
-                        <select name="ingredient" id="ingredient">
-                            <?php
-                            $ingredients = (new IngredientManager())->getAll();
-                            foreach($ingredients as $ingredient)
-                            /* @var Ingredient $ingredient*/
-                            {
-                                ?>
-                                <option value="<?= $ingredient->getId() ?>"><?= $ingredient->getName() ?></option>
-                                    <?php
-                            }
-                            ?>
-                        </select>
+                    </div>
 
-                        <label for="quantity"></label>
-                        <input name="quantity" id="quantity" type="number" min="1" max="10000">
-
-                        <select name="unit" id="unit">
-                            <?php
-                            $units = (new UnitManager())->getAll();
-                            foreach($units as $unit)
-                                /* @var Unit $unit */
-                            {
-                                ?>
-                                <option value="<?= $unit->getId() ?>"><?= $unit->getName() ?></option>
-                                    <?php
-                            }
-                            ?>
-                        </select>
+                    <div>
+                        <button id="addIngredientButton" type="button">Ajouter un ingrédient</button>
                     </div>
 
                     <div class="my-2">
@@ -75,5 +49,6 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </div>
     </div>
+    <script defer src="/assets/addIngredient.js"></script>
     <?php
 }
