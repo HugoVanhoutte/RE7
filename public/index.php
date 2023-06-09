@@ -23,6 +23,8 @@ require_once __DIR__ . "/../Model/DB.php";
     require_once __DIR__ . "/../Model/Entity/User.php";
     require_once __DIR__ . "/../Model/Entity/Recipe.php";
     require_once __DIR__ . "/../Model/Entity/Comment.php";
+    require_once __DIR__ . "/../Model/Entity/Ingredient.php";
+    require_once __DIR__ . "/../Model/Entity/Unit.php";
 
     //Manager
     require_once __DIR__ . "/../Model/Manager/ManagerInterface.php";
@@ -31,6 +33,8 @@ require_once __DIR__ . "/../Model/DB.php";
     require_once __DIR__ . "/../Model/Manager/AbstractManager.php";
     require_once __DIR__ . "/../Model/Manager/RecipeManager.php";
     require_once __DIR__ . "/../Model/Manager/CommentManager.php";
+    require_once __DIR__ . "/../Model/Manager/IngredientManager.php";
+    require_once __DIR__ . "/../Model/Manager/UnitManager.php";
 
 
 //Controller

@@ -42,6 +42,32 @@ use App\Model\Manager\UserManager;
             <h2>Temps de cuisson: <?= $recipe->getCookingTimeMinutes() ?> minutes</h2>
         </div>
 
+        <!--
+        TESTS
+        -->
+        <h2>Ingrédients: </h2>
+        <?php
+
+        $ingredientManager = new \App\Model\Manager\IngredientManager();
+
+        foreach ($ingredientManager->getIngredientsRecipe($recipe->getId()) as $ingredient)
+        {
+            $quantity = $ingredient['quantity'];
+            $unit_name = $ingredient['unit_name'];
+            $name = $ingredient['name'];
+
+            //TODO Traitement des pluriels et des apostrophes
+
+            echo "$quantity $unit_name(s) de $name <br>";
+        }
+
+        ?>
+
+
+        <!--
+        FIN DU TEST
+        -->
+        <h2>Recette: </h2>
         <p><?= nl2br(htmlspecialchars_decode($recipe->getContent())) ?></p>
 
         <h3>Recette Créée par <strong><a

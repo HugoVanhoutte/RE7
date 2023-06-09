@@ -165,4 +165,10 @@ class RecipeManager extends AbstractManager implements ManagerInterface
         }
         return $recipes;
     }
+
+    public function transformIngredientsStringToArray(string $ingredientsString): array
+    {
+        $ingredientsArray = explode("/" ,$ingredientsString);
+        
+    }
 }
