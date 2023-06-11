@@ -153,4 +153,24 @@ class CommentManager extends AbstractManager implements ManagerInterface
 
         return $comments;
     }
+
+    public function getNumberCommentPerRecipe(int $recipeId): int
+    {
+        $sql = "SELECT count(*) AS number FROM comments WHERE recipe_id = :recipe_id";
+        $stmt = DB::getInstance()->prepare($sql);
+        $stmt->bindParam(':recipe_id', $recipeId);
+        $stmt->execute();
+
+        return $stmt->fetch()['number'];
+    }
+
+    public function getNumberCommentsPerUser(int $userId): int
+    {
+        $sql = "SELECT count(*) AS number FROM comments WHERE author_id = :author_id";
+        $stmt = DB::getInstance()->prepare($sql);
+        $stmt->bindParam(':author_id', $userId);
+        $stmt->execute();
+
+        return $stmt->fetch()['number'];
+    }
 }

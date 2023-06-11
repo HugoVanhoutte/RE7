@@ -87,17 +87,4 @@ class IngredientManager extends AbstractManager implements ManagerInterface
 
         return $pdo->lastInsertId();
     }
-    public function getIngredientsRecipe(int $recipe_id): array
-    {
-        $sql = "SELECT  ingredients.id as ingredient_id, ingredients.name, units.id as unit_id, units.name as unit_name, recipe_ingredients.quantity
-    FROM recipe_ingredients
-        
-    JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
-    JOIN units ON recipe_ingredients.unit_id = units.id
-    WHERE recipe_ingredients.recipe_id = :id";
-        $stmt = DB::getInstance()->prepare($sql);
-        $stmt->bindParam(':id', $recipe_id);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
 }

@@ -70,14 +70,14 @@ class UnitManager extends AbstractManager implements ManagerInterface
         return $stmt-> execute();
     }
 
-    public function insert(Unit $unit): int
+    public function insert(string $name): int
     {
         $sql = "INSERT INTO units (name)
                 VALUES (:name)";
         $pdo = DB::getInstance();
         $stmt = $pdo->prepare($sql);
 
-        $name = $this->sanitize($unit->getName());
+        $name = $this->sanitize($name);
 
         $stmt->bindParam(':name', $name);
         $stmt->execute();

@@ -5,6 +5,7 @@ use App\Model\Entity\Ingredient;
 use App\Model\Entity\Recipe;
 use App\Model\Entity\Unit;
 use App\Model\Manager\IngredientManager;
+use App\Model\Manager\Recipe_IngredientManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\UnitManager;
 use App\Model\Manager\UserManager;
@@ -36,14 +37,13 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
 
                         $ingredientManager = new IngredientManager();
                         $unitManager = new UnitManager();
+                        $recipe_IngredientManager = new Recipe_IngredientManager();
 
                         $number = 1;
-                        foreach ($ingredientManager->getIngredientsRecipe($recipe->getId()) as $ingredient)
+                        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient)
                         /* @var Ingredient $ingredient */
                         {
-                            //var_dump($ingredient);
 
-                            //TODO get array of all ingredients from DB
                             $ingredients = $ingredientManager->getAll();
                             ?>
                                 <div class="ingredientLine">

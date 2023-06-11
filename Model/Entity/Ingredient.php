@@ -30,7 +30,7 @@ class Ingredient
      */
     public function getName(): string
     {
-        return $this->name;
+        return nl2br(htmlspecialchars_decode($this->name));
     }
 
     /**

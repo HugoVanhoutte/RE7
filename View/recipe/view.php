@@ -5,6 +5,7 @@ use App\Model\Entity\Recipe;
 use App\Model\Entity\User;
 use App\Model\Manager\CommentManager;
 use App\Model\Manager\IngredientManager;
+use App\Model\Manager\Recipe_IngredientManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\UserManager;
 
@@ -35,8 +36,8 @@ use App\Model\Manager\UserManager;
     }
     ?>
 
-    <div> <!--RECIPE: Displays content written by user from DB: since user entry is sanitized: need to use htmlspecialchars_decode for proper display and nl2br for new lines-->
-        <h1><?= nl2br(htmlspecialchars_decode($recipe->getTitle())) ?></h1>
+    <div>
+        <h1><?= $recipe->getTitle() ?></h1>
 
         <div>
             <h2>Temps de préparation: <?= $recipe->getPreparationTimeMinutes() ?> minutes</h2>
@@ -47,8 +48,9 @@ use App\Model\Manager\UserManager;
         <?php
 
         $ingredientManager = new IngredientManager();
+        $recipe_IngredientManager = new Recipe_IngredientManager();
 
-        foreach ($ingredientManager->getIngredientsRecipe($recipe->getId()) as $ingredient)
+        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient)
         {
             $quantity = $ingredient['quantity'];
             $unit_name = $ingredient['unit_name'];
@@ -60,7 +62,7 @@ use App\Model\Manager\UserManager;
         ?>
 
         <h2>Recette: </h2>
-        <p><?= nl2br(htmlspecialchars_decode($recipe->getContent())) ?></p>
+        <p><?= $recipe->getContent() ?></p>
 
         <h3>Recette Créée par <strong><a
                         href="/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a></strong>
@@ -71,7 +73,10 @@ use App\Model\Manager\UserManager;
     <div>
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 col-xxl-4 border rounded">
-                <h2>Commentaires: </h2>
+                <?php
+                $commentManager = new CommentManager();
+                ?>
+                <h2>Commentaires: <span class="badge bg-secondary"><?= $commentManager->getNumberCommentPerRecipe($recipe->getId()) ?></span></h2>
 
                 <?php
                 //Checks if user is authenticated, if true: displays new comment form
@@ -97,7 +102,6 @@ use App\Model\Manager\UserManager;
                 <ul class="list-unstyled">
                     <?php
                     }
-                    $commentManager = new CommentManager();
                     $comments = $commentManager->getCommentsByRecipeId($recipe->getId());
 
                     if(empty($comments)) {

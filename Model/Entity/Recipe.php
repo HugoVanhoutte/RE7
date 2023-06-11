@@ -13,7 +13,7 @@ class Recipe extends AbstractPost
      */
     public function getTitle(): string
     {
-        return $this->title;
+        return nl2br(htmlspecialchars_decode($this->title));
     }
 
     /**

@@ -24,7 +24,7 @@ class IngredientController extends AbstractController implements ControllerInter
 
             case 'new' :
             {
-                $this->newIngredient();
+                $this->new();
                 break;
             }
 
@@ -46,7 +46,7 @@ class IngredientController extends AbstractController implements ControllerInter
 
     }
 
-    private function newIngredient()
+    private function new()
     {
         if (isset($_SESSION['user_id'])) {
             $this->display("ingredient/new", "Ajouter un ingrédient");

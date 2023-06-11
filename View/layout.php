@@ -29,6 +29,10 @@
                         </li>
 
                     <li class="nav-item">
+                        <a href="/index.php/unit?action=new" title="Ajouter une unité" class="nav-link">Nouvelle Unité</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link">Nouvelle
                             Recette</a>
                     </li>

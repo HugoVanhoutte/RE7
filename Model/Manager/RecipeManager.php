@@ -166,9 +166,14 @@ class RecipeManager extends AbstractManager implements ManagerInterface
         return $recipes;
     }
 
-    public function transformIngredientsStringToArray(string $ingredientsString): array
+    public function getNumberRecipePerUser(int $user_id): int
     {
-        $ingredientsArray = explode("/" ,$ingredientsString);
-        
+        $sql = "SELECT count(*) AS number FROM recipes WHERE author_id = :author_id";
+        $stmt = DB::getInstance()->prepare($sql);
+
+        $stmt->bindParam(':author_id', $user_id);
+
+        $stmt->execute();
+        return $stmt->fetch()['number'];
     }
 }

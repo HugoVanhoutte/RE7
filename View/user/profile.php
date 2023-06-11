@@ -31,19 +31,19 @@ $userManager = new UserManager();
         <?php
     }
     ?>
-</div>
 <div> <!-- Profile -->
     <h1>Profil de <?= $user->getUsername() ?></h1>
     <p><strong>Adresse Mail:</strong> <?= $user->getEmail() ?></p>
     <p><strong>Rôle: </strong><?= (new RoleManager())->getRole($user->getRoleId()) ?></p>
     <p><strong>Compte créé le </strong><?= (new UserManager())->getTimeFR($user->getRegistrationDateTime()) ?></p>
 </div>
-
-<h2>Liste des recettes de <?= $user->getUsername() ?></h2>
+<?php
+$recipeManager = new RecipeManager();
+?>
+<h2>Liste des recettes de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $recipeManager->getNumberRecipePerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
         <?php
-        $recipeManager = new RecipeManager();
         $recipes = $recipeManager->getRecipesByAuthorId($user->getId());
 
         if (empty($recipes)) {
@@ -81,11 +81,13 @@ $userManager = new UserManager();
         ?>
     </div>
 </section>
-<h2>Liste des commentaires de <?= $user->getUsername() ?></h2>
+<?php
+$commentManager = new CommentManager();
+?>
+<h2>Liste des commentaires de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $commentManager->getNumberCommentsPerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
         <?php
-        $commentManager = new CommentManager();
         $comments = $commentManager->getCommentsByAuthorId($user->getId());
 
         if (empty($comments)) {
@@ -121,3 +123,4 @@ $userManager = new UserManager();
         ?>
     </div>
 </section>
+</div>
