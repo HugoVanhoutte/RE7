@@ -31,7 +31,7 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
                                value="<?= $recipe->getTitle() ?>" class="form-control">
                     </div>
 
-                    <div class="col col-md-8 shadow rounded bg-light text-center" id="ingredients">
+                    <div class="shadow rounded bg-light text-center" id="ingredients">
                         <?php
 
                         $ingredientManager = new IngredientManager();

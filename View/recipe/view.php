@@ -35,7 +35,7 @@ use App\Model\Manager\UserManager;
     }
     ?>
 
-    <div> <!--RECIPE: Displays content xritten by user from DB: since user entry is sanitized: need to use htmlspecialchars_decode for proper display and nl2br for new lines-->
+    <div> <!--RECIPE: Displays content written by user from DB: since user entry is sanitized: need to use htmlspecialchars_decode for proper display and nl2br for new lines-->
         <h1><?= nl2br(htmlspecialchars_decode($recipe->getTitle())) ?></h1>
 
         <div>

@@ -83,12 +83,12 @@ class RecipeController extends AbstractController implements ControllerInterface
 
         $id = $recipeManager->insert($recipe);
 
-        //Managing the ingredient/quantity/unit
+        // Managing the ingredient/quantity/unit
         $ingredients = [];
         $quantities = [];
         $units = [];
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (str_contains($key, 'ingredient')) {
                 $ingredientNumber = substr($key, strlen('ingredient'));
                 $ingredients[$ingredientNumber] = $value;
@@ -103,17 +103,25 @@ class RecipeController extends AbstractController implements ControllerInterface
             }
         }
 
-        for ($i = 1 ;$i < count($ingredients)+1; $i++){
+        $ingredients = array_values($ingredients);
+        $units = array_values($units);
+        $quantities = array_values($quantities);
+
+        for ($i = 0; $i < count($ingredients); $i++) {
             $data = [
                 'recipe_id' => $id,
                 'ingredient_id' => $ingredients[$i],
                 'unit_id' => $units[$i],
                 'quantity' => $quantities[$i]
             ];
-            (new Recipe_IngredientManager())->insert($data);
+
+            if (!empty($data['ingredient_id'])) {
+                (new Recipe_IngredientManager())->insert($data);
+            }
         }
 
-        $this->display('recipe/view', 'Recette', [
+
+        $this->display('recipe/view', $recipe->getTitle(), [
             'id' => $id
         ]);
     }
@@ -161,6 +169,7 @@ class RecipeController extends AbstractController implements ControllerInterface
             $quantities = [];
             $units = [];
 
+
             foreach($updateData as $key => $value) {
                 if (str_contains($key, 'ingredient')) {
                     $ingredientNumber = substr($key, strlen('ingredient'));
@@ -176,18 +185,27 @@ class RecipeController extends AbstractController implements ControllerInterface
                 }
             }
 
+            $ingredients = array_values($ingredients);
+            $units = array_values($units);
+            $quantities = array_values($quantities);
+
+
             $recipeIngredientsManager = new Recipe_IngredientManager();
+
             $recipeIngredientsManager->deleteAllFromRecipe($id);
-
-            for ($i = 1 ;$i < count($ingredients)+1; $i++){
-                $data = [
-                    'recipe_id' => $id,
-                    'ingredient_id' => $ingredients[$i],
-                    'unit_id' => $units[$i],
-                    'quantity' => $quantities[$i]
-                ];
-
-                $recipeIngredientsManager->insert($data);
+            $data = [];
+            for ($i = 0 ;$i < count($ingredients); $i++){
+                if (isset($ingredients[$i])) {
+                    $data = [
+                        'recipe_id' => $id,
+                        'ingredient_id' => $ingredients[$i],
+                        'unit_id' => $units[$i],
+                        'quantity' => $quantities[$i]
+                    ];
+                }
+                if (!empty($data['ingredient_id'])) {
+                    (new Recipe_IngredientManager())->insert($data);
+                }
             }
 
             $this->view($id);
