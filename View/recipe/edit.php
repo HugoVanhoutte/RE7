@@ -1,12 +1,13 @@
 <?php
 
 use App\Controller\RootController;
+use App\Model\Entity\Ingredient;
 use App\Model\Entity\Recipe;
+use App\Model\Entity\Unit;
+use App\Model\Manager\IngredientManager;
 use App\Model\Manager\RecipeManager;
+use App\Model\Manager\UnitManager;
 use App\Model\Manager\UserManager;
-
-?>
-<?php
 
 $recipeManager = new RecipeManager();
 $recipe = $recipeManager->get($params['id']);
@@ -18,15 +19,63 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
     exit;
 } else {
     ?>
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col col-md-8 shadow rounded bg-light text-center">
-                <form action="index.php/recipe?action=validateEdit&id=<?= $recipe->getId() ?>"
+                <form action="/recipe?action=validateEdit&id=<?= $recipe->getId() ?>"
                       method="post" class="needs-validation">
                     <div class="my-2">
                         <label for="title" class="form-label">Titre de la recette</label>
                         <input type="text" maxlength="50" required name="title" id="title"
                                value="<?= $recipe->getTitle() ?>" class="form-control">
+                    </div>
+
+                    <div class="col col-md-8 shadow rounded bg-light text-center" id="ingredients">
+                        <?php
+
+                        $ingredientManager = new IngredientManager();
+                        $unitManager = new UnitManager();
+
+                        $number = 1;
+                        foreach ($ingredientManager->getIngredientsRecipe($recipe->getId()) as $ingredient)
+                        /* @var Ingredient $ingredient */
+                        {
+                            //var_dump($ingredient);
+
+                            //TODO get array of all ingredients from DB
+                            $ingredients = $ingredientManager->getAll();
+                            ?>
+                                <div class="ingredientLine">
+                            <select name="ingredient<?= $number ?>" id="ingredient<?= $number ?>">
+                                <?php
+                                foreach($ingredients as $ingredientEntity){
+                                    /* @var Ingredient $ingredientEntity */
+                                    ?>
+                                    <option <?php if ($ingredient['ingredient_id'] === $ingredientEntity->getId()) {echo "selected";} ?> value="<?= $ingredientEntity->getId() ?>"><?= $ingredientEntity->getName() ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <input type="number" name="quantity<?= $number ?>" id="quantity<?= $number ?>" value="<?= $ingredient['quantity'] ?>">
+                            <select name="unit<?= $number ?>" id="unit<?= $number ?>">
+                                <?php
+                                $units = $unitManager->getAll();
+                                foreach($units as $unit){
+                                    /* @var Unit $unit */
+                                    ?>
+                                    <option <?php if ($ingredient['unit_id'] === $unit->getId()) {echo "selected";} ?> value="<?= $unit->getId() ?>"><?= $unit->getName() ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                                </div>
+                        <?php
+                            $number++;
+                        }
+                        ?>
+
+                        <button id="addIngredientButton" type="button">Ajouter un ingrédient</button>
                     </div>
 
                     <div class="my-2">
@@ -54,6 +103,7 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
             </div>
         </div>
     </div>
+    <script defer src="/assets/addIngredient.js"></script>
     <?php
 }
 ?>

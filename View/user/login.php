@@ -18,6 +18,7 @@
                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}"
                                title="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial."
                                required class="form-control">
+                        <span class="input-group-text"><i class="fa-solid fa-eye passwordVisibility"></i></span>
                     </div>
                     </div>
 
@@ -30,3 +31,4 @@
         </div>
     </div>
 </div>
+<script defer src="/assets/passwordVisibility.js"></script>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Entity\Recipe;
+use App\Model\Manager\Recipe_IngredientManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\UserManager;
 
@@ -82,6 +83,36 @@ class RecipeController extends AbstractController implements ControllerInterface
 
         $id = $recipeManager->insert($recipe);
 
+        //Managing the ingredient/quantity/unit
+        $ingredients = [];
+        $quantities = [];
+        $units = [];
+
+        foreach($data as $key => $value) {
+            if (str_contains($key, 'ingredient')) {
+                $ingredientNumber = substr($key, strlen('ingredient'));
+                $ingredients[$ingredientNumber] = $value;
+            }
+            if (str_contains($key, 'unit')) {
+                $unitNumber = substr($key, strlen('unit'));
+                $units[$unitNumber] = $value;
+            }
+            if (str_contains($key, 'quantity')) {
+                $quantityNumber = substr($key, strlen('quantity'));
+                $quantities[$quantityNumber] = $value;
+            }
+        }
+
+        for ($i = 1 ;$i < count($ingredients)+1; $i++){
+            $data = [
+                'recipe_id' => $id,
+                'ingredient_id' => $ingredients[$i],
+                'unit_id' => $units[$i],
+                'quantity' => $quantities[$i]
+            ];
+            (new Recipe_IngredientManager())->insert($data);
+        }
+
         $this->display('recipe/view', 'Recette', [
             'id' => $id
         ]);
@@ -124,7 +155,43 @@ class RecipeController extends AbstractController implements ControllerInterface
         $recipe = $recipeManager->get($id);
         if($userManager->isAuthor($recipe->getAuthorId())) {
             $recipeManager->update($id, $updateData);
+
+            //Managing the ingredient/quantity/unit
+            $ingredients = [];
+            $quantities = [];
+            $units = [];
+
+            foreach($updateData as $key => $value) {
+                if (str_contains($key, 'ingredient')) {
+                    $ingredientNumber = substr($key, strlen('ingredient'));
+                    $ingredients[$ingredientNumber] = $value;
+                }
+                if (str_contains($key, 'unit')) {
+                    $unitNumber = substr($key, strlen('unit'));
+                    $units[$unitNumber] = $value;
+                }
+                if (str_contains($key, 'quantity')) {
+                    $quantityNumber = substr($key, strlen('quantity'));
+                    $quantities[$quantityNumber] = $value;
+                }
+            }
+
+            $recipeIngredientsManager = new Recipe_IngredientManager();
+            $recipeIngredientsManager->deleteAllFromRecipe($id);
+
+            for ($i = 1 ;$i < count($ingredients)+1; $i++){
+                $data = [
+                    'recipe_id' => $id,
+                    'ingredient_id' => $ingredients[$i],
+                    'unit_id' => $units[$i],
+                    'quantity' => $quantities[$i]
+                ];
+
+                $recipeIngredientsManager->insert($data);
+            }
+
             $this->view($id);
+
         } else {
             $this->displayError(403);
         }

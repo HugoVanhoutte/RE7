@@ -212,11 +212,12 @@ class UserController extends AbstractController implements ControllerInterface
             $newUser = $userManager->get($userManager->getIdFromEmail($newUser->getEmail()));
 
             $id = $newUser->getId();
+            $host = $_SERVER['HTTP_HOST'];
 
             if((new MailUtil())->sendmail([$newUser->getEmail()], '[RE7] Confirmation de votre compte', "
                 <h1>Bienvenue sur RE7</h1>
                 <p>Cliquez sur ce lien pour confirmer votre adresse mail</p>
-                <a href='localhost/RE7/public/index.php/user?action=emailValidation&id=$id&token=$token'>Confirmer mon adresse Mail</a>    
+                <a href='$host/index.php/user?action=emailValidation&id=$id&token=$token'>Confirmer mon adresse Mail</a>    
             ")) {
                 $this->display('home/generic_display', 'Compte créé', [
                     'message' => 'votre compte a été créé, un e-mail de confirmation vous a été envoyé, vous pouvez fermer cette page.'
@@ -403,10 +404,12 @@ class UserController extends AbstractController implements ControllerInterface
         $username = $user->getUsername();
         $token = uniqid("", true);
 
+        $host = $_SERVER['HTTP_HOST'];
+
         $body = "
                 <h1>Bonjour $username</h1>
                 <p>Cliquez sur ce lien pour changer votre mot de passe</p>
-                <a href='localhost/index.php/user?action=newPassword&id=$id&token=$token'>Changer mon mot de passe</a> 
+                <a href='$host/index.php/user?action=newPassword&id=$id&token=$token'>Changer mon mot de passe</a> 
                 <p>Si vous n'êtes pas à l'origine de cette action, ne cliquez pas sur le lien</p>
             ";
 

@@ -8,7 +8,7 @@
     <script src="https://kit.fontawesome.com/9010a17673.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title><?= $pageTitle ?></title>
+    <title>RE7: <?= $pageTitle ?></title>
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">    <!--Navbar-->
@@ -24,18 +24,23 @@
                 <?php
                 if (!empty($_SESSION['user_id'])) {
                     ?>
+                        <li class="nav-item">
+                            <a href="/index.php/ingredient?action=new" title="Ajouter un ingrédient" class="nav-link">Nouvel Ingrédient</a>
+                        </li>
+
                     <li class="nav-item">
                         <a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link">Nouvelle
                             Recette</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link">Déconnexion</a>
-                    </li>
 
                     <li class="nav-item">
                         <a href="/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>"
                            title="Mon profil" class="nav-link">Mon profil</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link">Déconnexion</a>
                     </li>
                     <?php
                 } else {

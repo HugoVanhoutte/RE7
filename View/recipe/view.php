@@ -4,6 +4,7 @@ use App\Model\Entity\Comment;
 use App\Model\Entity\Recipe;
 use App\Model\Entity\User;
 use App\Model\Manager\CommentManager;
+use App\Model\Manager\IngredientManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\UserManager;
 
@@ -42,13 +43,10 @@ use App\Model\Manager\UserManager;
             <h2>Temps de cuisson: <?= $recipe->getCookingTimeMinutes() ?> minutes</h2>
         </div>
 
-        <!--
-        TESTS
-        -->
         <h2>Ingrédients: </h2>
         <?php
 
-        $ingredientManager = new \App\Model\Manager\IngredientManager();
+        $ingredientManager = new IngredientManager();
 
         foreach ($ingredientManager->getIngredientsRecipe($recipe->getId()) as $ingredient)
         {
@@ -56,17 +54,11 @@ use App\Model\Manager\UserManager;
             $unit_name = $ingredient['unit_name'];
             $name = $ingredient['name'];
 
-            //TODO Traitement des pluriels et des apostrophes
-
             echo "$quantity $unit_name(s) de $name <br>";
         }
 
         ?>
 
-
-        <!--
-        FIN DU TEST
-        -->
         <h2>Recette: </h2>
         <p><?= nl2br(htmlspecialchars_decode($recipe->getContent())) ?></p>
 

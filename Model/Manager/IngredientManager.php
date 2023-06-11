@@ -61,8 +61,9 @@ class IngredientManager extends AbstractManager implements ManagerInterface
     public function update(int $id, array $updateData = []): bool
     {
         $ingredient = $this->get($id);
+        /* @var Ingredient $ingredient */
 
-        $name = $this->sanitize($updateData['name']) ?? $ingredient->getContent();
+        $name = $this->sanitize($updateData['name']) ?? $ingredient->getName();
 
         $sql = "UPDATE ingredients SET name = :name WHERE id = :id";
         $stmt = DB::getInstance()->prepare($sql);
@@ -71,14 +72,14 @@ class IngredientManager extends AbstractManager implements ManagerInterface
         return $stmt->execute();
     }
 
-    public function insert($name): int
+    public function insert(string $name): int
     {
         $sql = "INSERT INTO ingredients (name)
                 VALUES (:name)";
         $pdo = DB::getInstance();
         $stmt = $pdo->prepare($sql);
 
-        $name = $this->sanitize($name->getContent());
+        $name = $this->sanitize($name);
 
         $stmt->bindParam(':name',$name);
 
@@ -86,13 +87,11 @@ class IngredientManager extends AbstractManager implements ManagerInterface
 
         return $pdo->lastInsertId();
     }
-
-
-    //TODO a revoir
     public function getIngredientsRecipe(int $recipe_id): array
     {
-        $sql = "SELECT ingredients.name, units.name as unit_name, recipe_ingredients.quantity
+        $sql = "SELECT  ingredients.id as ingredient_id, ingredients.name, units.id as unit_id, units.name as unit_name, recipe_ingredients.quantity
     FROM recipe_ingredients
+        
     JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
     JOIN units ON recipe_ingredients.unit_id = units.id
     WHERE recipe_ingredients.recipe_id = :id";

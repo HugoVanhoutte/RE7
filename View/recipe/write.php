@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="my-2" id="ingredients">
-
+                        <!-- Ingredient select created from JS -->
                     </div>
 
                     <div>
