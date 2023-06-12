@@ -7,9 +7,7 @@ $data = (new IngredientManager())->getAll();
 
 $array = [];
 
-foreach ($data as $ingredientObject)
-    /* @var Ingredient $ingredientObject */
-{
+foreach ($data as $ingredientObject) /* @var Ingredient $ingredientObject */ {
     $array[] = [
         'id' => $ingredientObject->getId(),
         'name' => $ingredientObject->getName()

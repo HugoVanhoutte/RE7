@@ -51,6 +51,12 @@ class RecipeController extends AbstractController implements ControllerInterface
                 break;
             }
 
+            case 'getAll' :
+            {
+                $this->getAll();
+                break;
+            }
+
             default:
             {
                 (new RootController())->index();
@@ -74,11 +80,11 @@ class RecipeController extends AbstractController implements ControllerInterface
     private function validateWrite($data):void {
         $recipeManager = new RecipeManager();
         $recipe = (new Recipe())
-            ->setTitle($recipeManager->sanitize($data['title']))
-            ->setContent($recipeManager->sanitize($data['content']))
-            ->setPreparationTimeMinutes($recipeManager->sanitize($data['preparation_time_minutes']))
-            ->setCookingTimeMinutes($recipeManager->sanitize($data['cooking_time_minutes']))
-            ->setAuthorId($recipeManager->sanitize($_SESSION['user_id']))
+            ->setTitle($data['title'])
+            ->setContent($data['content'])
+            ->setPreparationTimeMinutes($data['preparation_time_minutes'])
+            ->setCookingTimeMinutes($data['cooking_time_minutes'])
+            ->setAuthorId($_SESSION['user_id'])
             ;
 
         $id = $recipeManager->insert($recipe);
@@ -229,5 +235,10 @@ class RecipeController extends AbstractController implements ControllerInterface
         } else {
             $this->displayError(403);
         }
+    }
+
+    private function getAll()
+    {
+        $this->getJson("getAllRecipes");
     }
 }

@@ -7,16 +7,17 @@ use App\Model\DB;
 class Recipe_IngredientManager extends AbstractManager
 {
 
-    public function getFromRecipe(int $recipe_id)
+    public function getFromRecipe(int $recipeId): array
     {
-        $sql = "SELECT  ingredients.id as ingredient_id, ingredients.name, units.id as unit_id, units.name as unit_name, recipe_ingredients.quantity
+        $sql = "SELECT ingredients.id as ingredient_id, ingredients.name, units.id as unit_id, units.name as unit_name, recipe_ingredients.quantity
     FROM recipe_ingredients
         
     JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
     JOIN units ON recipe_ingredients.unit_id = units.id
-    WHERE recipe_ingredients.recipe_id = :id";
+    WHERE recipe_ingredients.recipe_id = :recipe_id";
+
         $stmt = DB::getInstance()->prepare($sql);
-        $stmt->bindParam(':id', $recipe_id);
+        $stmt->bindParam(':recipe_id', $recipeId);
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -31,7 +32,8 @@ class Recipe_IngredientManager extends AbstractManager
         return $stmt->execute();
     }
 
-    public function insert(array $data): int {
+    public function insert(array $data): int
+    {
         $sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id, unit_id, quantity) 
                 VALUES (:recipe_id, :ingredient_id, :unit_id, :quantity)";
         $pdo = DB::getInstance();
