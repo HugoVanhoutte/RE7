@@ -25,6 +25,10 @@
                 if (!empty($_SESSION['user_id'])) {
                     ?>
                         <li class="nav-item">
+                            <a href="/index.php/menu?action=new" title="Créer un menu" class="nav-link">Nouveau Menu</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="/index.php/ingredient?action=new" title="Ajouter un ingrédient" class="nav-link">Nouvel Ingrédient</a>
                         </li>
 

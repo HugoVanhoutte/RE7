@@ -93,4 +93,32 @@ class MenuManager extends AbstractManager implements ManagerInterface
 
         return $pdo->lastInsertId();
     }
+
+    public function getMenusByAuthorId(int $authorId): array
+    {
+        $sql = "SELECT * FROM menus WHERE author_id = :author_id";
+        $stmt = DB::getInstance()->prepare($sql);
+        $stmt->bindParam(':author_id', $authorId);
+        $stmt->execute();
+        $data = $stmt->fetchAll();
+        $menus = [];
+        foreach ($data as $menuData) {
+            $menus[] = (new Menu())
+                ->setId($menuData['id'])
+                ->setName($menuData['name'])
+                ->setAuthorId($menuData['author_id'])
+                ;
+        }
+
+        return $menus;
+    }
+
+    public function getNumberMenusPerUser($userId): int
+    { $sql = "SELECT count(*) AS number FROM menus WHERE author_id = :author_id";
+        $stmt = DB::getInstance()->prepare($sql);
+        $stmt->bindParam(':author_id', $userId);
+        $stmt->execute();
+
+        return $stmt->fetch()['number'];
+    }
 }

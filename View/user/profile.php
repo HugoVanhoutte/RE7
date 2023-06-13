@@ -1,8 +1,10 @@
 <?php
 
 use App\Model\Entity\Comment;
+use App\Model\Entity\Menu;
 use App\Model\Entity\Recipe;
 use App\Model\Manager\CommentManager;
+use App\Model\Manager\MenuManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\RoleManager;
 use App\Model\Entity\User;
@@ -81,6 +83,45 @@ $recipeManager = new RecipeManager();
         ?>
     </div>
 </section>
+
+    <?php
+    $menuManager = new MenuManager();
+    ?>
+    <h2>Liste des menus de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $menuManager->getNumberMenusPerUser($user->getId()) ?></span></h2>
+    <section class="container">
+        <div class="row align-items-center justify-content-center">
+            <?php
+                $menus = $menuManager->getMenusByAuthorId($user->getId());
+            if (empty($menus)) {
+            ?>
+            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
+            <?php
+        }
+            foreach ($menus as $menu) {
+                /* @var Menu $menu */
+                ?>
+                <div class="col-12 col-md-5 col-md-5 col-lg-4 col-xl-3">
+                    <div class="card bg-light rounded shadow m-2 text-center border-0">
+                        <a href="/index.php/menu?action=view&id=<?= $menu->getId() ?>"
+                           class="card-title display-6 text-decoration-none"><?= $menu->getName() ?></a>
+                        <?php
+                        if ($userManager->isRemovable($user->getId())) {
+                            ?>
+                            <a href="/index.php/menu?action=delete&id=<?= $menu->getId() ?>"
+                               title="Supprimer" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+    </section>
+
+
+
 <?php
 $commentManager = new CommentManager();
 ?>

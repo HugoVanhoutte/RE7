@@ -20,6 +20,11 @@ addRecipeButton.addEventListener("click", function () {
 
             let newDeleteButton = document.createElement("button");
             newDeleteButton.type = "button";
+            newDeleteButton.innerHTML = "Supprimer"
+
+            newDeleteButton.addEventListener('click', function () {
+                newRecipeLine.remove();
+            })
 
 
             newRecipeLine.appendChild(newDeleteButton);

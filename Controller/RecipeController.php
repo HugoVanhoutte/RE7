@@ -229,7 +229,7 @@ class RecipeController extends AbstractController implements ControllerInterface
     {
         $recipeManager = new RecipeManager();
         $recipe = $recipeManager->get($id);
-        if((new UserManager())->isAuthor($recipe->getAuthorId())) {
+        if((new UserManager())->isRemovable($recipe->getAuthorId())) {
             $recipeManager->delete($id);
             (new RootController())->index();
         } else {

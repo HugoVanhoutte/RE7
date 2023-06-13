@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Entity\Menu;
 use App\Model\Manager\Menu_RecipeManager;
 use App\Model\Manager\MenuManager;
+use App\Model\Manager\UserManager;
 
 class MenuController extends AbstractController implements ControllerInterface
 {
@@ -31,6 +32,12 @@ class MenuController extends AbstractController implements ControllerInterface
             case 'view' :
             {
                 $this->view($params['id']);
+                break;
+            }
+
+            case 'delete' :
+            {
+                $this->delete($params['id']);
                 break;
             }
 
@@ -98,5 +105,17 @@ class MenuController extends AbstractController implements ControllerInterface
         $this->display('menu/view', $menu->getName(), [
             'id' => $id
         ]);
+    }
+
+    private function delete($id):void
+    {
+        $menuManager = new MenuManager();
+        $menu = $menuManager->get($id);
+        if ((new UserManager())->isRemovable($menu->getAuthorId())) {
+            $menuManager->delete($id);
+            (new RootController())->index();
+        } else {
+            $this->displayError(403);
+        }
     }
 }
