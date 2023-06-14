@@ -33,8 +33,10 @@ if ($userManager->isRemovable($author->getId())) {
 <div class="row">
 <?php
 foreach ($menu_RecipeManager->getFromMenu($menu->getId()) as $recipe)
+//Displays each recipe as a card
 {
 $recipe = $recipeManager->get($recipe['recipe_id']);
+/* @var Recipe $recipe */
 ?>
 <div class="col-12 col-md-5 col-lg-4 col-xl-3">
     <div class="card bg-light rounded shadow m-2 text-center border-0">
@@ -43,13 +45,15 @@ $recipe = $recipeManager->get($recipe['recipe_id']);
         <p class="text-muted fst-italic">
             le <?= $recipeManager->getTimeFR($recipe->getCreationDateTime()) ?></p>
         <?php
-        if ($userManager->isAuthor($author->getId())) {
+        //Get recipes authors: enable or not edition and removing capabilities
+        $recipeAuthor = $userManager->get($recipe->getAuthorId());
+        if ($userManager->isAuthor($recipeAuthor->getId())) {
             ?>
             <a href="/index.php/recipe?action=edit&id=<?= $recipe->getId() ?>"
                title="&Eacute;diter" class="btn btn-outline-primary"><i class="fa-solid fa-pen"></i></a>
             <?php
         }
-        if ($userManager->isRemovable($author->getId())) {
+        if ($userManager->isRemovable($recipeAuthor->getId())) {
             ?>
             <a href="/index.php/recipe?action=delete&id=<?= $recipe->getId() ?>"
                title="Supprimer" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>

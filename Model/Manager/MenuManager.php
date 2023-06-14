@@ -24,8 +24,7 @@ class MenuManager extends AbstractManager implements ManagerInterface
             $menus[] = (new Menu())
                 ->setId($menuData['id'])
                 ->setName($menuData['name'])
-                ->setAuthorId($menuData['author_id'])
-                ;
+                ->setAuthorId($menuData['author_id']);
         }
         return $menus;
     }
@@ -43,8 +42,7 @@ class MenuManager extends AbstractManager implements ManagerInterface
         return (new Menu())
             ->setId($data['id'])
             ->setName($data['name'])
-            ->setAuthorId($data['author_id'])
-            ;
+            ->setAuthorId($data['author_id']);
     }
 
     /**
@@ -76,6 +74,11 @@ class MenuManager extends AbstractManager implements ManagerInterface
         return $stmt->execute();
     }
 
+    /**
+     * inserts a new menu into DB
+     * @param Menu $menu
+     * @return int
+     */
     public function insert(Menu $menu): int
     {
         $sql = "INSERT INTO menus (name, author_id)
@@ -94,6 +97,11 @@ class MenuManager extends AbstractManager implements ManagerInterface
         return $pdo->lastInsertId();
     }
 
+    /**
+     * get All menus created by a user
+     * @param int $authorId
+     * @return array
+     */
     public function getMenusByAuthorId(int $authorId): array
     {
         $sql = "SELECT * FROM menus WHERE author_id = :author_id";
@@ -106,15 +114,20 @@ class MenuManager extends AbstractManager implements ManagerInterface
             $menus[] = (new Menu())
                 ->setId($menuData['id'])
                 ->setName($menuData['name'])
-                ->setAuthorId($menuData['author_id'])
-                ;
+                ->setAuthorId($menuData['author_id']);
         }
 
         return $menus;
     }
 
+    /**
+     * gets number of menus created by a user
+     * @param $userId
+     * @return int
+     */
     public function getNumberMenusPerUser($userId): int
-    { $sql = "SELECT count(*) AS number FROM menus WHERE author_id = :author_id";
+    {
+        $sql = "SELECT count(*) AS number FROM menus WHERE author_id = :author_id";
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':author_id', $userId);
         $stmt->execute();

@@ -12,8 +12,7 @@ class UnitController extends AbstractController implements ControllerInterface
      */
     public function index(array $params = []): void
     {
-        switch ($params['action'])
-        {
+        switch ($params['action']) {
             case 'getAll':
             {
                 $this->getAll();
@@ -40,15 +39,23 @@ class UnitController extends AbstractController implements ControllerInterface
         }
     }
 
+    /**
+     * generates a JSON containing all units from DB
+     * @return void
+     */
     private function getAll(): void
     {
         $this->getJson("getAllUnits");
     }
 
+    /**
+     * redirects to unit creation page if user is authorised
+     * @return void
+     */
     private function new(): void
     {
-        if (isset($_SESSION['user_id'])){
-        $this->display("unit/new", "Nouvelle Unité");
+        if (isset($_SESSION['user_id'])) {
+            $this->display("unit/new", "Nouvelle Unité");
         } else {
             $this->display("user/login", "Connexion", [
                 "error" => "Afin d'ajouter une nouvelle unité, vous devez être connecté"
@@ -57,6 +64,11 @@ class UnitController extends AbstractController implements ControllerInterface
 
     }
 
+    /**
+     * validate and insert newly created unit
+     * @param $data
+     * @return void
+     */
     private function validateNew($data): void
     {
         (new UnitManager())->insert($data['name']);

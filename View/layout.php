@@ -22,6 +22,7 @@
         <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
             <ul class="navbar-nav">
                 <?php
+                //Links to display to a guest
                 if (!empty($_SESSION['user_id'])) {
                     ?>
                         <li class="nav-item">
@@ -52,6 +53,7 @@
                     </li>
                     <?php
                 } else {
+                    //Links to display to an authenticated user
                     ?>
                     <li class="nav-item">
                         <a href="/index.php/user?action=register" title="Créer un compte" class="nav-link">Créer un
@@ -82,7 +84,7 @@ if (isset($params['message'])) {
 
 <?= $pageContent ?>
 
-<footer class="bg-dark text-light mt-5 container-fluid"> <!-- TODO -->
+<footer class="bg-dark text-light mt-5 container-fluid">
     <div class="row">
         <div class="col text-start">
             <ul class="list-unstyled">

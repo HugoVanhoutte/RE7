@@ -1,5 +1,7 @@
 <?php
 
+
+//File used for token/user deletion made automatically with a cron job
 use App\Model\DB;
 
 $sql = "DELETE FROM users WHERE token IS NOT NULL and role_id = 6 AND registration_date_time <= NOW() - INTERVAL 1 DAY";

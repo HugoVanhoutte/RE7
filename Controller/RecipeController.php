@@ -9,14 +9,14 @@ use App\Model\Manager\UserManager;
 
 class RecipeController extends AbstractController implements ControllerInterface
 {
-
     /**
      * @inheritDoc
      */
     public function index(array $params = []): void
     {
         switch ($params['action']) {
-            case 'write' : {
+            case 'write' :
+            {
                 $this->write();
                 break;
             }
@@ -66,34 +66,48 @@ class RecipeController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * redirects to recipe creation page if user authenticated, else: sends to login page with error message
      * @return void
      */
-    private function write():void
+    private function write(): void
     {
-        $this->display('recipe/write','Nouvelle recette');
+        if ($_SESSION['user_id']) {
+            $this->display('recipe/write', 'Nouvelle recette');
+        } else {
+            $this->display('user/login', 'Connexion', [
+                'error' => 'Vous devez être connecté pour écrire une recette'
+            ]);
+        }
     }
 
     /**
+     * validates new recipe and insert recipe and ingredients to DB
      * @param $data
      * @return void
      */
-    private function validateWrite($data):void {
+    private function validateWrite($data): void
+    {
+        //Instantiate a recipe manager, creates a new recipe object and gives it all dta needed
         $recipeManager = new RecipeManager();
         $recipe = (new Recipe())
             ->setTitle($data['title'])
             ->setContent($data['content'])
             ->setPreparationTimeMinutes($data['preparation_time_minutes'])
             ->setCookingTimeMinutes($data['cooking_time_minutes'])
-            ->setAuthorId($_SESSION['user_id'])
-            ;
+            ->setAuthorId($_SESSION['user_id']);
 
+        //Insert the recipe and gets newly added recipe id
         $id = $recipeManager->insert($recipe);
 
-        // Managing the ingredient/quantity/unit
+        /**
+         * creates empty arrays for the ingredients, their associated units and quantities, as specified by user and
+         * passed through Post method
+         **/
         $ingredients = [];
         $quantities = [];
         $units = [];
 
+        // gets every ingredients, units and quantities to add them to their respectives arrays
         foreach ($data as $key => $value) {
             if (str_contains($key, 'ingredient')) {
                 $ingredientNumber = substr($key, strlen('ingredient'));
@@ -109,10 +123,12 @@ class RecipeController extends AbstractController implements ControllerInterface
             }
         }
 
+        //Using array_values() to delete empty entries (avoid errors with missing keys)
         $ingredients = array_values($ingredients);
         $units = array_values($units);
         $quantities = array_values($quantities);
 
+        //generates array with correctly formated data to insert into DB
         for ($i = 0; $i < count($ingredients); $i++) {
             $data = [
                 'recipe_id' => $id,
@@ -126,37 +142,46 @@ class RecipeController extends AbstractController implements ControllerInterface
             }
         }
 
-
+//Redirects to the newly created recipe
         $this->display('recipe/view', $recipe->getTitle(), [
             'id' => $id
         ]);
     }
 
     /**
+     * redirects to a recipe page, if the recipe does bot exist: redirects to 404
      * @param $id
      * @return void
      */
     private function view($id): void
     {
         $recipe = (new RecipeManager())->get($id);
-        if (is_null($recipe)){
+        if (is_null($recipe)) {
             $this->displayError(404);
             exit;
         }
-
         $this->display('recipe/view', $recipe->getTitle(), ['id' => $id]);
     }
 
     /**
+     * redirects to edit page if user is authorised
      * @param $id
      * @return void
      */
-    private function edit($id):void
+    private function edit($id): void
     {
-        $this->display('recipe/edit', 'Edition', ['id'=>$id]);
+        $userManager = new UserManager();
+        $recipe = (new RecipeManager())->get($id);
+        /* @var Recipe $recipe */
+        if (!$userManager->isAuthor($recipe->getAuthorId())) {
+            $this->displayError(403);
+        } else {
+            $this->display('recipe/edit', 'Edition', ['id' => $id]);
+        }
     }
 
     /**
+     * validates and updates a recipe, and the recipe_ingredients (almost identical to creation of a new recipe)
      * @param $updateData
      * @param $id
      * @return void
@@ -167,7 +192,7 @@ class RecipeController extends AbstractController implements ControllerInterface
         $userManager = new UserManager();
 
         $recipe = $recipeManager->get($id);
-        if($userManager->isAuthor($recipe->getAuthorId())) {
+        if ($userManager->isAuthor($recipe->getAuthorId())) {
             $recipeManager->update($id, $updateData);
 
             //Managing the ingredient/quantity/unit
@@ -176,7 +201,7 @@ class RecipeController extends AbstractController implements ControllerInterface
             $units = [];
 
 
-            foreach($updateData as $key => $value) {
+            foreach ($updateData as $key => $value) {
                 if (str_contains($key, 'ingredient')) {
                     $ingredientNumber = substr($key, strlen('ingredient'));
                     $ingredients[$ingredientNumber] = $value;
@@ -200,7 +225,7 @@ class RecipeController extends AbstractController implements ControllerInterface
 
             $recipeIngredientsManager->deleteAllFromRecipe($id);
             $data = [];
-            for ($i = 0 ;$i < count($ingredients); $i++){
+            for ($i = 0; $i < count($ingredients); $i++) {
                 if (isset($ingredients[$i])) {
                     $data = [
                         'recipe_id' => $id,
@@ -222,6 +247,7 @@ class RecipeController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * deletes a recipe if user is authorised
      * @param $id
      * @return void
      */
@@ -229,7 +255,7 @@ class RecipeController extends AbstractController implements ControllerInterface
     {
         $recipeManager = new RecipeManager();
         $recipe = $recipeManager->get($id);
-        if((new UserManager())->isRemovable($recipe->getAuthorId())) {
+        if ((new UserManager())->isRemovable($recipe->getAuthorId())) {
             $recipeManager->delete($id);
             (new RootController())->index();
         } else {
@@ -237,7 +263,12 @@ class RecipeController extends AbstractController implements ControllerInterface
         }
     }
 
-    private function getAll()
+
+    /**
+     * @return void
+     * generates a JSON containing all recipes in DB
+     */
+    private function getAll(): void
     {
         $this->getJson("getAllRecipes");
     }

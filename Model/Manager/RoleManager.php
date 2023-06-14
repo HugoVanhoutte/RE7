@@ -6,6 +6,11 @@ use App\Model\DB;
 
 class RoleManager
 {
+    /**
+     * gets role name based on ID
+     * @param $role_id
+     * @return string
+     */
     public function getRole($role_id): string
     {
         $sql = "SELECT * FROM roles WHERE id = :id";

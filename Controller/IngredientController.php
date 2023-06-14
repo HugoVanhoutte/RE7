@@ -8,18 +8,16 @@ use App\Model\Manager\IngredientManager;
 
 class IngredientController extends AbstractController implements ControllerInterface
 {
-
     /**
      * @inheritDoc
      */
     public function index(array $params = []): void
     {
-        switch ($params['action'])
-        {
+        switch ($params['action']) {
             case 'getAll' :
             {
-            $this->getAllAsJSON();
-            break;
+                $this->getAllAsJSON();
+                break;
             }
 
             case 'new' :
@@ -40,13 +38,21 @@ class IngredientController extends AbstractController implements ControllerInter
         }
     }
 
-    private function getAllAsJSON()
+    /**
+     * gets all ingredients from DB as a json for treatment in front
+     * @return void
+     */
+    private function getAllAsJSON(): void
     {
         $this->getJson("getAllIngredients");
 
     }
 
-    private function new()
+    /**
+     * displays ingredient creation page if user is authenticated, if not: sends to login page with error message
+     * @return void
+     */
+    private function new(): void
     {
         if (isset($_SESSION['user_id'])) {
             $this->display("ingredient/new", "Ajouter un ingrédient");
@@ -57,7 +63,12 @@ class IngredientController extends AbstractController implements ControllerInter
         }
     }
 
-    private function validateNew($data)
+    /**
+     * validates and insert the newly created ingredient to the database by invoking insert() from manager
+     * @param $data
+     * @return void
+     */
+    private function validateNew($data): void
     {
         (new IngredientManager())->insert(strtolower($data['name']));
         $this->display("home/index", "Homepage", [

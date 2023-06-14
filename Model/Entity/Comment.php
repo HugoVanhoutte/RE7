@@ -4,8 +4,11 @@ namespace App\Model\Entity;
 
 class Comment extends AbstractPost
 {
+    /**Properties******************************************************************************************************/
     private int $recipe_id;
 
+
+    /**Getters And Setters*********************************************************************************************/
     /**
      * @return int
      */

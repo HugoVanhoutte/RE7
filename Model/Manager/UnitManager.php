@@ -17,12 +17,10 @@ class UnitManager extends AbstractManager implements ManagerInterface
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->execute();
         $units = [];
-        foreach ($stmt->fetchAll() as $unitData)
-        {
+        foreach ($stmt->fetchAll() as $unitData) {
             $units[] = (new Unit())
                 ->setId($unitData['id'])
-                ->setName($unitData['name'])
-                ;
+                ->setName($unitData['name']);
         }
         return $units;
     }
@@ -39,8 +37,7 @@ class UnitManager extends AbstractManager implements ManagerInterface
         $data = $stmt->fetch();
         return (new Unit())
             ->setId($data['id'])
-            ->setName($data['name'])
-            ;
+            ->setName($data['name']);
     }
 
     /**
@@ -67,9 +64,14 @@ class UnitManager extends AbstractManager implements ManagerInterface
         $stmt->bindParam(":id", $id);
         $stmt->bindParam(":name", $name);
 
-        return $stmt-> execute();
+        return $stmt->execute();
     }
 
+    /**
+     * Inserts a new unit in DB
+     * @param string $name
+     * @return int
+     */
     public function insert(string $name): int
     {
         $sql = "INSERT INTO units (name)

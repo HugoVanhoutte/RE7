@@ -6,6 +6,7 @@ use App\Model\Entity\Unit;
 use App\Model\Manager\IngredientManager;
 use App\Model\Manager\UnitManager;
 
+//Checks if user is authenticated, if not send him to error page, since the check is made in the controller already
 if (!isset($_SESSION['user_id'])) {
     (new RootController())->displayError(403);
 } else {

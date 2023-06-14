@@ -2,6 +2,7 @@
 
 use App\Model\Entity\Recipe;
 use App\Model\Manager\RecipeManager;
+//Generates a JSON file containing All Recipes in DB
 
 $data = (new RecipeManager())->getAll();
 

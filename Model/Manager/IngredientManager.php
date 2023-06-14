@@ -21,8 +21,7 @@ class IngredientManager extends AbstractManager implements ManagerInterface
         foreach ($data as $ingredientData) {
             $ingredients[] = (new Ingredient())
                 ->setId($ingredientData['id'])
-                ->setName($ingredientData['name'])
-            ;
+                ->setName($ingredientData['name']);
         }
 
         return $ingredients;
@@ -40,8 +39,7 @@ class IngredientManager extends AbstractManager implements ManagerInterface
         $data = $stmt->fetch();
         return (new Ingredient)
             ->setId($data['id'])
-            ->setName($data['name'])
-            ;
+            ->setName($data['name']);
     }
 
     /**
@@ -72,6 +70,11 @@ class IngredientManager extends AbstractManager implements ManagerInterface
         return $stmt->execute();
     }
 
+    /**
+     * inserts a ingredient in DB
+     * @param string $name
+     * @return int
+     */
     public function insert(string $name): int
     {
         $sql = "INSERT INTO ingredients (name)
@@ -81,7 +84,7 @@ class IngredientManager extends AbstractManager implements ManagerInterface
 
         $name = $this->sanitize($name);
 
-        $stmt->bindParam(':name',$name);
+        $stmt->bindParam(':name', $name);
 
         $stmt->execute();
 

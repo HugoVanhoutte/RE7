@@ -15,7 +15,6 @@ class User
     private ?string $token;
 
 
-
     /**Getters And Setters*********************************************************************************************/
     /**
      * @return int

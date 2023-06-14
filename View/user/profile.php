@@ -17,7 +17,7 @@ $userManager = new UserManager();
 ?>
 <div class="container">
     <?php
-    if ($userManager->isAuthor($user->getId())) //Checks if user is authenticated (prevent error message) and check if he is admin or user
+    if ($userManager->isAuthor($user->getId())) //Checks user authorisations
     {
         ?>
         <a href="/index.php/user?action=edit&id=<?= $user->getId() ?>" title="&Eacute;diter mon profil"
@@ -42,6 +42,7 @@ $userManager = new UserManager();
 <?php
 $recipeManager = new RecipeManager();
 ?>
+    <!--Recipes List-->
 <h2>Liste des recettes de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $recipeManager->getNumberRecipePerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
@@ -87,6 +88,7 @@ $recipeManager = new RecipeManager();
     <?php
     $menuManager = new MenuManager();
     ?>
+    <!--Menus List-->
     <h2>Liste des menus de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $menuManager->getNumberMenusPerUser($user->getId()) ?></span></h2>
     <section class="container">
         <div class="row align-items-center justify-content-center">
@@ -125,6 +127,7 @@ $recipeManager = new RecipeManager();
 <?php
 $commentManager = new CommentManager();
 ?>
+    <!--Comment List-->
 <h2>Liste des commentaires de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $commentManager->getNumberCommentsPerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">

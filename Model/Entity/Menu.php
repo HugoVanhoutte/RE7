@@ -4,10 +4,13 @@ namespace App\Model\Entity;
 
 class Menu
 {
+    /**Properties******************************************************************************************************/
     private int $id;
     private string $name;
     private int $author_id;
 
+
+    /**Getters And Setters*********************************************************************************************/
     /**
      * @return int
      */

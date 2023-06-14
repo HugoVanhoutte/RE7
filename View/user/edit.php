@@ -3,6 +3,7 @@
 use App\Controller\RootController;
 use App\Model\Manager\UserManager;
 
+//Checks if user authorised
 $userManager = new UserManager();
 
 if (isset($_SESSION['user_id']) && $userManager->isAuthor($params['id'])) {

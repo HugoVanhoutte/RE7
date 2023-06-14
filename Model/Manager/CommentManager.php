@@ -13,7 +13,7 @@ class CommentManager extends AbstractManager implements ManagerInterface
      */
     public function getAll(): array
     {
-        $sql="SELECT * FROM comments";
+        $sql = "SELECT * FROM comments";
         $stmt = DB::getInstance()->prepare($sql);
 
         $stmt->execute();
@@ -21,14 +21,13 @@ class CommentManager extends AbstractManager implements ManagerInterface
 
         $comments = [];
 
-        foreach($data as $commentData) {
+        foreach ($data as $commentData) {
             $comments[] = (new Comment())
                 ->setId($commentData['id'])
                 ->setContent($commentData['content'])
                 ->setAuthorId($commentData['author_id'])
                 ->setCreationDateTime($commentData['creation_date_time'])
-                ->setRecipeId($commentData['recipe_id'])
-                ;
+                ->setRecipeId($commentData['recipe_id']);
         }
         return $comments;
     }
@@ -42,14 +41,13 @@ class CommentManager extends AbstractManager implements ManagerInterface
         $stmt = DB::getInstance()->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        if($data = $stmt->fetch()) {
+        if ($data = $stmt->fetch()) {
             return (new Comment())
                 ->setId($data['id'])
                 ->setContent($data['content'])
                 ->setAuthorId($data['author_id'])
                 ->setCreationDateTime($data['creation_date_time'])
-                ->setRecipeId($data['recipe_id'])
-                ;
+                ->setRecipeId($data['recipe_id']);
         } else {
             return null;
         }
@@ -85,6 +83,7 @@ class CommentManager extends AbstractManager implements ManagerInterface
     }
 
     /**
+     * insert a new Comment in DB: from a Comment Entity
      * @param Comment $comment
      * returns the newly inserted ID
      * @return int
@@ -100,15 +99,20 @@ class CommentManager extends AbstractManager implements ManagerInterface
         $authorId = $comment->getAuthorId();
         $recipeId = $comment->getRecipeId();
 
-        $stmt->bindParam(':content',$content);
-        $stmt->bindParam(':author_id',$authorId);
-        $stmt->bindParam(':recipe_id',$recipeId);
+        $stmt->bindParam(':content', $content);
+        $stmt->bindParam(':author_id', $authorId);
+        $stmt->bindParam(':recipe_id', $recipeId);
 
         $stmt->execute();
 
         return $pdo->lastInsertId();
     }
 
+    /**
+     * Gets all comments as entities based on their author ID
+     * @param $authorId
+     * @return array
+     */
     public function getCommentsByAuthorId($authorId): array
     {
         $sql = "SELECT * FROM comments WHERE author_id = :author_id";
@@ -118,19 +122,23 @@ class CommentManager extends AbstractManager implements ManagerInterface
 
         $comments = [];
         $data = $stmt->fetchAll();
-        foreach($data as $commentData) {
+        foreach ($data as $commentData) {
             $comments[] = (new Comment())
                 ->setId($commentData['id'])
                 ->setContent($commentData['content'])
                 ->setAuthorId($commentData['author_id'])
                 ->setCreationDateTime($commentData['creation_date_time'])
-                ->setRecipeId($commentData['recipe_id'])
-                ;
+                ->setRecipeId($commentData['recipe_id']);
         }
 
         return $comments;
     }
 
+    /**
+     * Gets all comments made on a recipe
+     * @param $recipeId
+     * @return array
+     */
     public function getCommentsByRecipeId($recipeId): array
     {
 
@@ -141,19 +149,23 @@ class CommentManager extends AbstractManager implements ManagerInterface
 
         $comments = [];
         $data = $stmt->fetchAll();
-        foreach($data as $commentData) {
+        foreach ($data as $commentData) {
             $comments[] = (new Comment())
                 ->setId($commentData['id'])
                 ->setContent($commentData['content'])
                 ->setAuthorId($commentData['author_id'])
                 ->setCreationDateTime($commentData['creation_date_time'])
-                ->setRecipeId($commentData['recipe_id'])
-            ;
+                ->setRecipeId($commentData['recipe_id']);
         }
 
         return $comments;
     }
 
+    /**
+     * gets the number of comments a recipe has
+     * @param int $recipeId
+     * @return int
+     */
     public function getNumberCommentPerRecipe(int $recipeId): int
     {
         $sql = "SELECT count(*) AS number FROM comments WHERE recipe_id = :recipe_id";
@@ -164,6 +176,11 @@ class CommentManager extends AbstractManager implements ManagerInterface
         return $stmt->fetch()['number'];
     }
 
+    /**
+     * get the number of comments a user has written
+     * @param int $userId
+     * @return int
+     */
     public function getNumberCommentsPerUser(int $userId): int
     {
         $sql = "SELECT count(*) AS number FROM comments WHERE author_id = :author_id";

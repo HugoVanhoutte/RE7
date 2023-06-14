@@ -8,7 +8,7 @@ use App\Model\Manager\UserManager;
 ?>
 <div class="container">
     <?php
-
+//Checks if user is authenticated, if he is: get his infos from DB, else: set his username to "guest"
     if (isset($_SESSION['user_id'])) {
         $user = (new UserManager())->get($_SESSION['user_id']);
     } else {
@@ -27,7 +27,8 @@ use App\Model\Manager\UserManager;
     <section class="container">
         <div class="row align-items-center justify-content-center">
             <?php
-            foreach ((new RecipeManager())->get3MostRecent() as $recipe) {
+            //Gets 3 most recent recipes to display on homepage: TODO Change for X most liked recipes when likes implemented
+            foreach ((new RecipeManager())->getXMostRecent(3) as $recipe) {
                 /* @var Recipe $recipe */
                 $author = (new UserManager)->get($recipe->getAuthorId());
                 ?>

@@ -1,14 +1,15 @@
 <?php
 
+use App\Controller\RootController;
 use App\Model\Manager\UserManager;
 
 $userManager = new UserManager();
 $user = $userManager->get($params['id']);
-
-/*if ($params['token'] !== $user->getToken()) { //Token are different, sends user to 403
+//TODO re validate this view
+if ($params['token'] !== $user->getToken()) { //Token are different, sends user to 403
     echo "test";
     (new RootController())->display('user/login', 'Login');
-} else { //Token matches: display form*/
+} else { //Token matches: display form
 ?>
     <div class="container">
         <div class="row justify-content-center">

@@ -15,6 +15,7 @@ $recipe = $recipeManager->get($params['id']);
 /* @var Recipe $recipe */
 $userManager = new UserManager();
 
+//Get recipe Author and check if current user is author, if he is not: redirects to error 403
 if (!$userManager->isAuthor($recipe->getAuthorId())) {
     (new RootController())->displayError(403);
     exit;
@@ -34,6 +35,11 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
 
                     <div class="shadow rounded bg-light text-center" id="ingredients">
                         <?php
+
+                        /*
+                         * Creates managers and entities used in the recipe, so that they are placed in the correct inputs/selects and option
+                         * For recipe edition
+                         */
 
                         $ingredientManager = new IngredientManager();
                         $unitManager = new UnitManager();
