@@ -12,7 +12,7 @@ use App\Model\Manager\UserManager;
 ?>
 <div class="container">
     <?php
-//Getting all instances and managers
+    //Getting all instances and managers
     $recipeManager = new RecipeManager();
     $recipe = $recipeManager->get($params['id']);
     /* @var Recipe $recipe */
@@ -50,17 +50,19 @@ use App\Model\Manager\UserManager;
         $ingredientManager = new IngredientManager();
         $recipe_IngredientManager = new Recipe_IngredientManager();
 
-        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient)
-        {
+        ?>
+        <ul>
+        <?php
+        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient) {
             $quantity = $ingredient['quantity'];
             $unit_name = $ingredient['unit_name'];
             $name = $ingredient['name'];
 
-            echo "$quantity $unit_name(s) de $name <br>";
+            echo "<li>$quantity $unit_name(s) de $name </li>";
         }
 
         ?>
-
+        </ul>
         <h2>Recette: </h2>
         <p><?= $recipe->getContent() ?></p>
 
@@ -76,7 +78,9 @@ use App\Model\Manager\UserManager;
                 <?php
                 $commentManager = new CommentManager();
                 ?>
-                <h2>Commentaires: <span class="badge bg-secondary"><?= $commentManager->getNumberCommentPerRecipe($recipe->getId()) ?></span></h2>
+                <h2>Commentaires: <span
+                            class="badge bg-secondary"><?= $commentManager->getNumberCommentPerRecipe($recipe->getId()) ?></span>
+                </h2>
 
                 <?php
                 //Checks if user is authenticated, if true: displays new comment form
@@ -104,7 +108,7 @@ use App\Model\Manager\UserManager;
                     }
                     $comments = $commentManager->getCommentsByRecipeId($recipe->getId());
 
-                    if(empty($comments)) {
+                    if (empty($comments)) {
                         echo "<span class='text-muted fst-italic'>Aucun commentaire n'a été publié pour cette recette</span>";
                     } else {
                         foreach ($comments as $comment) {
