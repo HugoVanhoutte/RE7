@@ -69,7 +69,6 @@ use App\Model\Manager\UserManager;
         <h3>Recette Créée par <strong><a
                         href="/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a></strong>
             le <?= $recipeManager->getTimeFR($recipe->getCreationDateTime()) ?></h3>
-
     </div>
 
     <div>
