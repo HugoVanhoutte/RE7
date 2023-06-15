@@ -36,7 +36,7 @@ abstract class AbstractPost
      */
     public function getContent(): string
     {
-        return nl2br(htmlspecialchars_decode($this->content));
+        return htmlspecialchars_decode($this->content);
     }
 
     /**

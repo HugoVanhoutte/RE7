@@ -52,19 +52,19 @@ use App\Model\Manager\UserManager;
 
         ?>
         <ul>
-        <?php
-        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient) {
-            $quantity = $ingredient['quantity'];
-            $unit_name = $ingredient['unit_name'];
-            $name = $ingredient['name'];
+            <?php
+            foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient) {
+                $quantity = $ingredient['quantity'];
+                $unit_name = $ingredient['unit_name'];
+                $name = $ingredient['name'];
 
-            echo "<li>$quantity $unit_name(s) de $name </li>";
-        }
+                echo "<li>$quantity $unit_name(s) de $name </li>";
+            }
 
-        ?>
+            ?>
         </ul>
         <h2>Recette: </h2>
-        <p><?= $recipe->getContent() ?></p>
+        <p><?= nl2br($recipe->getContent()) ?></p>
 
         <h3>Recette Créée par <strong><a
                         href="/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a></strong>
@@ -84,27 +84,29 @@ use App\Model\Manager\UserManager;
                 <?php
                 //Checks if user is authenticated, if true: displays new comment form
                 if (isset($_SESSION['user_id'])) {
-                ?>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-md-8 shadow rounded bg-light text-center">
-                            <form action="/index.php/comment?action=write&recipe_id=<?= $recipe->getId() ?>"
-                                  method="post">
-                                <div class="my-2">
-                                    <label for="content" class="form-label">&Eacute;crire un commentaire</label>
-                                    <input type="text" name="content" id="content" maxlength="150"
-                                           placeholder="Votre commentaire" class="form-control">
-                                </div>
-                                <div class="my-3">
-                                    <input type="submit" value="Commenter" class="btn btn-primary">
-                                </div>
-                            </form>
+                    ?>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col col-md-8 shadow rounded bg-light text-center">
+                                <form action="/index.php/comment?action=write&recipe_id=<?= $recipe->getId() ?>"
+                                      method="post">
+                                    <div class="my-2">
+                                        <label for="content" class="form-label">&Eacute;crire un commentaire</label>
+                                        <input type="text" name="content" id="content" maxlength="150"
+                                               placeholder="Votre commentaire" class="form-control">
+                                    </div>
+                                    <div class="my-3">
+                                        <input type="submit" value="Commenter" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <?php
+                }
+                ?>
                 <ul class="list-unstyled">
                     <?php
-                    }
                     $comments = $commentManager->getCommentsByRecipeId($recipe->getId());
 
                     if (empty($comments)) {

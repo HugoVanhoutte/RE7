@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="justify-content-center">
         <div class="col col-md-4 shadow rounded bg-light text-center">
             <form action="/index.php/user?action=validateRegistration" method="post" class="needs-validation"
                   novalidate>

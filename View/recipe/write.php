@@ -21,11 +21,17 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="my-2" id="ingredients">
+                        <div class="row justify-content-center">
+                            <div class="col-4"><h5>ingrédient</h5></div>
+                            <div class="col-2"><h5>Quantité</h5></div>
+                            <div class="col-4"><h5>Unité</h5></div>
+                            <div class="col-1"></div>
+                        </div>
                         <!-- Ingredient select created from JS -->
                     </div>
 
                     <div>
-                        <button id="addIngredientButton" type="button">Ajouter un ingrédient</button>
+                        <button id="addIngredientButton" type="button" class="btn btn-outline-primary">Ajouter un ingrédient</button>
                     </div>
 
                     <div class="my-2">
@@ -33,16 +39,17 @@ if (!isset($_SESSION['user_id'])) {
                         <textarea name="content" id="content" cols="30" rows="10" class="form-control"></textarea>
                     </div>
 
-                    <div class="my-2">
-                        <label for="preparation_time_minutes" class="form-label">Temps de préparation (en minutes)</label>
-                        <input type="number" max="65535" name="preparation_time_minutes" id="preparation_time_minutes" class="form-control">
-                    </div>
+                    <div class="row">
+                        <div class="my-2 col-6">
+                            <label for="preparation_time_minutes" class="form-label">Temps de préparation (en minutes)</label>
+                            <input type="number" max="65535" name="preparation_time_minutes" id="preparation_time_minutes" class="form-control">
+                        </div>
 
-                    <div class="my-2">
-                        <label for="cooking_time_minutes" class="form-label">Temps de cuisson (en minutes)</label>
-                        <input type="number" max="65535" name="cooking_time_minutes" id="cooking_time_minutes" class="form-control">
+                        <div class="my-2 col-6">
+                            <label for="cooking_time_minutes" class="form-label">Temps de cuisson (en minutes)</label>
+                            <input type="number" max="65535" name="cooking_time_minutes" id="cooking_time_minutes" class="form-control">
+                        </div>
                     </div>
-
                     <div class="my-3">
                         <input type="submit" value="Créer ma recette" class="btn btn-primary">
                     </div>

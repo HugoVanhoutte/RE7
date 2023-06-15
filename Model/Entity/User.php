@@ -39,7 +39,7 @@ class User
      */
     public function getUsername(): string
     {
-        return nl2br(htmlspecialchars_decode($this->username));
+        return htmlspecialchars_decode($this->username);
     }
 
     /**

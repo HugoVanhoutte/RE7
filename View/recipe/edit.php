@@ -21,19 +21,24 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
     exit;
 } else {
     ?>
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="col col-md-8 shadow rounded bg-light text-center">
                 <form action="/recipe?action=validateEdit&id=<?= $recipe->getId() ?>"
-                      method="post" class="needs-validation">
+                      method="post">
                     <div class="my-2">
                         <label for="title" class="form-label">Titre de la recette</label>
                         <input type="text" maxlength="50" required name="title" id="title"
                                value="<?= $recipe->getTitle() ?>" class="form-control">
                     </div>
 
-                    <div class="shadow rounded bg-light text-center" id="ingredients">
+                    <div class="my-2" id="ingredients"> <!--Ingredients container-->
+                        <div class="row justify-content-center">
+                            <div class="col-4"><h5>ingrédient</h5></div>
+                            <div class="col-2"><h5>Quantité</h5></div>
+                            <div class="col-4"><h5>Unité</h5></div>
+                            <div class="col-1"></div>
+                        </div>
                         <?php
 
                         /*
@@ -46,42 +51,52 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
                         $recipe_IngredientManager = new Recipe_IngredientManager();
 
                         $number = 1;
-                        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient)
-                        /* @var Ingredient $ingredient */
-                        {
-
+                        foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient) {
+                            /* @var Ingredient $ingredient */
                             $ingredients = $ingredientManager->getAll();
                             ?>
-                                <div class="ingredientLine">
-                            <select name="ingredient<?= $number ?>" id="ingredient<?= $number ?>">
-                                <?php
-                                foreach($ingredients as $ingredientEntity){
-                                    /* @var Ingredient $ingredientEntity */
-                                    ?>
-                                    <option <?php if ($ingredient['ingredient_id'] === $ingredientEntity->getId()) {echo "selected";} ?> value="<?= $ingredientEntity->getId() ?>"><?= $ingredientEntity->getName() ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                            <input type="number" name="quantity<?= $number ?>" id="quantity<?= $number ?>" value="<?= $ingredient['quantity'] ?>">
-                            <select name="unit<?= $number ?>" id="unit<?= $number ?>">
-                                <?php
-                                $units = $unitManager->getAll();
-                                foreach($units as $unit){
-                                    /* @var Unit $unit */
-                                    ?>
-                                    <option <?php if ($ingredient['unit_id'] === $unit->getId()) {echo "selected";} ?> value="<?= $unit->getId() ?>"><?= $unit->getName() ?></option>
-                                    <?php
-                                }
-                                ?>
-                            </select>
+                            <div class="ingredientLine row justify-content-center my-2">
+                                <div class="col-4"> <!--Ingredient div-->
+                                    <select name="ingredient<?= $number ?>" id="ingredient<?= $number ?>" class="form-select"> <!--ingredient select-->
+                                        <?php
+                                        foreach ($ingredients as $ingredientEntity) {
+                                            /* @var Ingredient $ingredientEntity */
+                                            ?>
+                                            <option <?php if ($ingredient['ingredient_id'] === $ingredientEntity->getId()) {
+                                                echo "selected";
+                                            } ?> value="<?= $ingredientEntity->getId() ?>"><?= $ingredientEntity->getName() ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
-                        <?php
+                                <div class="col-2"> <!--quantity div-->
+                                    <input type="number" name="quantity<?= $number ?>" id="quantity<?= $number ?>"
+                                           value="<?= $ingredient['quantity'] ?>" class="form-control">
+                                </div>
+                                <div class="col-4"> <!--unit div-->
+                                    <select name="unit<?= $number ?>" id="unit<?= $number ?>" class="form-select"> <!--unit select-->
+                                        <?php
+                                        $units = $unitManager->getAll();
+                                        foreach ($units as $unit) {
+                                            /* @var Unit $unit */
+                                            ?>
+                                            <option <?php if ($ingredient['unit_id'] === $unit->getId()) {
+                                                echo "selected";
+                                            } ?> value="<?= $unit->getId() ?>"><?= $unit->getName() ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php
                             $number++;
                         }
                         ?>
-
-                        <button id="addIngredientButton" type="button">Ajouter un ingrédient</button>
+                    </div>
+                    <div>
+                        <button id="addIngredientButton" type="button" class="btn btn-outline-primary">Ajouter un ingrédient</button>
                     </div>
 
                     <div class="my-2">
@@ -91,14 +106,16 @@ if (!$userManager->isAuthor($recipe->getAuthorId())) {
                     </div>
 
                     <div class="my-2">
-                        <label for="preparation_time_minutes" class="form-label">Temps de préparation (en minutes)</label>
+                        <label for="preparation_time_minutes" class="form-label">Temps de préparation (en
+                            minutes)</label>
                         <input type="number" max="65535" name="preparation_time_minutes" id="preparation_time_minutes"
                                value="<?= $recipe->getPreparationTimeMinutes() ?>" class="form-control">
                     </div>
 
                     <div class="my-2">
                         <label for="cooking_time_minutes" class="form-label">Temps de cuisson (en minutes)</label>
-                        <input type="number" max="65535" name="cooking_time_minutes" id="cooking_time_minutes" class="form-control"
+                        <input type="number" max="65535" name="cooking_time_minutes" id="cooking_time_minutes"
+                               class="form-control"
                                value="<?= $recipe->getCookingTimeMinutes() ?>">
                     </div>
 

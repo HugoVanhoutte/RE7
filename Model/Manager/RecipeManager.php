@@ -158,10 +158,8 @@ class RecipeManager extends AbstractManager implements ManagerInterface
      */
     public function getXMostRecent(int $limit): array
     {
-        $sql = "SELECT * FROM recipes ORDER BY creation_date_time DESC LIMIT :limit";
+        $sql = "SELECT * FROM recipes ORDER BY creation_date_time DESC LIMIT " .$limit;
         $stmt = DB::getInstance()->prepare($sql);
-
-        $stmt->bindParam(":limit", $limit);
 
         $stmt->execute();
         $recipes = [];
