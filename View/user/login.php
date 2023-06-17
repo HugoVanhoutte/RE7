@@ -32,3 +32,4 @@
     </div>
 </div>
 <script defer src="/assets/passwordVisibility.js"></script>
+<script defer src="/assets/pageReload.js"></script>

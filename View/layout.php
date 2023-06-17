@@ -22,43 +22,38 @@
         <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
             <ul class="navbar-nav">
                 <?php
-                //Links to display to a guest
+                //Links to display to an authenticated user
                 if (!empty($_SESSION['user_id'])) {
                     ?>
-                    <li class="nav-item">
-                        <a href="/index.php/menu?action=new" title="Créer un menu" class="nav-link">Nouveau Menu</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/index.php/ingredient?action=new" title="Ajouter un ingrédient" class="nav-link">Nouvel Ingrédient</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/index.php/unit?action=new" title="Ajouter une unité" class="nav-link">Nouvelle Unité</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link">Nouvelle Recette</a>
-                    </li>
-
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <span><i class="fa-solid fa-plus"></i></span> Création
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="dropdown-item"><a href="/index.php/menu?action=new" title="Créer un menu" class="nav-link text-dark">Nouveau Menu</a></li>
+                                <li class="dropdown-item"><a href="/index.php/ingredient?action=new" title="Ajouter un ingrédient" class="nav-link text-dark">Nouvel Ingrédient</a></li>
+                                <li class="dropdown-item"><a href="/index.php/unit?action=new" title="Ajouter une unité" class="nav-link text-dark">Nouvelle Unité</a></li>
+                                <li class="dropdown-item"><a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link text-dark">Nouvelle Recette</a></li>
+                            </ul>
+                        </li>
                     <li class="nav-item">
                         <a href="/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>"
-                           title="Mon profil" class="nav-link">Mon profil</a>
+                           title="Mon profil" class="nav-link"><span><i class="fa-solid fa-user"></i> </span>Mon profil</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link">Déconnexion</a>
+                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> </span>Déconnexion</a>
                     </li>
                     <?php
                 } else {
-                    //Links to display to an authenticated user
+                    //Links to display to a guest
                     ?>
                     <li class="nav-item">
-                        <a href="/index.php/user?action=register" title="Créer un compte" class="nav-link">Créer un compte</a>
+                        <a href="/index.php/user?action=register" title="Créer un compte" class="nav-link"><span><i class="fa-solid fa-plus"></i></span> Créer un compte</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/index.php/user?action=login" title="Connexion" class="nav-link">Connexion</a>
+                        <a href="/index.php/user?action=login" title="Connexion" class="nav-link"><span><i class="fa-solid fa-arrow-right-to-bracket"></i> </span>Connexion</a>
                     </li>
                     <?php
                 }

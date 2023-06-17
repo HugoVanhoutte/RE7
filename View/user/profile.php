@@ -43,7 +43,7 @@ $userManager = new UserManager();
 $recipeManager = new RecipeManager();
 ?>
     <!--Recipes List-->
-<h2>Liste des recettes de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $recipeManager->getNumberRecipePerUser($user->getId()) ?></span></h2>
+<h2 class="text-center">Liste des recettes de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $recipeManager->getNumberRecipePerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
         <?php
@@ -51,7 +51,7 @@ $recipeManager = new RecipeManager();
 
         if (empty($recipes)) {
             ?>
-            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
+            <p class="text-muted text-center"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
             <?php
         }
         foreach ($recipes as $recipe) {
@@ -89,14 +89,14 @@ $recipeManager = new RecipeManager();
     $menuManager = new MenuManager();
     ?>
     <!--Menus List-->
-    <h2>Liste des menus de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $menuManager->getNumberMenusPerUser($user->getId()) ?></span></h2>
+    <h2 class="text-center">Liste des menus de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $menuManager->getNumberMenusPerUser($user->getId()) ?></span></h2>
     <section class="container">
         <div class="row align-items-center justify-content-center">
             <?php
                 $menus = $menuManager->getMenusByAuthorId($user->getId());
             if (empty($menus)) {
             ?>
-            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
+            <p class="text-muted text-center"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
             <?php
         }
             foreach ($menus as $menu) {
@@ -128,7 +128,7 @@ $recipeManager = new RecipeManager();
 $commentManager = new CommentManager();
 ?>
     <!--Comment List-->
-<h2>Liste des commentaires de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $commentManager->getNumberCommentsPerUser($user->getId()) ?></span></h2>
+<h2 class="text-center">Liste des commentaires de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $commentManager->getNumberCommentsPerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
         <?php
@@ -136,7 +136,7 @@ $commentManager = new CommentManager();
 
         if (empty($comments)) {
             ?>
-            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de commentaires</p>
+            <p class="text-muted text-center"><?= $user->getUsername() ?> n'a pas encore publié de commentaires</p>
             <?php
         }
 

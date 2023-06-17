@@ -71,7 +71,7 @@ class RecipeController extends AbstractController implements ControllerInterface
      */
     private function write(): void
     {
-        if ($_SESSION['user_id']) {
+        if (isset($_SESSION['user_id'])) {
             $this->display('recipe/write', 'Nouvelle recette');
         } else {
             $this->display('user/login', 'Connexion', [

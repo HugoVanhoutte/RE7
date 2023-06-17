@@ -31,7 +31,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
 
                     <div>
-                        <button id="addIngredientButton" type="button" class="btn btn-outline-primary">Ajouter un ingrédient</button>
+                        <button id="addIngredientButton" type="button" class="btn btn-outline-primary"><span><i class="fa-solid fa-plus"></i></span> Ajouter un ingrédient</button>
                     </div>
 
                     <div class="my-2">

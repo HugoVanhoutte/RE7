@@ -119,14 +119,20 @@ class MenuController extends AbstractController implements ControllerInterface
      */
     private function view($id): void
     {
-        $menu = (new MenuManager())->get($id);
-        if (is_null($menu)) {
-            $this->displayError(404);
-        }
+        if (isset($_SESSION['user_id'])) {
+            $menu = (new MenuManager())->get($id);
+            if (is_null($menu)) {
+                $this->displayError(404);
+            }
 
-        $this->display('menu/view', $menu->getName(), [
-            'id' => $id
-        ]);
+            $this->display('menu/view', $menu->getName(), [
+                'id' => $id
+            ]);
+        } else {
+            $this->display("user/login", "Connexion", [
+                'error' => 'Vous devez être connecté pour créer un menu'
+                ]);
+        }
     }
 
     /**
@@ -142,7 +148,7 @@ class MenuController extends AbstractController implements ControllerInterface
         /* @var Menu $menu */
         if ((new UserManager())->isRemovable($menu->getAuthorId())) {
             $menuManager->delete($id);
-            $menuRecipeManager->deleteAllFromMenu($menu->getId())
+            $menuRecipeManager->deleteAllFromMenu($menu->getId());
             (new RootController())->index();
         } else {
             $this->displayError(403);

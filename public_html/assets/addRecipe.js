@@ -8,19 +8,29 @@ addRecipeButton.addEventListener("click", function () {
         .then(function (response) {
             let newRecipeLine = document.createElement("div");
             newRecipeLine.classList.add("recipeLine");
+            newRecipeLine.classList.add("row");
+            newRecipeLine.classList.add("my-2");
+            newRecipeLine.classList.add("justify-content-center");
+            let newRecipeSelectDiv = document.createElement("div");
+            newRecipeSelectDiv.classList.add("col-8");
             let newSelectRecipe = document.createElement("select");
             newSelectRecipe.name = "recipe" + number;
+            newSelectRecipe.classList.add("form-select");
             for (let i = 0; i < response.length; i++) {
                 let newOption = document.createElement("option");
                 newOption.value = response[i].id;
                 newOption.innerHTML = response[i].title;
                 newSelectRecipe.appendChild(newOption);
             }
-            newRecipeLine.appendChild(newSelectRecipe);
+            newRecipeSelectDiv.appendChild(newSelectRecipe)
+            newRecipeLine.appendChild(newRecipeSelectDiv);
 
             let newDeleteButton = document.createElement("button");
             newDeleteButton.type = "button";
-            newDeleteButton.innerHTML = "Supprimer"
+            newDeleteButton.innerHTML = "<i class=\"fa-solid fa-trash\"></i>"
+            newDeleteButton.classList.add("col-2");
+            newDeleteButton.classList.add("btn");
+            newDeleteButton.classList.add("btn-outline-danger");
 
             newDeleteButton.addEventListener('click', function () {
                 newRecipeLine.remove();
