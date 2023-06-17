@@ -263,7 +263,6 @@ class UserController extends AbstractController implements ControllerInterface
             if (password_verify($data['password'], $user->getPassword())) {
                 //Password correct, start session
                 $_SESSION['user_id'] = $user->getId();
-                //header('location: /index.php');
                 $this->display("home/index", "Homepage", [
                     'message' => 'Vous êtes maintenant connecté'
                 ]);
