@@ -1,6 +1,4 @@
 <?php
-
-
 use App\Controller\RootController;
 
 session_start();
@@ -23,6 +21,9 @@ require_once __DIR__ . "/../Model/DB.php";
     require_once __DIR__ . "/../Model/Entity/User.php";
     require_once __DIR__ . "/../Model/Entity/Recipe.php";
     require_once __DIR__ . "/../Model/Entity/Comment.php";
+    require_once __DIR__ . "/../Model/Entity/Ingredient.php";
+    require_once __DIR__ . "/../Model/Entity/Unit.php";
+    require_once __DIR__ . "/../Model/Entity/Menu.php";
 
     //Manager
     require_once __DIR__ . "/../Model/Manager/ManagerInterface.php";
@@ -31,6 +32,11 @@ require_once __DIR__ . "/../Model/DB.php";
     require_once __DIR__ . "/../Model/Manager/AbstractManager.php";
     require_once __DIR__ . "/../Model/Manager/RecipeManager.php";
     require_once __DIR__ . "/../Model/Manager/CommentManager.php";
+    require_once __DIR__ . "/../Model/Manager/IngredientManager.php";
+    require_once __DIR__ . "/../Model/Manager/UnitManager.php";
+    require_once __DIR__ . "/../Model/Manager/Recipe_IngredientManager.php";
+    require_once __DIR__ . "/../Model/Manager/MenuManager.php";
+    require_once __DIR__ . "/../Model/Manager/Menu_RecipeManager.php";
 
 
 //Controller
@@ -39,6 +45,7 @@ require_once __DIR__ . "/../Controller/RootController.php";
 require_once __DIR__ . "/../Controller/ControllerInterface.php";
 require_once __DIR__ . "/../Controller/RecipeController.php";
 require_once __DIR__ . "/../Controller/CommentController.php";
+require_once __DIR__ . "/../Controller/MenuController.php";
 
 
 //Router

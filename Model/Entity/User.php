@@ -15,7 +15,6 @@ class User
     private ?string $token;
 
 
-
     /**Getters And Setters*********************************************************************************************/
     /**
      * @return int
@@ -40,7 +39,7 @@ class User
      */
     public function getUsername(): string
     {
-        return $this->username;
+        return htmlspecialchars_decode($this->username);
     }
 
     /**

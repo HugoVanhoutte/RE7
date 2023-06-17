@@ -10,7 +10,7 @@ abstract class AbstractManager
      * @param $date_time
      * @return string
      */
-    public function getTimeFR($date_time): string
+    public function getTimeFR(string $date_time): string
     {
         $date_time = explode(" ", $date_time);
         $date = explode("-", $date_time[0]);
@@ -19,8 +19,13 @@ abstract class AbstractManager
         return $date[2] . "/" . $date[1] . "/" . $date[0] . " à " . $time[0] . "h" . $time[1];
     }
 
-public function sanitize($userEntry): string
-{
-    return htmlspecialchars(trim($userEntry));
-}
+    /**
+     * Removes potential threats from user entries
+     * @param $userEntry
+     * @return string
+     */
+    public function sanitize(string $userEntry): string
+    {
+        return htmlspecialchars(trim($userEntry));
+    }
 }

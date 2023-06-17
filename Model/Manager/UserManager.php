@@ -6,8 +6,13 @@ use App\Model\DB;
 use App\Model\Entity\User;
 
 require_once "AbstractManager.php";
+require_once "ManagerInterface.php";
+
 class UserManager extends AbstractManager implements ManagerInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function getAll(): array
     {
         $sql = "SELECT * FROM users";
@@ -24,13 +29,15 @@ class UserManager extends AbstractManager implements ManagerInterface
                 ->setPassword($userData['password'])
                 ->setRegistrationDateTime($userData['registration_date_time'])
                 ->setRoleId($userData['role_id'])
-                ->setToken($userData['token'])
-                ;
+                ->setToken($userData['token']);
 
         }
         return $users;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get(int $id): ?User
     {
         $sql = "SELECT * FROM users WHERE id = :id";
@@ -39,21 +46,25 @@ class UserManager extends AbstractManager implements ManagerInterface
         $stmt->execute();
         if ($data = $stmt->fetch()) {
 
-        return (new User())
-            ->setId($data['id'])
-            ->setUsername($data['username'])
-            ->setEmail($data['email'])
-            ->setPassword($data['password'])
-            ->setRegistrationDateTime($data['registration_date_time'])
-            ->setRoleId($data['role_id'])
-            ->setToken($data['token'])
-        ;
+            return (new User())
+                ->setId($data['id'])
+                ->setUsername($data['username'])
+                ->setEmail($data['email'])
+                ->setPassword($data['password'])
+                ->setRegistrationDateTime($data['registration_date_time'])
+                ->setRoleId($data['role_id'])
+                ->setToken($data['token']);
 
         } else {
             return null;
         }
     }
 
+    /**
+     * gets user id from email Address
+     * @param string $email
+     * @return int
+     */
     public function getIdFromEmail(string $email): int
     {
         $sql = "SELECT id FROM users WHERE email = :email";
@@ -63,6 +74,9 @@ class UserManager extends AbstractManager implements ManagerInterface
         return $stmt->fetch()['id'];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM users WHERE id = :id";
@@ -74,6 +88,7 @@ class UserManager extends AbstractManager implements ManagerInterface
     }
 
     /**
+     * Inserts a user in DB
      * @param User $user
      * @return bool
      */
@@ -97,40 +112,36 @@ class UserManager extends AbstractManager implements ManagerInterface
     }
 
 
-
+    /**
+     * @inheritDoc
+     */
     public function update(int $id, array $updateData = []): bool
     {
         $user = $this->get($id);
-if (!isset($updateData['username'])) {
-    $username = $user->getUsername();
-} else {
-    $username = $this->sanitize($updateData['username']);
-}
+        if (!isset($updateData['username'])) {
+            $username = $user->getUsername();
+        } else {
+            $username = $this->sanitize($updateData['username']);
+        }
 
-if (!isset($updateData['email'])) {
-    $email = $user->getEmail();
-} else {
-    $email = $this->sanitize($updateData['email']);
-}
+        if (!isset($updateData['email'])) {
+            $email = $user->getEmail();
+        } else {
+            $email = $this->sanitize($updateData['email']);
+        }
 
-if (!isset($updatedata['password'])) {
-    $password = $user->getPassword();
-} else {
-    $password = $updateData['password'];
-}
+        if (!isset($updatedata['password'])) {
+            $password = $user->getPassword();
+        } else {
+            $password = $updateData['password'];
+        }
 
-if (!isset($updateData['role_id'])) {
-    $role_id = $user->getRoleId();
-} else {
-    $role_id = $updateData['role_id'];
-}
+        if (!isset($updateData['role_id'])) {
+            $role_id = $user->getRoleId();
+        } else {
+            $role_id = $updateData['role_id'];
+        }
 
-        /*
-        $username = $this->sanitize($updateData['username']) ?? $user->getUsername();
-        $email = $this->sanitize($updateData['email']) ?? $user->getEmail();
-        $password = $updateData['password'] ?? $user->getPassword();
-        $role_id = $updateData['role_id'] ?? $user->getRoleId();
-*/
         if (isset($updateData['token'])) {
             // this 'if' statement is set to avoid an undefined array key "token"... error
             if (is_null($updateData['token'])) {
@@ -165,7 +176,7 @@ if (!isset($updateData['role_id'])) {
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
-        return (bool) $stmt->fetch();
+        return (bool)$stmt->fetch();
     }
 
     /**
@@ -180,10 +191,11 @@ if (!isset($updateData['role_id'])) {
         $stmt->bindParam(':username', $username);
         $stmt->execute();
 
-        return (bool) $stmt->fetch();
+        return (bool)$stmt->fetch();
     }
 
     /**
+     * returns true if email address is in valid format
      * @param string $email
      * @return bool
      */
@@ -197,6 +209,7 @@ if (!isset($updateData['role_id'])) {
     }
 
     /**
+     * returns true if username is in valid format
      * @param string $username
      * @return bool
      */
@@ -206,34 +219,40 @@ if (!isset($updateData['role_id'])) {
     }
 
     /**
+     * returns true if password is in valid format
      * @param string $password
      * @return bool
      */
     public function validatePassword(string $password): bool
     {
-        return (bool) preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}/", $password);
+        return (bool)preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}/", $password);
     }
 
 
     /**
+     * returns true if current user is admin
      * @return bool
      */
-    public function isAdmin():bool {
+    public function isAdmin(): bool
+    {
         if (isset($_SESSION['user_id'])) {
             $currentUser = (new UserManager())->get($_SESSION['user_id']);
-            return in_array($currentUser->getRoleId(), [1,2,3]);
+            return in_array($currentUser->getRoleId(), [1, 2, 3]);
         } else return false;
     }
 
     /**
+     * returns true if current user is author of current page
      * @param $authorId
      * @return bool
      */
-    public function isAuthor($authorId): bool {
+    public function isAuthor($authorId): bool
+    {
         return (isset($_SESSION['user_id']) && $authorId === $_SESSION['user_id']);
     }
 
     /**
+     * returns true if current has authorisations to remove content
      * @param $authorId
      * @return bool
      */

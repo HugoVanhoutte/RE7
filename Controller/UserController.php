@@ -15,8 +15,7 @@ class UserController extends AbstractController implements ControllerInterface
             exit();
         }
 
-        switch($params['action'])
-        {
+        switch ($params['action']) {
             case 'register' :  //Registration page
             {
                 $this->register();
@@ -55,7 +54,7 @@ class UserController extends AbstractController implements ControllerInterface
 
             case 'profile' :
             {
-                if (isset($params['id'])){
+                if (isset($params['id'])) {
                     $this->profile($params['id']);
                 } else {
                     $this->displayError(404);
@@ -65,7 +64,7 @@ class UserController extends AbstractController implements ControllerInterface
 
             case 'edit' :
             {
-                if (isset($params['id'])){
+                if (isset($params['id'])) {
                     $this->edit($params['id']);
                 } else {
                     $this->displayError(404);
@@ -143,28 +142,23 @@ class UserController extends AbstractController implements ControllerInterface
     private function validateRegistration(array $registrationInfo): void
     {
         if (empty($_POST)) {                                                                                            //Ensures that no error message is displayed on register page before sending info
-         die();
+            die();
         }
 
         $userManager = new UserManager();
 
-        if($userManager->checkUsernameAlreadyInDB($registrationInfo['username']))                                       //If true: a username is already in DB
+        if ($userManager->checkUsernameAlreadyInDB($registrationInfo['username']))                                       //If true: a username is already in DB
         {
             //Display Message on registration page that username already taken
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Ce nom d\'utilisateur est déjà utilisé'
             ]);
-        }
-
-        elseif($userManager->checkEmailAlreadyInDB($registrationInfo['email']))
-        {
+        } elseif ($userManager->checkEmailAlreadyInDB($registrationInfo['email'])) {
             //Display Message on registration page that email already taken
             $this->display('user/register', 'S\'enregistrer', [                                           //If true: an email is already used in DB
                 'error' => 'Cette adresse mail est déjà utilisé'
             ]);
-        }
-
-        elseif (!($registrationInfo['password'] === $registrationInfo['passwordConfirm']))                              //If true: password and password confirmation doesn't match
+        } elseif (!($registrationInfo['password'] === $registrationInfo['passwordConfirm']))                              //If true: password and password confirmation doesn't match
             //Display Error Message (Generic)
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
@@ -176,25 +170,19 @@ class UserController extends AbstractController implements ControllerInterface
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
-        }
-
-        elseif(!$userManager->validateUsername($registrationInfo['username']))                                          //If true: username is not valid
+        } elseif (!$userManager->validateUsername($registrationInfo['username']))                                          //If true: username is not valid
         {
             //Display Error Message (Generic)
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
-        }
-
-        elseif (!$userManager->validatePassword($registrationInfo['password']))                                         //If true: password is not valid
+        } elseif (!$userManager->validatePassword($registrationInfo['password']))                                         //If true: password is not valid
         {
             //Display Error Message (Generic)
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
-        }
-
-        else                                                                                                            //All good: create a new User and send confirmation email
+        } else                                                                                                            //All good: create a new User and send confirmation email
         {
             $username = $userManager->sanitize($registrationInfo['username']);
             $email = $userManager->sanitize(strtolower($registrationInfo['email']));
@@ -205,18 +193,18 @@ class UserController extends AbstractController implements ControllerInterface
                 ->setUsername($username)
                 ->setEmail($email)
                 ->setPassword($password)
-                ->setToken($token)
-                ;
+                ->setToken($token);
 
             $userManager->insert($newUser);
             $newUser = $userManager->get($userManager->getIdFromEmail($newUser->getEmail()));
 
             $id = $newUser->getId();
+            $host = $_SERVER['HTTP_HOST'];
 
-            if((new MailUtil())->sendmail([$newUser->getEmail()], '[RE7] Confirmation de votre compte', "
+            if ((new MailUtil())->sendmail([$newUser->getEmail()], '[RE7] Confirmation de votre compte', "
                 <h1>Bienvenue sur RE7</h1>
                 <p>Cliquez sur ce lien pour confirmer votre adresse mail</p>
-                <a href='localhost/RE7/public/index.php/user?action=emailValidation&id=$id&token=$token'>Confirmer mon adresse Mail</a>    
+                <a href='$host/index.php/user?action=emailValidation&id=$id&token=$token'>Confirmer mon adresse Mail</a>    
             ")) {
                 $this->display('home/generic_display', 'Compte créé', [
                     'message' => 'votre compte a été créé, un e-mail de confirmation vous a été envoyé, vous pouvez fermer cette page.'
@@ -233,8 +221,7 @@ class UserController extends AbstractController implements ControllerInterface
     {
         $userManager = new UserManager();
         $user = $userManager->get($params['id']);
-        if($user->getToken() === $params['token'])
-        {
+        if ($user->getToken() === $params['token']) {
             $updateData = [
                 'role_id' => 4,
                 'token' => null
@@ -265,22 +252,27 @@ class UserController extends AbstractController implements ControllerInterface
      */
     private function validateLogin(array $data): void
     {
-        if(empty($data)) {
-            exit();                                                                                                     //Prevent error messages
+        //Prevent error messages
+        if (empty($data)) {
+            exit();
         }
         $userManager = new UserManager();
-        if ($userManager->checkEmailAlreadyInDB($data['email'])) {                                                     //Email exists, get user, check PW
+        //if email address exists in DB, get user Entity, check if entered password matches DB password
+        if ($userManager->checkEmailAlreadyInDB($data['email'])) {
             $user = $userManager->get($userManager->getIdFromEmail($data['email']));
-            if (password_verify($data['password'], $user->getPassword())) {                                            //Password correct, start session
-
+            if (password_verify($data['password'], $user->getPassword())) {
+                //Password correct, start session
                 $_SESSION['user_id'] = $user->getId();
-                header('location: /index.php');                                                      //Not using display: prevents broken links for some reason...
-            } else {                                                                                                    //Wrong Password
+                header('location: /index.php');
+                //Not using display: prevents broken links for some reason... FIXME: use display
+            } else {
+                //If password is not correct: send back to login page with error message
                 $this->display('user/login', 'Connexion', [
                     'error' => 'Mot de passe incorrect'
                 ]);
             }
         } else {
+            //If entered email is not present in DB: sends back to login page with corresponding error message
             $this->display('user/login', 'Connexion', [
                 'error' => 'Cette adresse e-mail ne correspond à aucun compte'
             ]);
@@ -288,9 +280,10 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * destroys user session and sends back to login page with success message
      * @return void
      */
-    private function logout() :void
+    private function logout(): void
     {
         session_destroy();
         $this->display('user/login', 'Connexion', [
@@ -299,34 +292,42 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * displays user profile from its id: if user doesn't exist: redirects to 404
      * @param int $id
      * @return void
      */
     private function profile(int $id): void
     {
         $user = (new UserManager())->get($id);
-        if (is_null($user)){
+        if (is_null($user)) {
             $this->displayError(404);
             exit;
         }
         $username = $user->getUsername();
-            $this->display('user/profile', "Profil de $username", [
-                'user' => $user
-            ]);
+        $this->display('user/profile', "Profil de $username", [
+            'user' => $user
+        ]);
     }
 
     /**
+     * displays profile edition page if user is authorised
      * @param int $id
      * @return void
      */
     private function edit(int $id): void
     {
-        $this->display('user/edit', 'Modifier', [
-            'id' => $id
-        ]);
+        $userManager = new UserManager();
+        if ($userManager->isAuthor($id)) {
+            $this->display('user/edit', 'Modifier', [
+                'id' => $id
+            ]);
+        } else {
+            $this->displayError(403);
+        }
     }
 
     /**
+     * Validate edited values and update DB
      * @param array $data
      * @param int $id
      * @return void
@@ -371,6 +372,7 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * displays password reset request page
      * @return void
      */
     private function passwordReset(): void
@@ -379,6 +381,7 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * sends password reset mail after checking if entered email address exists in DB
      * @param string $email
      * @return void
      */
@@ -396,24 +399,31 @@ class UserController extends AbstractController implements ControllerInterface
                 'error' => 'Cette adresse e-mail n\'est associée à aucun compte'
             ]);
         }
-        //If everything is correct: get user from DB by email address and send password changing mail.
+        //If everything is correct: get user from DB by email address and send password reset email.
         $user = $userManager->get($userManager->getIdFromEmail($email));
 
+        //Gets users infos and generates new token
         $id = $user->getId();
         $username = $user->getUsername();
         $token = uniqid("", true);
 
+        //Gets host info: useful for hosting changes: don't have to manually change host info when deploying project on another server
+        $host = $_SERVER['HTTP_HOST'];
+
+        //Email body
         $body = "
                 <h1>Bonjour $username</h1>
                 <p>Cliquez sur ce lien pour changer votre mot de passe</p>
-                <a href='localhost/index.php/user?action=newPassword&id=$id&token=$token'>Changer mon mot de passe</a> 
+                <a href='$host/index.php/user?action=newPassword&id=$id&token=$token'>Changer mon mot de passe</a> 
                 <p>Si vous n'êtes pas à l'origine de cette action, ne cliquez pas sur le lien</p>
             ";
 
-        if((new MailUtil())->sendmail([$email], '[RE7] Récupération de votre mot de passe', $body)) {//If mail successfully sent, update user token in DB
+        //If mail successfully sent, update user token in DB
+        if ((new MailUtil())->sendmail([$email], '[RE7] Récupération de votre mot de passe', $body)) {
 
-            $userManager->update($id, ['token'=>$token]);
+            $userManager->update($id, ['token' => $token]);
 
+            //User feedback
             $this->display('home/generic_display', 'E-mail envoyé', [
                 'message' => 'email envoyé avec succès, vous pouvez fermer cette page.'
             ]);
@@ -425,19 +435,21 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * Checks if token in url matches token in DB and redirects to password reset page
      * @param int $id
      * @param string $token
      * @return void
      */
     private function newPassword(int $id, string $token): void
     {
-            $this->display('user/new_password', 'Changer mot de passe', [
-                'id' => $id,
-                'token' => $token
-                ]);
+        $this->display('user/new_password', 'Changer mot de passe', [
+            'id' => $id,
+            'token' => $token
+        ]);
     }
 
     /**
+     * validates password reset and updates password in DB
      * @param int $id
      * @param string $token
      * @return void
@@ -464,17 +476,25 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
+     * redirects to user deletion confirmation page if user is authorised
      * @param int $id
      * @return void
      */
     private function delete(int $id): void
     {
-        $this->display('user/deletion_confirmation', 'Supprimer', [
-            'id' => $id
-        ]);
+        $userManager = new UserManager();
+        $user = $userManager->get($id);
+        if ($userManager->isAuthor($user->getId())) {
+            $this->display('user/deletion_confirmation', 'Supprimer', [
+                'id' => $id
+            ]);
+        } else {
+            $this->displayError(403);
+        }
     }
 
     /**
+     * validated user deletion, if user is authorised and following user preferences set on confirmation page
      * @param $id
      * @param $deleteAll
      * @return void
@@ -482,29 +502,36 @@ class UserController extends AbstractController implements ControllerInterface
     private function deletionValidated($id, $deleteAll): void
     {
         $userManager = new UserManager();
-        if($deleteAll === 'true') {
-            //Call delete on user id
-            $userManager->delete($id);
-            session_destroy();
-            $this->display('home/index', 'Accueil', [
-                'message' => 'Votre profil a été supprimé'
-            ]);
-        } elseif($deleteAll === 'false') {
-            //Set User to deleted
-            $userManager->update($id, [
-                'username' => '[supprimé]',
-                'email' => '[supprimé]',
-                'password' => password_hash(uniqid("", true), PASSWORD_BCRYPT),
-                'registration_date_time' => '2000-01-01 00:00:00',
-                'role_id' => 5,
-                'token' => null
-            ]);
-            session_destroy();
-            $this->display('home/index', 'Accueil', [
-                'message' => 'Votre profil a été supprimé'
-            ]);
+        $user = $userManager->get($id);
+        //Checks if current user is authorised
+        if ($userManager->isAuthor($user->getId())) {
+            if ($deleteAll === 'true') {
+                //Call delete on user id
+                $userManager->delete($id);
+                session_destroy();
+                $this->display('home/index', 'Accueil', [
+                    'message' => 'Votre profil a été supprimé'
+                ]);
+            } elseif ($deleteAll === 'false') {
+                //Set User to deleted
+                $userManager->update($id, [
+                    'username' => '[supprimé]',
+                    'email' => '[supprimé]',
+                    'password' => password_hash(uniqid("", true), PASSWORD_BCRYPT),
+                    'registration_date_time' => '2000-01-01 00:00:00',
+                    'role_id' => 5,
+                    'token' => null
+                ]);
+                session_destroy();
+                $this->display('home/index', 'Accueil', [
+                    'message' => 'Votre profil a été supprimé'
+                ]);
+            } else {
+                //error
+                $this->displayError(403);
+            }
         } else {
-            //error
+            //User not authorised: displays error
             $this->displayError(403);
         }
     }

@@ -8,12 +8,12 @@
     <script src="https://kit.fontawesome.com/9010a17673.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title><?= $pageTitle ?></title>
+    <title>RE7 | <?= $pageTitle ?></title>
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">    <!--Navbar-->
     <div class="container">
-        <a href="/index.php" title="Accueil" class="navbar-brand"><span class="text-light">RE7</span></a> <!-- IDE error is wrong: link works on deployment -->
+        <a href="/index.php" title="Accueil" class="navbar-brand"><span class="text-light">RE7</span></a>
         <!-- Toggle button for mobile navigation -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"><span
                     class="navbar-toggler-icon"></span></button>
@@ -22,31 +22,38 @@
         <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
             <ul class="navbar-nav">
                 <?php
+                //Links to display to an authenticated user
                 if (!empty($_SESSION['user_id'])) {
                     ?>
-                    <li class="nav-item">
-                        <a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link">Nouvelle
-                            Recette</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link">Déconnexion</a>
-                    </li>
-
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <span><i class="fa-solid fa-plus"></i></span> Création
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="dropdown-item"><a href="/index.php/menu?action=new" title="Créer un menu" class="nav-link text-dark">Nouveau Menu</a></li>
+                                <li class="dropdown-item"><a href="/index.php/ingredient?action=new" title="Ajouter un ingrédient" class="nav-link text-dark">Nouvel Ingrédient</a></li>
+                                <li class="dropdown-item"><a href="/index.php/unit?action=new" title="Ajouter une unité" class="nav-link text-dark">Nouvelle Unité</a></li>
+                                <li class="dropdown-item"><a href="/index.php/recipe?action=write" title="Créer une nouvelle recette" class="nav-link text-dark">Nouvelle Recette</a></li>
+                            </ul>
+                        </li>
                     <li class="nav-item">
                         <a href="/index.php/user?action=profile&id=<?= $_SESSION['user_id'] ?>"
-                           title="Mon profil" class="nav-link">Mon profil</a>
+                           title="Mon profil" class="nav-link"><span><i class="fa-solid fa-user"></i> </span>Mon profil</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/index.php/user?action=logout" title="Déconnexion" class="nav-link"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> </span>Déconnexion</a>
                     </li>
                     <?php
                 } else {
+                    //Links to display to a guest
                     ?>
                     <li class="nav-item">
-                        <a href="/index.php/user?action=register" title="Créer un compte" class="nav-link">Créer un
-                            compte</a>
+                        <a href="/index.php/user?action=register" title="Créer un compte" class="nav-link"><span><i class="fa-solid fa-plus"></i></span> Créer un compte</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/index.php/user?action=login" title="Connexion" class="nav-link">Connexion</a>
+                        <a href="/index.php/user?action=login" title="Connexion" class="nav-link"><span><i class="fa-solid fa-arrow-right-to-bracket"></i> </span>Connexion</a>
                     </li>
                     <?php
                 }
@@ -69,21 +76,24 @@ if (isset($params['message'])) {
 
 <?= $pageContent ?>
 
-<footer class="bg-dark text-light mt-5 container-fluid"> <!-- TODO -->
+<footer class="bg-dark text-light mt-5 container-fluid">
     <div class="row">
         <div class="col text-start">
             <ul class="list-unstyled">
                 <li><h3>Contact</h3></li>
-                <li><a href="mailto: hugo.vanhoutte.pro@gmail.com" title="Mail" class="text-muted display-6"><i class="fa-solid fa-envelope"></i></a></li>
-                <li><a href="#" title="Twitter" class="text-muted display-6"><i class="fa-brands fa-square-twitter"></i></a></li>
-                <li><a href="#" title="Facebook" class="text-muted display-6"><i class="fa-brands fa-square-facebook"></i></a></li>
+                <li><a href="mailto: hugo.vanhoutte.pro@gmail.com" title="Mail" class="text-muted display-6"><i
+                                class="fa-solid fa-envelope"></i></a></li>
+                <li><a href="#" title="Twitter" class="text-muted display-6"><i class="fa-brands fa-square-twitter"></i></a>
+                </li>
+                <li><a href="#" title="Facebook" class="text-muted display-6"><i
+                                class="fa-brands fa-square-facebook"></i></a></li>
             </ul>
         </div>
 
         <div class="col">
             <ul class="list-unstyled text-end">
-                    <li><h3>Mentions légales</h3></li>
-                    <li><a href="/index.php/user?action=rgpd" class="text-muted">RGPD</a></li>
+                <li><h3>Mentions légales</h3></li>
+                <li><a href="/index.php/user?action=rgpd" class="text-muted">RGPD</a></li>
             </ul>
         </div>
     </div>

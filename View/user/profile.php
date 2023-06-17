@@ -1,8 +1,10 @@
 <?php
 
 use App\Model\Entity\Comment;
+use App\Model\Entity\Menu;
 use App\Model\Entity\Recipe;
 use App\Model\Manager\CommentManager;
+use App\Model\Manager\MenuManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\RoleManager;
 use App\Model\Entity\User;
@@ -15,7 +17,7 @@ $userManager = new UserManager();
 ?>
 <div class="container">
     <?php
-    if ($userManager->isAuthor($user->getId())) //Checks if user is authenticated (prevent error message) and check if he is admin or user
+    if ($userManager->isAuthor($user->getId())) //Checks user authorisations
     {
         ?>
         <a href="/index.php/user?action=edit&id=<?= $user->getId() ?>" title="&Eacute;diter mon profil"
@@ -31,24 +33,25 @@ $userManager = new UserManager();
         <?php
     }
     ?>
-</div>
 <div> <!-- Profile -->
     <h1>Profil de <?= $user->getUsername() ?></h1>
     <p><strong>Adresse Mail:</strong> <?= $user->getEmail() ?></p>
     <p><strong>Rôle: </strong><?= (new RoleManager())->getRole($user->getRoleId()) ?></p>
     <p><strong>Compte créé le </strong><?= (new UserManager())->getTimeFR($user->getRegistrationDateTime()) ?></p>
 </div>
-
-<h2>Liste des recettes de <?= $user->getUsername() ?></h2>
+<?php
+$recipeManager = new RecipeManager();
+?>
+    <!--Recipes List-->
+<h2 class="text-center">Liste des recettes de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $recipeManager->getNumberRecipePerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
         <?php
-        $recipeManager = new RecipeManager();
         $recipes = $recipeManager->getRecipesByAuthorId($user->getId());
 
         if (empty($recipes)) {
             ?>
-            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
+            <p class="text-muted text-center"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
             <?php
         }
         foreach ($recipes as $recipe) {
@@ -81,16 +84,59 @@ $userManager = new UserManager();
         ?>
     </div>
 </section>
-<h2>Liste des commentaires de <?= $user->getUsername() ?></h2>
+
+    <?php
+    $menuManager = new MenuManager();
+    ?>
+    <!--Menus List-->
+    <h2 class="text-center">Liste des menus de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $menuManager->getNumberMenusPerUser($user->getId()) ?></span></h2>
+    <section class="container">
+        <div class="row align-items-center justify-content-center">
+            <?php
+                $menus = $menuManager->getMenusByAuthorId($user->getId());
+            if (empty($menus)) {
+            ?>
+            <p class="text-muted text-center"><?= $user->getUsername() ?> n'a pas encore publié de recettes</p>
+            <?php
+        }
+            foreach ($menus as $menu) {
+                /* @var Menu $menu */
+                ?>
+                <div class="col-12 col-md-5 col-md-5 col-lg-4 col-xl-3">
+                    <div class="card bg-light rounded shadow m-2 text-center border-0">
+                        <a href="/index.php/menu?action=view&id=<?= $menu->getId() ?>"
+                           class="card-title display-6 text-decoration-none"><?= $menu->getName() ?></a>
+                        <?php
+                        if ($userManager->isRemovable($user->getId())) {
+                            ?>
+                            <a href="/index.php/menu?action=delete&id=<?= $menu->getId() ?>"
+                               title="Supprimer" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+    </section>
+
+
+
+<?php
+$commentManager = new CommentManager();
+?>
+    <!--Comment List-->
+<h2 class="text-center">Liste des commentaires de <?= $user->getUsername() ?> <span class="badge bg-secondary"><?= $commentManager->getNumberCommentsPerUser($user->getId()) ?></span></h2>
 <section class="container">
     <div class="row align-items-center justify-content-center">
         <?php
-        $commentManager = new CommentManager();
         $comments = $commentManager->getCommentsByAuthorId($user->getId());
 
         if (empty($comments)) {
             ?>
-            <p class="text-muted"><?= $user->getUsername() ?> n'a pas encore publié de commentaires</p>
+            <p class="text-muted text-center"><?= $user->getUsername() ?> n'a pas encore publié de commentaires</p>
             <?php
         }
 
@@ -121,3 +167,4 @@ $userManager = new UserManager();
         ?>
     </div>
 </section>
+</div>

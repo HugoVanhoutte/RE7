@@ -3,11 +3,13 @@
 use App\Controller\RootController;
 use App\Model\Manager\UserManager;
 
+//Checks for user session
 if (!(new UserManager())->isRemovable($params['id'])) {
     (new RootController())->displayError(403);
 }
+// TODO Check form bootstrap
 ?>
-<div class="container"> <!-- TODO FORM -->
+<div class="container">
     <form action="/index.php/user?action=deletion_validated&id=<?= $params['id'] ?>" method="post">
         <h2>Que souhaitez vous supprimer ?</h2>
         <input type="radio" name="deleteAll" value="true">

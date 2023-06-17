@@ -1,9 +1,21 @@
 <?php
 namespace App\utils;
 
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class MailUtil{
+    /**
+     * Method used to send a mail
+     * @param array $to
+     * @param string $subject
+     * @param string $body
+     * @param string $from
+     * @param $cc
+     * @param $bcc
+     * @return bool
+     * @throws Exception
+     */
     public function sendmail(array $to, string $subject, string $body, string $from = 'noreply.re7project@gmail.com', $cc = [], $bcc = []): bool
     {
         //Mail Sending

@@ -4,13 +4,15 @@ use App\Model\Entity\Comment;
 use App\Model\Entity\Recipe;
 use App\Model\Entity\User;
 use App\Model\Manager\CommentManager;
+use App\Model\Manager\IngredientManager;
+use App\Model\Manager\Recipe_IngredientManager;
 use App\Model\Manager\RecipeManager;
 use App\Model\Manager\UserManager;
 
 ?>
 <div class="container">
     <?php
-//Getting all instances and managers
+    //Getting all instances and managers
     $recipeManager = new RecipeManager();
     $recipe = $recipeManager->get($params['id']);
     /* @var Recipe $recipe */
@@ -34,55 +36,80 @@ use App\Model\Manager\UserManager;
     }
     ?>
 
-    <div> <!--RECIPE: Displays content xritten by user from DB: since user entry is sanitized: need to use htmlspecialchars_decode for proper display and nl2br for new lines-->
-        <h1><?= nl2br(htmlspecialchars_decode($recipe->getTitle())) ?></h1>
+    <div>
+        <h1><?= $recipe->getTitle() ?></h1>
 
         <div>
             <h2>Temps de préparation: <?= $recipe->getPreparationTimeMinutes() ?> minutes</h2>
             <h2>Temps de cuisson: <?= $recipe->getCookingTimeMinutes() ?> minutes</h2>
         </div>
 
-        <p><?= nl2br(htmlspecialchars_decode($recipe->getContent())) ?></p>
+        <h2>Ingrédients: </h2>
+        <?php
+
+        $ingredientManager = new IngredientManager();
+        $recipe_IngredientManager = new Recipe_IngredientManager();
+
+        ?>
+        <ul>
+            <?php
+            foreach ($recipe_IngredientManager->getFromRecipe($recipe->getId()) as $ingredient) {
+                $quantity = $ingredient['quantity'];
+                $unit_name = $ingredient['unit_name'];
+                $name = $ingredient['name'];
+
+                echo "<li>$quantity $unit_name(s) de $name </li>";
+            }
+
+            ?>
+        </ul>
+        <h2>Recette: </h2>
+        <p><?= nl2br($recipe->getContent()) ?></p>
 
         <h3>Recette Créée par <strong><a
                         href="/index.php/user?action=profile&id=<?= $author->getId() ?>"><?= $author->getUsername() ?></a></strong>
             le <?= $recipeManager->getTimeFR($recipe->getCreationDateTime()) ?></h3>
-
     </div>
 
     <div>
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 col-xxl-4 border rounded">
-                <h2>Commentaires: </h2>
+                <?php
+                $commentManager = new CommentManager();
+                ?>
+                <h2>Commentaires: <span
+                            class="badge bg-secondary"><?= $commentManager->getNumberCommentPerRecipe($recipe->getId()) ?></span>
+                </h2>
 
                 <?php
                 //Checks if user is authenticated, if true: displays new comment form
                 if (isset($_SESSION['user_id'])) {
-                ?>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-md-8 shadow rounded bg-light text-center">
-                            <form action="/index.php/comment?action=write&recipe_id=<?= $recipe->getId() ?>"
-                                  method="post">
-                                <div class="my-2">
-                                    <label for="content" class="form-label">&Eacute;crire un commentaire</label>
-                                    <input type="text" name="content" id="content" maxlength="150"
-                                           placeholder="Votre commentaire" class="form-control">
-                                </div>
-                                <div class="my-3">
-                                    <input type="submit" value="Commenter" class="btn btn-primary">
-                                </div>
-                            </form>
+                    ?>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col col-md-8 shadow rounded bg-light text-center">
+                                <form action="/index.php/comment?action=write&recipe_id=<?= $recipe->getId() ?>"
+                                      method="post">
+                                    <div class="my-2">
+                                        <label for="content" class="form-label">&Eacute;crire un commentaire</label>
+                                        <input type="text" name="content" id="content" maxlength="150"
+                                               placeholder="Votre commentaire" class="form-control">
+                                    </div>
+                                    <div class="my-3">
+                                        <input type="submit" value="Commenter" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <?php
+                }
+                ?>
                 <ul class="list-unstyled">
                     <?php
-                    }
-                    $commentManager = new CommentManager();
                     $comments = $commentManager->getCommentsByRecipeId($recipe->getId());
 
-                    if(empty($comments)) {
+                    if (empty($comments)) {
                         echo "<span class='text-muted fst-italic'>Aucun commentaire n'a été publié pour cette recette</span>";
                     } else {
                         foreach ($comments as $comment) {

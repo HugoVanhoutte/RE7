@@ -3,12 +3,16 @@
 namespace App\Model\Entity;
 
 abstract class AbstractPost
+//Class used for users post: comments and recipes
 {
+    /**Properties******************************************************************************************************/
     private int $id;
     private string $content;
     private int $author_id;
     private string $creation_date_time;
 
+
+    /**Getters And Setters*********************************************************************************************/
     /**
      * @return int
      */
@@ -32,7 +36,7 @@ abstract class AbstractPost
      */
     public function getContent(): string
     {
-        return $this->content;
+        return htmlspecialchars_decode($this->content);
     }
 
     /**

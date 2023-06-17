@@ -4,16 +4,18 @@ namespace App\Model\Entity;
 
 class Recipe extends AbstractPost
 {
+    /**Properties******************************************************************************************************/
     private string $title;
     private int $preparation_time_minutes;
     private int $cooking_time_minutes;
 
+    /**Getters And Setters*********************************************************************************************/
     /**
      * @return string
      */
     public function getTitle(): string
     {
-        return $this->title;
+        return htmlspecialchars_decode($this->title);
     }
 
     /**
@@ -61,6 +63,4 @@ class Recipe extends AbstractPost
         $this->cooking_time_minutes = $cooking_time_minutes;
         return $this;
     }
-
-
 }
