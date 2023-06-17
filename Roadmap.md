@@ -3,8 +3,6 @@
 	* Finir style (Bootstrap)
 	* Responsive
     * Amélioration de la mise en page des recettes : (retours à la ligne, sécurité failles XSS, etc,...)
-  
-
 * 1.1
 	* Amélioration mise en page des recettes (Ingredients, units, etc..)
 	* Menus
