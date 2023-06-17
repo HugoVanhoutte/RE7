@@ -24,7 +24,7 @@ if (isset($_SESSION['user_id']) && $userManager->isAuthor($params['id'])) {
                         <input type="text" id="username" name="username" value="<?= $user->getUsername() ?>" required class="form-control">
                     </div>
                     <div class="my-3">
-                        <input type="submit" value="Editer" class="btn btn-primary">
+                        <input type="submit" value="&Eacute;diter" class="btn btn-primary">
                     </div>
                 </form>
             </div>

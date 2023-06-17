@@ -7,7 +7,7 @@ use Throwable;
 
 class DB
 {
-    //Class use to create a PDO connection the the DB (Singleton design Pattern)
+    //Class use to create a PDO connection the DB (Singleton design Pattern)
     private static string $server = 'localhost';
     private static string $username = 'id20884415_admin';
     private static string $password = 'P@ssword1234';

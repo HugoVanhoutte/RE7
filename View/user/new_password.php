@@ -33,4 +33,4 @@ if ($params['token'] !== $user->getToken()) { //Token are different, sends user 
         </div>
     </div>
 <?php
-//}
+}

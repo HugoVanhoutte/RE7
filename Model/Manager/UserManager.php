@@ -61,7 +61,7 @@ class UserManager extends AbstractManager implements ManagerInterface
     }
 
     /**
-     * gets user id from emailAdress
+     * gets user id from email Address
      * @param string $email
      * @return int
      */
@@ -195,7 +195,7 @@ class UserManager extends AbstractManager implements ManagerInterface
     }
 
     /**
-     * returns true if email adress is in valid format
+     * returns true if email address is in valid format
      * @param string $email
      * @return bool
      */

@@ -292,7 +292,7 @@ class UserController extends AbstractController implements ControllerInterface
     }
 
     /**
-     * displays user profile from its id: if user doesnt exist: redirects to 404
+     * displays user profile from its id: if user doesn't exist: redirects to 404
      * @param int $id
      * @return void
      */

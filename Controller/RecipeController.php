@@ -107,7 +107,7 @@ class RecipeController extends AbstractController implements ControllerInterface
         $quantities = [];
         $units = [];
 
-        // gets every ingredients, units and quantities to add them to their respectives arrays
+        // gets every ingredient, units and quantities to add them to their respectives arrays
         foreach ($data as $key => $value) {
             if (str_contains($key, 'ingredient')) {
                 $ingredientNumber = substr($key, strlen('ingredient'));
@@ -128,7 +128,7 @@ class RecipeController extends AbstractController implements ControllerInterface
         $units = array_values($units);
         $quantities = array_values($quantities);
 
-        //generates array with correctly formated data to insert into DB
+        //generates array with correctly formatted data to insert into DB
         for ($i = 0; $i < count($ingredients); $i++) {
             $data = [
                 'recipe_id' => $id,
