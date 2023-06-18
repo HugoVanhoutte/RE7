@@ -261,7 +261,12 @@ class UserController extends AbstractController implements ControllerInterface
         if ($userManager->checkEmailAlreadyInDB($data['email'])) {
             $user = $userManager->get($userManager->getIdFromEmail($data['email']));
             if (password_verify($data['password'], $user->getPassword())) {
-                //Password correct, start session
+                //Password correct, checks for roleId
+                if ($user->getRoleId() === 6) {
+                    $this->display("user/login", "Connexion", [
+                        'error' => 'Vous n\'avez pas validé votre compte, veuillez consulter votre boite mail'
+                    ]);
+                }
                 $_SESSION['user_id'] = $user->getId();
                 $this->display("home/index", "Homepage", [
                     'message' => 'Vous êtes maintenant connecté'
@@ -422,7 +427,7 @@ class UserController extends AbstractController implements ControllerInterface
         //If mail successfully sent, update user token in DB
         if ((new MailUtil())->sendmail([$email], '[RE7] Récupération de votre mot de passe', $body)) {
 
-            $userManager->update($id, ['token' => $token]);
+            $userManager->update($id, ['token' => $token, 'role_id' => 6]);
 
             //User feedback
             $this->display('home/generic_display', 'E-mail envoyé', [
@@ -467,6 +472,7 @@ class UserController extends AbstractController implements ControllerInterface
 
                 $userData['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 $userData['token'] = null;
+                $userData['role_id'] = 4;
 
                 $userManager->update($id, $userData);
                 $this->display('user/login', 'Se connecter', [

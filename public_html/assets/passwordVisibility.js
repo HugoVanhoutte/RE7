@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () { //Load the script on
     let passwordInputs = document.querySelectorAll("input[type='password']");
 
     for (let i = 0; i < visibilityButtons.length; i++) {
-        visibilityButtons[i].addEventListener("click", function () {
+        visibilityButtons[i].parentElement.addEventListener("click", function () {
             togglePasswordVisibility(i);
         });
     }
