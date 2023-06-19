@@ -34,9 +34,16 @@
                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+]).{8,}" required
                            class="form-control"
                            title="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial(!@#$%^&*()_+).">
-                    <span class="input-group-text"><i class="fa-solid fa-eye passwordVisibility"></i></span>
+                    <span class="input-group-text" role="button"><i class="fa-solid fa-eye passwordVisibility"></i></span>
                     <div class="invalid-feedback">
-                        le mot de passe n'est pas valide
+                        le mot de passe n'est pas valide, celui-ci doit comporter au minimum :
+                        <ul class="list-unstyled">
+                            <li>8 caractères</li>
+                            <li>1 lettre minuscule</li>
+                            <li>1 lettre majuscule</li>
+                            <li>1 chiffre</li>
+                            <li>1 caractère spécial parmi: !@#$%^&*()_+</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row justify-content-evenly mt-2">
@@ -63,7 +70,7 @@
                     <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
                     <input type="password" name="passwordConfirm" id="passwordConfirm" required
                            class="form-control">
-                    <span class="input-group-text"><i class="fa-solid fa-eye passwordVisibility"></i></span>
+                    <span class="input-group-text" role="button"><i class="fa-solid fa-eye passwordVisibility"></i></span>
                     <div class="invalid-feedback">
                         Veuillez confirmer votre mot de passe
                     </div>
