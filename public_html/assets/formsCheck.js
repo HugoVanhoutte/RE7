@@ -3,7 +3,7 @@ let form = document.querySelector(".needs-validation");
 //Bootstrap form validation
 form.addEventListener('submit', validate);
 
-function validate(e) { //TODO: change for password validated correctly NOT URGENT
+function validate(e) {
     if (form.checkValidity() === false) {
         e.preventDefault();
     }

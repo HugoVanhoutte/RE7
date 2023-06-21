@@ -141,48 +141,55 @@ class UserController extends AbstractController implements ControllerInterface
      */
     private function validateRegistration(array $registrationInfo): void
     {
-        if (empty($_POST)) {                                                                                            //Ensures that no error message is displayed on register page before sending info
+        if (empty($_POST)) {
             die();
         }
 
         $userManager = new UserManager();
 
-        if ($userManager->checkUsernameAlreadyInDB($registrationInfo['username']))                                       //If true: a username is already in DB
+        if ($userManager->checkUsernameAlreadyInDB($registrationInfo['username']))
+            //If true: a username is already in DB
         {
             //Display Message on registration page that username already taken
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Ce nom d\'utilisateur est déjà utilisé'
             ]);
         } elseif ($userManager->checkEmailAlreadyInDB($registrationInfo['email'])) {
+            //If true: an email is already used in DB
             //Display Message on registration page that email already taken
-            $this->display('user/register', 'S\'enregistrer', [                                           //If true: an email is already used in DB
-                'error' => 'Cette adresse mail est déjà utilisé'
+            $this->display('user/register', 'S\'enregistrer', [
+                'error' => 'Cette adresse mail est déjà utilisée'
             ]);
-        } elseif (!($registrationInfo['password'] === $registrationInfo['passwordConfirm']))                              //If true: password and password confirmation doesn't match
+        } elseif (!($registrationInfo['password'] === $registrationInfo['passwordConfirm'])) {
+            //If true: password and password confirmation doesn't match
             //Display Error Message (Generic)
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
-
-        elseif (!$userManager->validateEmail($registrationInfo['email']))                                               //If true: email is not valid
+        }
+        elseif (!$userManager->validateEmail($registrationInfo['email']))
+        {
+            //If true: email is not valid
+            //Display Error Message (Generic)
+            $this->display('user/register', 'S\'enregistrer', [
+                'error' => 'Une erreur s\'est produite, veuillez réessayer'
+            ]);
+        } elseif (!$userManager->validateUsername($registrationInfo['username']))
+            //If true: username is not valid
         {
             //Display Error Message (Generic)
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
-        } elseif (!$userManager->validateUsername($registrationInfo['username']))                                          //If true: username is not valid
+        } elseif (!$userManager->validatePassword($registrationInfo['password']))
+            //If true: password is not valid
         {
             //Display Error Message (Generic)
             $this->display('user/register', 'S\'enregistrer', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
-        } elseif (!$userManager->validatePassword($registrationInfo['password']))                                         //If true: password is not valid
-        {
-            //Display Error Message (Generic)
-            $this->display('user/register', 'S\'enregistrer', [
-                'error' => 'Une erreur s\'est produite, veuillez réessayer'
-            ]);
-        } else                                                                                                            //All good: create a new User and send confirmation email
+        } else
+            //All good: create a new User and send confirmation email
         {
             $username = $userManager->sanitize($registrationInfo['username']);
             $email = $userManager->sanitize(strtolower($registrationInfo['email']));
@@ -232,7 +239,7 @@ class UserController extends AbstractController implements ControllerInterface
                 'message' => 'Adresse E-mail vérifié, vous pouvez vous connecter'
             ]);
         } else {
-            $this->display('home/generic_display', 'Erreur', [
+            $this->display('home/index', 'Homepage', [
                 'error' => 'Une erreur s\'est produite, veuillez réessayer'
             ]);
         }

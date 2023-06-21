@@ -68,7 +68,7 @@
                 <label for="passwordConfirm" class="form-label">Confirmer mot de passe:</label>
                 <div class="input-group has-validation">
                     <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
-                    <input type="password" name="passwordConfirm" id="passwordConfirm" required
+                    <input type="password" name="passwordConfirm" id="passwordConfirm" required minlength="8"
                            class="form-control">
                     <span class="input-group-text" role="button"><i class="fa-solid fa-eye passwordVisibility"></i></span>
                     <div class="invalid-feedback">
